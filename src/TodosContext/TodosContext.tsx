@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext } from "react";
 import type { TodoObject } from "../types";
 
 interface TodosContextValue {
@@ -7,16 +7,7 @@ interface TodosContextValue {
 }
 
 
-const TodosContext = createContext<TodosContextValue | null>(null);
-
-export default function TodosContextProvider({ children }: { children: ReactNode }) {
-    const [todos, setTodos] = useState<TodoObject[]>([]);
-    return (
-        <TodosContext.Provider value={{ todos, setTodos }}>
-            {children}
-        </TodosContext.Provider>
-    )
-}
+export const TodosContext = createContext<TodosContextValue | null>(null);
 
 export function useTodosContext() {
     const currentTodosContext = useContext(TodosContext);

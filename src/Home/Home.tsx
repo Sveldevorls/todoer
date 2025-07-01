@@ -6,6 +6,8 @@ export default function Home() {
     const { editorRef, setEditorAction } = useEditorContext();
     const { todos } = useTodosContext();
 
+    console.log(todos);
+
     function handleAddTodoClick(): void {
         setEditorAction("NEW_TODO");
         editorRef.current?.showModal();

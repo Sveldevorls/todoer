@@ -1,5 +1,5 @@
 import EditorContextProvider from './EditorContext/EditorContextProvider'
-import TodosContextProvider from './TodosContext/TodosContext'
+import TodosContextProvider from './TodosContext/TodosContextProvider'
 import Home from './Home/Home'
 import Editor from './Editor/Editor'
 import './App.css'
