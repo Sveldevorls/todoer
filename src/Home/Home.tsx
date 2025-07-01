@@ -1,23 +1,19 @@
+import { useEditorContext } from "../EditorContext/EditorContext";
 import { useTodosContext } from "../TodosContext/TodosContext";
 import type { TodoObject } from "../types";
 
 export default function Home() {
-    const { todos, setTodos } = useTodosContext();
-    
-    function handleAddTodoClick() : void {
-        const newTodo : TodoObject = {
-            id: crypto.randomUUID(),
-            title: "Title",
-            description: "Description",
-            isCompleted: false
-        }
+    const { editorRef, setEditorAction } = useEditorContext();
+    const { todos } = useTodosContext();
 
-        setTodos([...todos, newTodo]);
+    function handleAddTodoClick(): void {
+        setEditorAction("NEW_TODO");
+        editorRef.current?.showModal();
     }
 
     return (
         <div id="home">
-            <h1>Hello world</h1>
+            <h1>Todo list</h1>
             {
                 todos.length === 0 ?
                     <h2>No todos yet</h2> :

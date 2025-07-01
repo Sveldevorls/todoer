@@ -4,3 +4,5 @@ export type TodoObject = {
     description: string | null;
     isCompleted: boolean;
 }
+
+export type EditorActionType = "" | "NEW_TODO" | "EDIT_TODO";
