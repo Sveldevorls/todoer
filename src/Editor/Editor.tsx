@@ -6,22 +6,24 @@ import type { TodoObject } from "../types";
 export default function Editor() {
     const { editorRef, editorAction } = useEditorContext();
 
-    function handleDialogClick(e: React.MouseEvent<HTMLDialogElement>): void {
+    /* function handleDialogClick(e: React.MouseEvent<HTMLDialogElement>): void {
         const clickedElement = e.target as HTMLElement;
         if (clickedElement.tagName === "DIALOG") {
             editorRef.current!.close();
         }
-    }
+    } */
 
     return (
-        <dialog ref={editorRef} onClick={(e) => handleDialogClick(e)}>
-            <div>
-                {{
-                    "NEW_TODO": <NewTodoTemplate />,
-                    "EDIT_TODO": <EditTodoTemplate />,
-                    "": <></>,
-                }[editorAction]}
-            </div>
+        <dialog
+            ref={editorRef}
+            /* onClick={(e) => handleDialogClick(e)} */
+            className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2"
+        >
+            {{
+                "NEW_TODO": <NewTodoTemplate />,
+                "EDIT_TODO": <EditTodoTemplate />,
+                "": <></>,
+            }[editorAction]}
         </dialog>
     )
 }
@@ -45,24 +47,48 @@ function NewTodoTemplate() {
     }
 
     return (
-        <div>
-            <form id="new-todo" onSubmit={(e) => handleNewTodoSubmit(e)}>
+        <div className="flex flex-col gap-4 p-8">
+            <form id="new-todo" onSubmit={(e) => handleNewTodoSubmit(e)} className="flex flex-col gap-3">
                 <label>
-                    <h2>Title</h2>
-                    <input type="text" name="title" required />
+                    <h2>Title*</h2>
+                    <input
+                        type="text"
+                        name="title"
+                        className="border-1 border-black"
+                        required
+                    />
                 </label>
                 <label>
                     <h2>Description</h2>
-                    <textarea name="description" />
+                    <textarea
+                        name="description"
+                        className="border-1 border-black"
+                    />
                 </label>
-                <h2>Status</h2>
-                <input type="radio" name="status" id="completed" value="true" required />
-                <label htmlFor="completed">Completed</label>
-                <input type="radio" name="status" id="unfinished" value="false" />
-                <label htmlFor="unfinished">Unfinished</label>
+                <div className="flex flex-col">
+                    <h2>Status*</h2>
+                    <label>
+                        <input type="radio" name="status" value="false" />
+                        Unfinished
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="true" required />
+                        Completed
+                    </label>
+                </div>
             </form>
-            <button form="new-todo">Add todo</button>
-            <button onClick={() => editorRef.current!.close()}>Cancel</button>
+            <button
+                form="new-todo"
+                className="bg-green-200"
+            >
+                Add todo
+            </button>
+            <button
+                onClick={() => editorRef.current!.close()}
+                className="bg-red-200"
+            >
+                Cancel
+            </button>
         </div>
     )
 }
