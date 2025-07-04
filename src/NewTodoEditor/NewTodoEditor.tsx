@@ -2,19 +2,16 @@ import React, { useRef, useState } from "react";
 import { useConfirm } from "../ConfirmContext/ConfirmContext";
 import { useTodosContext } from "../TodosContext/TodosContext";
 import type { TodoObject } from "../types";
+import TextareaAutosize from 'react-textarea-autosize';
 
 export default function NewTodoEditor() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
-    function handleEditorClose() {
-        setIsOpen(false);
-    }
 
     return (
         <>
             {
                 isOpen ?
-                    <NewTodoForm closeHandler={handleEditorClose} /> :
+                    <NewTodoForm closeHandler={() => setIsOpen(false)} /> :
                     <NewTodoButton clickHandler={() => setIsOpen(true)} />
             }
         </>
@@ -90,10 +87,12 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
                     placeholder="Title"
                     required
                 />
-                <textarea
+                <TextareaAutosize
                     name="description"
                     className="resize-none text-sm focus:outline-0 focus:bg-gray-100"
                     placeholder="Description (optional)"
+                    minRows={3}
+                    maxRows={5}
                 />
             </form>
             <div className="flex justify-end gap-4">
