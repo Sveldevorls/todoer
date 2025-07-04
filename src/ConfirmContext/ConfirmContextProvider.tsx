@@ -28,11 +28,27 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
     return (
         <ConfirmContext.Provider value={{ confirm }}>
             {children}
-            <dialog ref={dialogRef} onCancel={handleCancel}>
-                <p>{message}</p>
-                <div>
-                    <button onClick={handleCancel}>{cancelText}</button>
-                    <button onClick={handleConfirm}>{confirmText}</button>
+            <dialog
+                ref={dialogRef}
+                onCancel={handleCancel}
+                className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2
+                p-4 rounded-md shadow-md
+                w-[min(90vw,480px)]"
+            >
+                <p className="p-4">{message}</p>
+                <div className="flex justify-end gap-4">
+                    <button
+                        onClick={handleCancel}
+                        className="button-secondary"
+                    >
+                        {cancelText}
+                    </button>
+                    <button
+                        onClick={handleConfirm}
+                        className="button-primary"
+                    >
+                        {confirmText}
+                    </button>
                 </div>
             </dialog>
         </ConfirmContext.Provider>

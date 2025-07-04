@@ -12,16 +12,23 @@ export default function NewTodoEditor() {
 
     return (
         <>
-            <button
-                onClick={() => setIsOpen(true)}
-                className="border-solid border-black border-1 px-4 py-1 bg-white"
-            >
-                Add todo
-            </button>
             {
-                isOpen && <NewTodoForm closeHandler={handleEditorClose} />
+                isOpen ?
+                    <NewTodoForm closeHandler={handleEditorClose} /> :
+                    <NewTodoButton clickHandler={() => setIsOpen(true)} />
             }
         </>
+    )
+}
+
+function NewTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
+    return (
+        <button
+            onClick={clickHandler}
+            className="button-primary"
+        >
+            + Add todo
+        </button>
     )
 }
 
@@ -42,7 +49,7 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
         };
 
         setTodos([newTodo, ...todos]);
-        closeHandler();
+        formRef.current!.reset();
     }
 
     function handleNewTodoFormCancel() {
@@ -69,28 +76,40 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
     }
 
     return (
-        <div className="border-1 border-black rounded-md">
+        <div className="border-1 border-gray-400 rounded-md w-[min(90vw,30em)] flex flex-col gap-4 p-2">
             <form
                 className="flex flex-col"
                 id="new-todo-form"
                 onSubmit={e => handleNewTodoFormSubmit(e)}
                 ref={formRef}
             >
-                <input type="text" name="title" className="border-b-1 border-black" required/>
-                <textarea name="description" className="border-b-1 border-black resize-none" />
+                <input
+                    type="text"
+                    name="title"
+                    className="font-bold focus:outline-0 focus:bg-gray-100"
+                    placeholder="Title"
+                    required
+                />
+                <textarea
+                    name="description"
+                    className="resize-none text-sm focus:outline-0 focus:bg-gray-100"
+                    placeholder="Description (optional)"
+                />
             </form>
-            <button
-                className="border-solid border-black border-1 px-4 py-1 bg-white"
-                onClick={handleNewTodoFormCancel}
-            >
-                Cancel
-            </button>
-            <button
-                form="new-todo-form"
-                className="border-solid border-black border-1 px-4 py-1 bg-white"
-            >
-                Add todo
-            </button>
+            <div className="flex justify-end gap-4">
+                <button
+                    className="button-secondary"
+                    onClick={handleNewTodoFormCancel}
+                >
+                    Cancel
+                </button>
+                <button
+                    form="new-todo-form"
+                    className="button-primary"
+                >
+                    Add todo
+                </button>
+            </div>
         </div>
     )
 }

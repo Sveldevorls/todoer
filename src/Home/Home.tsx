@@ -12,7 +12,7 @@ export default function Home() {
             <h1 className="text-4xl font-black w-full">Home</h1>
             {
                 todos.length === 0 ?
-                    <h2 className="w-full">No todos yet</h2> :
+                    <h2 className="w-full">There are currently no todos</h2> :
                     <div className="flex flex-col gap-2 w-full">
                         {todos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
                     </div>
