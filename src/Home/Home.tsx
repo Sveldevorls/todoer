@@ -1,17 +1,11 @@
-import { useEditorContext } from "../EditorContext/EditorContext";
 import { useTodosContext } from "../TodosContext/TodosContext";
 import type { TodoObject } from "../types";
 
+import NewTodoEditor from "../NewTodoEditor/NewTodoEditor";
+
 export default function Home() {
-    const { editorRef, setEditorAction } = useEditorContext();
     const { todos } = useTodosContext();
-
     console.log(todos);
-
-    function handleAddTodoClick(): void {
-        setEditorAction("NEW_TODO");
-        editorRef.current?.showModal();
-    }
 
     return (
         <div id="home" className="flex flex-col items-center gap-4 text-center p-2">
@@ -23,12 +17,7 @@ export default function Home() {
                         {todos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
                     </div>
             }
-            <button
-                onClick={handleAddTodoClick}
-                className="border-solid border-black border-1 px-4 py-1 bg-white"
-            >
-                Add todo
-            </button>
+            <NewTodoEditor/>
         </div>
     )
 }

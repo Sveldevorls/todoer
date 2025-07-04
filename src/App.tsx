@@ -1,18 +1,16 @@
-import EditorContextProvider from './EditorContext/EditorContextProvider'
 import TodosContextProvider from './TodosContext/TodosContextProvider'
+import { ConfirmProvider } from './ConfirmContext/ConfirmContextProvider'
 import Home from './Home/Home'
-import Editor from './Editor/Editor'
 import './App.css'
 
 
 
 export default function App() {
   return (
-    <EditorContextProvider>
-      <TodosContextProvider>
-        <Home />
-        <Editor />
-      </TodosContextProvider>
-    </EditorContextProvider>
+    <ConfirmProvider>
+        <TodosContextProvider>
+          <Home />
+        </TodosContextProvider>
+    </ConfirmProvider>
   )
 }
