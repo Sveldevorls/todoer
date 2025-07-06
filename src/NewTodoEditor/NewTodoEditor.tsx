@@ -45,7 +45,7 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
             isCompleted: false,
         };
 
-        setTodos([newTodo, ...todos]);
+        setTodos([...todos, newTodo]);
         formRef.current!.reset();
     }
 

@@ -13,22 +13,48 @@ export default function Home() {
             {
                 todos.length === 0 ?
                     <h2 className="w-full">There are currently no todos</h2> :
-                    <div className="flex flex-col gap-2 w-full">
+                    <ul className="flex flex-col items-center w-full">
                         {todos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
-                    </div>
+                    </ul>
             }
-            <NewTodoEditor/>
+            <NewTodoEditor />
         </div>
     )
 }
 
 function TodoCard({ todo }: { todo: TodoObject }) {
-    const background = todo.isCompleted ? "bg-green-200" : "bg-red-200";
+    const { todos, setTodos } = useTodosContext();
+
+    function handleTodoFinishClick() {
+        const nextTodos = todos.map(nextTodo => 
+            nextTodo.id === todo.id ? {...nextTodo, isCompleted: true} : nextTodo
+        )
+
+        setTodos(nextTodos);
+    }
 
     return (
-        <div className={`p-4 ${background}`}>
-            <h2 className="text-2xl font-bold">{todo.title}</h2>
-            <h3>{todo.description}</h3>
-        </div>
+        <li className="flex items-center p-2 gap-3 w-[min(90vw,480px)] text-left border-b-gray-200 hover:bg-gray-100 border-b-1">
+            <button
+                className="w-[24px] h-[24px] p-0 rounded-full
+                    border-2 border-gray-300 hover:border-green-500 
+                    transition-colors 
+                    flex items-center justify-center shrink-0 group"
+                onClick={handleTodoFinishClick}
+                title="Mark as finished"
+            >
+                <svg
+                    className="w-[16px] h-[16px] stroke-green-500 opacity-0 duration-300 group-hover:opacity-100"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" fill="none" strokeWidth="3" />
+                </svg>
+            </button>
+            <div className="min-w-0 flex-1">
+                <h2 className="font-bold truncate">{todo.title}</h2>
+                <p className="text-sm break-all line-clamp-2">{todo.description}</p>
+                {todo.isCompleted && <h2>finished</h2> }
+            </div>
+        </li>
     )
 }
