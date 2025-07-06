@@ -8,9 +8,9 @@ import './App.css'
 export default function App() {
   return (
     <ConfirmProvider>
-        <TodosContextProvider>
-          <Home />
-        </TodosContextProvider>
+      <TodosContextProvider>
+        <Home />
+      </TodosContextProvider>
     </ConfirmProvider>
   )
 }
