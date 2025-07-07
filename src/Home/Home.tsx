@@ -1,11 +1,16 @@
 import { useTodosContext } from "../TodosContext/TodosContext";
-import type { TodoObject } from "../types";
-
 import NewTodoEditor from "../NewTodoEditor/NewTodoEditor";
+import type { TodoObject } from "../types";
+import { useAlert } from "../AlertContext/AlertContext";
 
 export default function Home() {
   const { todos } = useTodosContext();
   console.log(todos);
+
+  const finishedTodos = todos.filter(todo => todo.isCompleted);
+  const unfinishedTodos = todos.filter(todo => !todo.isCompleted);
+
+  console.log(finishedTodos, unfinishedTodos)
 
   return (
     <div id="home" className="flex flex-col items-center gap-4 text-center p-2">
@@ -13,8 +18,15 @@ export default function Home() {
       {
         todos.length === 0 ?
           <h2 className="w-full">There are currently no todos</h2> :
-          <ul className="flex flex-col items-center w-full">
-            {todos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
+          <ul className="flex flex-col items-center gap-2 w-full">
+            <div>
+              <h2>In progress</h2>
+              {unfinishedTodos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
+            </div>
+            <div>
+              <h2>Finished</h2>
+              {finishedTodos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
+            </div>
           </ul>
       }
       <NewTodoEditor />
@@ -24,13 +36,19 @@ export default function Home() {
 
 function TodoCard({ todo }: { todo: TodoObject }) {
   const { todos, setTodos } = useTodosContext();
+  const showAlert = useAlert();
 
   function handleTodoFinishClick() {
-    const nextTodos = todos.map(nextTodo =>
-      nextTodo.id === todo.id ? { ...nextTodo, isCompleted: true } : nextTodo
-    )
+    if (!todo.isCompleted) {
+      const nextTodos = todos.map(nextTodo =>
+        nextTodo.id === todo.id ? { ...nextTodo, isCompleted: true } : nextTodo
+      )
+      showAlert({
+        message: "Task completed"
+      })
 
-    setTodos(nextTodos);
+      setTodos(nextTodos);
+    }
   }
 
   return (
@@ -51,7 +69,7 @@ function TodoCard({ todo }: { todo: TodoObject }) {
         </svg>
       </button>
       <div className="min-w-0 flex-1">
-        <h2 className="font-bold truncate">{todo.title} {todo.isCompleted && <span className="text-xs">Finished</span>}</h2>
+        <h3 className="font-bold truncate">{todo.title} {todo.isCompleted && <span className="text-xs">Finished</span>}</h3>
         <p className="text-sm break-all line-clamp-2">{todo.description}</p>
       </div>
     </li>
