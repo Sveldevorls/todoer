@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { TodoObject } from "../types";
+import type { TodoObject } from "../../types";
 
 interface TodosContextValue {
   todos: TodoObject[];

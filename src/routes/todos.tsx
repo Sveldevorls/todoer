@@ -1,9 +1,15 @@
-import { useTodosContext } from "../TodosContext/TodosContext";
+import { createFileRoute } from "@tanstack/react-router";
+import { useTodosContext } from "../contexts/TodosContext/TodosContext";
 import NewTodoEditor from "../NewTodoEditor/NewTodoEditor";
 import type { TodoObject } from "../types";
-import { useAlert } from "../AlertContext/AlertContext";
+import { useAlert } from "../contexts/AlertContext/AlertContext";
 
-export default function Home() {
+
+export const Route = createFileRoute('/todos')({
+  component: Home,
+})
+
+function Home() {
   const { todos } = useTodosContext();
   console.log(todos);
 
@@ -14,7 +20,7 @@ export default function Home() {
 
   return (
     <div id="home" className="flex flex-col items-center gap-4 text-center p-2">
-      <h1 className="text-4xl font-black w-full">Home</h1>
+      <h1 className="text-4xl font-black w-full">Todos</h1>
       {
         todos.length === 0 ?
           <h2 className="w-full">There are currently no todos</h2> :

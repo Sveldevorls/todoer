@@ -1,14 +1,14 @@
 import { useRef, useState, type ReactNode } from "react";
 import { ConfirmContext, type ConfirmOptions } from "./ConfirmContext";
 
-export function ConfirmProvider({ children }: { children: ReactNode }) {
+export default function ConfirmProvider({ children }: { children: ReactNode }) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [message, setMessage] = useState<string>("");
   const [cancelText, setCancelText] = useState<string>("");
   const [confirmText, setConfirmText] = useState<string>("");
   const [onConfirmCallback, setOnConfirmCallback] = useState<VoidFunction>(() => { });
 
-  const confirm = ({ message, cancelText, confirmText, onConfirm }: ConfirmOptions) => {
+  const showConfirm = ({ message, cancelText, confirmText, onConfirm }: ConfirmOptions) => {
     setMessage(message);
     setCancelText(cancelText);
     setConfirmText(confirmText);
@@ -26,7 +26,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ConfirmContext.Provider value={{ confirm }}>
+    <ConfirmContext.Provider value={{ showConfirm }}>
       {children}
       <dialog
         ref={dialogRef}

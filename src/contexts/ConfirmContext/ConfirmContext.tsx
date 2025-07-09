@@ -8,7 +8,7 @@ export type ConfirmOptions = {
 };
 
 type ConfirmContextType = {
-  confirm: (options: ConfirmOptions) => void;
+  showConfirm: (options: ConfirmOptions) => void;
 };
 
 export const ConfirmContext = createContext<ConfirmContextType | null>(null);
@@ -18,5 +18,5 @@ export function useConfirm() {
   if (!context) {
     throw new Error("ConfirmContext is null: is the component calling the context not in ConfirmContextProvider?");
   }
-  return context.confirm;
+  return context.showConfirm;
 }

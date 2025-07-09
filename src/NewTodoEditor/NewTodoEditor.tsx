@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { useConfirm } from "../ConfirmContext/ConfirmContext";
-import { useTodosContext } from "../TodosContext/TodosContext";
+import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
+import { useTodosContext } from "../contexts/TodosContext/TodosContext";
 import type { TodoObject } from "../types";
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -32,7 +32,7 @@ function NewTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
 function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const { todos, setTodos } = useTodosContext();
-  const confirm = useConfirm();
+  const showConfirm = useConfirm();
 
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -63,7 +63,7 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
       closeHandler();
     }
     else {
-      confirm({
+      showConfirm({
         message: "You will lose all unsaved progress if you exit. Are you sure?",
         cancelText: "Cancel",
         confirmText: "Yes, exit",
