@@ -2,21 +2,25 @@
 
 @layer base {
     button {
-        @apply px-3 py-1 rounded-sm;
         transition: filter ease-in-out 0.1s;
     }
 
     button:hover {
-        filter: brightness(90%);
+        filter: brightness(92%);
+        cursor: pointer;
     }
 }
 
 @layer components {
     .button-primary {
-        @apply bg-orange-600 text-white;
+        @apply px-3 py-1 rounded-sm bg-orange-600 text-white;
     }
 
     .button-secondary {
-        @apply bg-gray-100;
+        @apply px-3 py-1 rounded-sm bg-gray-100;
+    }
+
+    .button-svg {
+        @apply p-1;
     }
 }
