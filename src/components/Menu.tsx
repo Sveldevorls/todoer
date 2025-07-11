@@ -83,6 +83,9 @@ export default function Menu() {
             <li>
               <LinkBlock to="/todos" text="My tasks" />
             </li>
+            <li>
+              <LinkBlock to="/finished" text="Finished tasks" />
+            </li>
           </ul>
         </nav>
 

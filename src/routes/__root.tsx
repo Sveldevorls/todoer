@@ -25,7 +25,7 @@ function App() {
   return (
     <div id="app" className='flex min-h-[100vh]'>
       <Menu />
-      <div id="outlet" className="flex-grow-1 shrink-0">
+      <div id="outlet" className="flex-grow shrink p-10">
         <Outlet />
       </div>
     </div>

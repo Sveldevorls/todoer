@@ -73,7 +73,7 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
   }
 
   return (
-    <div className="border-1 border-gray-400 rounded-md w-[min(90vw,30em)] flex flex-col gap-4 p-2">
+    <div className="border-1 border-gray-400 rounded-md w-full flex flex-col gap-4 p-2">
       <form
         className="flex flex-col"
         id="new-todo-form"

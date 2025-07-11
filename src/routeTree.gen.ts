@@ -10,32 +10,42 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TodosRouteImport } from './routes/todos'
+import { Route as FinishedRouteImport } from './routes/finished'
 
 const TodosRoute = TodosRouteImport.update({
   id: '/todos',
   path: '/todos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FinishedRoute = FinishedRouteImport.update({
+  id: '/finished',
+  path: '/finished',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/finished': typeof FinishedRoute
   '/todos': typeof TodosRoute
 }
 export interface FileRoutesByTo {
+  '/finished': typeof FinishedRoute
   '/todos': typeof TodosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/finished': typeof FinishedRoute
   '/todos': typeof TodosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/todos'
+  fullPaths: '/finished' | '/todos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/todos'
-  id: '__root__' | '/todos'
+  to: '/finished' | '/todos'
+  id: '__root__' | '/finished' | '/todos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  FinishedRoute: typeof FinishedRoute
   TodosRoute: typeof TodosRoute
 }
 
@@ -48,10 +58,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/finished': {
+      id: '/finished'
+      path: '/finished'
+      fullPath: '/finished'
+      preLoaderRoute: typeof FinishedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  FinishedRoute: FinishedRoute,
   TodosRoute: TodosRoute,
 }
 export const routeTree = rootRouteImport
