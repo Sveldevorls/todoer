@@ -3,7 +3,7 @@ import { useTodosContext } from "../contexts/TodosContext/TodosContext";
 import { useAlert } from "../contexts/AlertContext/AlertContext";
 
 export default function TodoCard({ todo }: { todo: TodoObject }) {
-  const { todos, setTodos } = useTodosContext();
+  const { todos, setAndSaveTodos } = useTodosContext();
   const showAlert = useAlert();
 
   function handleTodoFinishClick() {
@@ -14,7 +14,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
       message: "Task completed"
     })
 
-    setTodos(nextTodos);
+    setAndSaveTodos(nextTodos);
   }
 
   function handleTodoRestartClick() {
@@ -25,7 +25,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
       message: "Task restarted"
     })
 
-    setTodos(nextTodos);
+    setAndSaveTodos(nextTodos);
   }
 
   return (

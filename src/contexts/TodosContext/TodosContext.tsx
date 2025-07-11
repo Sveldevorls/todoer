@@ -3,7 +3,7 @@ import type { TodoObject } from "../../types";
 
 interface TodosContextValue {
   todos: TodoObject[];
-  setTodos: React.Dispatch<React.SetStateAction<TodoObject[]>>;
+  setAndSaveTodos: (todos: TodoObject[]) => void;
 }
 
 

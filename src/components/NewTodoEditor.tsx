@@ -31,7 +31,7 @@ function NewTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
 
 function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { todos, setTodos } = useTodosContext();
+  const { todos, setAndSaveTodos } = useTodosContext();
   const showConfirm = useConfirm();
 
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -45,7 +45,7 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
       isCompleted: false,
     };
 
-    setTodos([...todos, newTodo]);
+    setAndSaveTodos([...todos, newTodo]);
     formRef.current!.reset();
   }
 
