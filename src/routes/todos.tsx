@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTodosContext } from "../contexts/TodosContext/TodosContext";
-import NewTodoEditor from "../NewTodoEditor/NewTodoEditor";
+import NewTodoEditor from "../components/NewTodoEditor";
 import TodoCard from "../components/TodoCard";
 
 
