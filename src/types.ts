@@ -1,8 +1,11 @@
 export type TodoObject = {
-    id: string;
-    title: string;
-    description: string | null;
-    isCompleted: boolean;
-}
+  id: string;
+  title: string;
+  description: string | null;
+  isCompleted: boolean;
+};
 
-export type EditorActionType = "" | "NEW_TODO" | "EDIT_TODO";
+export type GroupObject = {
+  id: string;
+  title: string;
+};

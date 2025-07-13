@@ -3,19 +3,22 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import TodosContextProvider from '../contexts/TodosContext/TodosContextProvider'
 import ConfirmProvider from '../contexts/ConfirmContext/ConfirmContextProvider'
 import AlertProvider from '../contexts/AlertContext/AlertContextProvider'
+import GroupsContextProvider from '../contexts/GroupsContext/GroupsContextProvider'
 import Menu from '../components/Menu'
 import "../main.css";
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <AlertProvider>
-        <ConfirmProvider>
-          <TodosContextProvider>
-            <App />
-          </TodosContextProvider>
-        </ConfirmProvider>
-      </AlertProvider>
+      <GroupsContextProvider>
+        <AlertProvider>
+          <ConfirmProvider>
+            <TodosContextProvider>
+              <App />
+            </TodosContextProvider>
+          </ConfirmProvider>
+        </AlertProvider>
+      </GroupsContextProvider>
       <TanStackRouterDevtools />
     </>
   ),

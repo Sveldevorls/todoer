@@ -1,5 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
 export default function Menu() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(window.innerWidth >= 768 ? true : false);
@@ -39,7 +40,7 @@ export default function Menu() {
   }, [location.pathname]);
 
   return (
-    <div id="sidebar">
+    <div id="sidebar" className="text-gray-700">
       <button
         className={`
           button-svg absolute top-[8px] left-[8px] bg-white stroke-gray-600 rounded-md transition-opacity
@@ -61,7 +62,7 @@ export default function Menu() {
       >
         <nav
           className={`relative h-full p-2 z-3 bg-blue-100 transition-all duration-500 overflow-hidden
-            ${sidebarIsOpen ? "w-[280px] translate-x-0" : "w-0 -translate-x-[100px]"}
+            ${sidebarIsOpen ? "w-[280px] translate-x-0" : "w-0 -translate-x-[150px]"}
             `}
         >
           <div>
@@ -78,15 +79,24 @@ export default function Menu() {
           </div>
           <ul>
             <li>
-              <LinkBlock to="/" text="Home" />
+              <LinkBlock to="/">
+                <h2>Home</h2>
+              </LinkBlock>
             </li>
             <li>
-              <LinkBlock to="/todos" text="My tasks" />
+              <LinkBlock to="/todos">
+                <h2>My tasks</h2>
+              </LinkBlock>
             </li>
             <li>
-              <LinkBlock to="/finished" text="Finished tasks" />
+              <LinkBlock to="/finished">
+                <h2>Finished tasks</h2>
+              </LinkBlock>
             </li>
           </ul>
+
+          <GroupsSection />
+
         </nav>
 
         <div
@@ -100,15 +110,76 @@ export default function Menu() {
   );
 }
 
-type LinkBlockProps = {
-  to: string,
-  text: string,
+
+function LinkBlock({ to, children }: { to: string, children: React.ReactNode }) {
+  return (
+    <Link
+      to={to}
+      className="block w-full p-1 rounded-md hover:bg-blue-200"
+      activeProps={{ className: "bg-blue-200" }}
+    >
+      {children}
+    </Link>
+  )
 }
 
-function LinkBlock({ to, text }: LinkBlockProps) {
+function GroupsSection() {
+  const [blockIsOpen, setBlockIsOpen] = useState<boolean>(true);
+  const { groups } = useGroupsContext();
+  const location = useLocation();
+
+  console.log(location.pathname)
+
   return (
-    <Link to={to} className="block w-full p-1 rounded-md hover:bg-blue-200">
-      {text}
-    </Link>
+    <div id="groups-menu" className="w-full mt-4">
+      <div className={`rounded-md p-1 flex items-center
+        ${location.pathname === "/groups" ? "bg-blue-200" : ""}
+        `}>
+        <Link
+          to="/groups"
+          className="block w-full"
+          activeProps={{ className: "bg-blue-200" }}
+          activeOptions={{ exact: true }}
+        >
+          <h2 className="font-black">Groups</h2>
+        </Link>
+        <button
+          className="button-svg p-0.5 ml-auto bg-blue-100 stroke-gray-600 rounded-md"
+          title="Collapse groups"
+          onClick={() => setBlockIsOpen(!blockIsOpen)}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24"
+            className={`transition-transform
+              ${blockIsOpen ? "rotate-0" : "-rotate-90"}
+            `}
+          >
+            <line x1="6" y1="10" x2="12" y2="16" strokeWidth="1.3" />
+            <line x1="18" y1="10" x2="12" y2="16" strokeWidth="1.3" />
+          </svg>
+        </button>
+      </div>
+      <div>
+        <div
+          id="mask"
+          className={`absolute left-0 w-full bg-blue-100 transition-all duration-500 origin-bottom
+            ${blockIsOpen ? "scale-y-0" : "scale-y-100"}
+          `}
+          style={{ height: `${groups.length * 32}px` }}
+        >
+        </div>
+        <ul>
+          {groups.map(group =>
+            <li>
+              <Link to={`/groups/${group.id}`} className="p-1 h-[32px] flex hover:bg-blue-200 rounded-md">
+                <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700">
+                  <circle cx="12" cy="12" r="2.5" />
+                </svg>
+                <h2 key={group.id}>{group.title}</h2>
+              </Link>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
   )
 }
