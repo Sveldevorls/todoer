@@ -1,7 +1,8 @@
 export type TodoObject = {
   id: string;
   title: string;
-  description: string | null;
+  description: string;
+  group: string;
   isCompleted: boolean;
 };
 

@@ -171,10 +171,10 @@ function GroupsSection() {
           {groups.map(group =>
             <li>
               <Link to={`/groups/${group.id}`} className="p-1 h-[32px] flex hover:bg-blue-200 rounded-md">
-                <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700">
+                <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
                   <circle cx="12" cy="12" r="2.5" />
                 </svg>
-                <h2 key={group.id}>{group.title}</h2>
+                <h2 key={group.id} className="truncate">{group.title}</h2>
               </Link>
             </li>
           )}
