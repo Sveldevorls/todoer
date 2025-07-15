@@ -13,7 +13,7 @@ function RouteComponent() {
   const { groups } = useGroupsContext();
 
   return (
-    <div id="groups" className="flex flex-col items-start gap-4 p-2">
+    <div id="groups" className="flex flex-col items-start gap-4">
       <h1 className="text-4xl pb-3 font-black w-full">My groups</h1>
       {
         groups.length === 0 ?

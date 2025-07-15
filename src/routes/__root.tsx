@@ -28,7 +28,7 @@ function App() {
   return (
     <div id="app" className='flex min-h-[100vh]'>
       <Menu />
-      <div id="outlet" className="flex flex-grow shrink justify-center min-w-0 px-10 py-5">
+      <div id="outlet" className="flex flex-grow shrink justify-center min-w-0 px-5 sm:px-10 py-10">
         <div id="outlet-inner" className="w-full min-w-0 max-w-[1000px]">
           <Outlet />
         </div>

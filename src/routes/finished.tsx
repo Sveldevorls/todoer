@@ -12,7 +12,7 @@ function RouteComponent() {
   const finishedTodos = todos.filter(todo => todo.isCompleted);
 
   return (
-    <div id="home" className="flex flex-col items-start gap-4 p-2">
+    <div id="home" className="flex flex-col items-start gap-4">
       <h1 className="text-3xl font-black w-full">Finished tasks</h1>
       {
         finishedTodos.length === 0 ?

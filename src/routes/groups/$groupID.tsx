@@ -35,7 +35,7 @@ function GroupPage({ group }: { group: GroupObject }) {
   const myGroupOngoingTodos = myGroupTodos.filter(todo => !todo.isCompleted);
 
   return (
-    <div id="group-page" className="flex flex-col items-start gap-4 p-2">
+    <div id="group-page" className="flex flex-col items-start gap-4">
       <div className="w-full pb-3">
         <h1 className="text-3xl font-black break-all line-clamp-2">
           {group.title}
