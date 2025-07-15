@@ -17,7 +17,7 @@ function RouteComponent() {
       {
         finishedTodos.length === 0 ?
           <h2 className="w-full">You don't have any finished tasks yet</h2> :
-          <ul className="flex flex-col items-start gap-2 w-full">
+          <ul className="flex flex-col items-start w-full">
             {finishedTodos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
           </ul>
       }

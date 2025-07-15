@@ -18,7 +18,7 @@ function Home() {
       {
         unfinishedTodos.length === 0 ?
           <h2 className="w-full break-words hyphens-auto">You don't have any ongoing tasks right now</h2> :
-          <ul className="flex flex-col items-start gap-2 w-full">
+          <ul className="flex flex-col items-start w-full">
             {unfinishedTodos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
           </ul>
       }

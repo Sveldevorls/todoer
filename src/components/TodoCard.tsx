@@ -1,9 +1,11 @@
 import type { TodoObject } from "../types";
 import { useTodosContext } from "../contexts/TodosContext/TodosContext";
 import { useAlert } from "../contexts/AlertContext/AlertContext";
+import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
 export default function TodoCard({ todo }: { todo: TodoObject }) {
   const { todos, setAndSaveTodos } = useTodosContext();
+  const { groups } = useGroupsContext();
   const showAlert = useAlert();
 
   function handleTodoFinishClick() {
@@ -36,7 +38,11 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
       }
       <div className="min-w-0 flex-1">
         <h3 className="font-bold truncate">{todo.title}</h3>
-        <p className="text-sm break-all line-clamp-2">{todo.description}</p>
+        <p className="break-all line-clamp-2 text-sm">{todo.description}</p>
+        {todo.group &&
+          <p className="w-fit max-w-[10em] px-2 py-1 mt-1 bg-blue-500 text-xs text-white font-bold truncate rounded-md">
+            {groups.find(group => group.id === todo.group)!.title}
+          </p>}
       </div>
     </li>
   )
