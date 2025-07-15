@@ -54,7 +54,7 @@ function GroupPage({ group }: { group: GroupObject }) {
         >
           <div className="flex flex-col items-start">
             {myGroupOngoingTodos.length == 0 ?
-              <p className="pt-2">
+              <p className="py-2">
                 You don't have any ongoing tasks in this gorup right now
               </p>
               :
@@ -70,11 +70,11 @@ function GroupPage({ group }: { group: GroupObject }) {
           </div>
         </Accordion>
         <Accordion
-          title="Finished tasks"
+          title={`Finished tasks${myGroupCompletedTodos.length > 0 ? ` (${myGroupCompletedTodos.length})` : ""}`}
         >
           <div className="flex flex-col items-start">
             {myGroupCompletedTodos.length == 0 ?
-              <p className="pt-2">
+              <p className="py-2">
                 You don't have any finished tasks in this gorup right now
               </p>
               :
