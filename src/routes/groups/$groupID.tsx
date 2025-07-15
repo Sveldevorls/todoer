@@ -52,17 +52,17 @@ function GroupPage({ group }: { group: GroupObject }) {
           title="Ongoing tasks"
           defaultOpen={true}
         >
-          <div className="flex flex-col items-start gap-2">
+          <div className="flex flex-col items-start">
             {myGroupOngoingTodos.length == 0 ?
               <p className="pt-2">
                 You don't have any ongoing tasks in this gorup right now
               </p>
               :
-              <>
+              <ul className="w-full pb-2">
                 {myGroupOngoingTodos.map(todo =>
                   <TodoCard key={todo.id} todo={todo} />
                 )}
-              </>
+              </ul>
             }
             <NewTodoEditor
               defaultGroupID={group.id}
@@ -72,17 +72,17 @@ function GroupPage({ group }: { group: GroupObject }) {
         <Accordion
           title="Finished tasks"
         >
-          <div className="flex flex-col items-start gap-2 pt-2">
+          <div className="flex flex-col items-start">
             {myGroupCompletedTodos.length == 0 ?
-              <p>
-                You don't have any finished tasks right now
+              <p className="pt-2">
+                You don't have any finished tasks in this gorup right now
               </p>
               :
-              <>
+              <ul className="w-full pb-2">
                 {myGroupCompletedTodos.map(todo =>
                   <TodoCard key={todo.id} todo={todo} />
                 )}
-              </>
+              </ul>
             }
           </div>
         </Accordion>
