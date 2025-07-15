@@ -14,10 +14,10 @@ function Home() {
 
   return (
     <div id="home" className="flex flex-col items-start gap-4 p-2">
-      <h1 className="text-4xl font-black w-full">My tasks</h1>
+      <h1 className="text-3xl font-black w-full">Ongoing tasks</h1>
       {
         unfinishedTodos.length === 0 ?
-          <h2 className="w-full break-words hyphens-auto">You don't have any todos in progress right now</h2> :
+          <h2 className="w-full break-words hyphens-auto">You don't have any ongoing tasks right now</h2> :
           <ul className="flex flex-col items-start gap-2 w-full">
             {unfinishedTodos.map(todo => <TodoCard todo={todo} key={todo.id} />)}
           </ul>

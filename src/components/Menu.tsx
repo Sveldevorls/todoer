@@ -85,7 +85,7 @@ export default function Menu() {
             </li>
             <li>
               <LinkBlock to="/todos">
-                <h2>My tasks</h2>
+                <h2>Ongoing tasks</h2>
               </LinkBlock>
             </li>
             <li>
@@ -128,8 +128,6 @@ function GroupsSection() {
   const { groups } = useGroupsContext();
   const location = useLocation();
 
-  console.log(location.pathname)
-
   return (
     <div id="groups-menu" className="w-full mt-4">
       <div className={`rounded-md p-1 flex items-center
@@ -159,25 +157,25 @@ function GroupsSection() {
         </button>
       </div>
       <div>
-        <div
-          id="mask"
-          className={`absolute left-0 w-full bg-blue-100 transition-all duration-500 origin-bottom
-            ${blockIsOpen ? "scale-y-0" : "scale-y-100"}
-          `}
-          style={{ height: `${groups.length * 32}px` }}
-        >
-        </div>
-        <ul>
-          {groups.map(group =>
-            <li>
-              <Link to={`/groups/${group.id}`} className="p-1 h-[32px] flex hover:bg-blue-200 rounded-md">
-                <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
-                  <circle cx="12" cy="12" r="2.5" />
-                </svg>
-                <h2 key={group.id} className="truncate">{group.title}</h2>
-              </Link>
-            </li>
-          )}
+        <ul className={`grid transition-[grid-template-rows] duration-500
+        ${blockIsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
+        `}>
+          <div className="overflow-hidden">
+            {groups.map(group =>
+              <li key={group.id}>
+                <Link
+                  to="/groups/$groupID"
+                  params={{ groupID: group.id }}
+                  className="p-1 h-[32px] flex hover:bg-blue-200 rounded-md"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
+                    <circle cx="12" cy="12" r="2.5" />
+                  </svg>
+                  <h2 key={group.id} className="truncate">{group.title}</h2>
+                </Link>
+              </li>
+            )}
+          </div>
         </ul>
       </div>
     </div>

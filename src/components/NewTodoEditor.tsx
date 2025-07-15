@@ -5,14 +5,21 @@ import type { TodoObject } from "../types";
 import TextareaAutosize from 'react-textarea-autosize';
 import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
-export default function NewTodoEditor() {
+type NewTodoEditorProps = {
+  defaultGroupID?: string
+}
+
+export default function NewTodoEditor({ defaultGroupID = "" }: NewTodoEditorProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
       {
         isOpen ?
-          <NewTodoForm closeHandler={() => setIsOpen(false)} /> :
+          <NewTodoForm
+            closeHandler={() => setIsOpen(false)}
+            defaultGroupID={defaultGroupID}
+          /> :
           <NewTodoButton clickHandler={() => setIsOpen(true)} />
       }
     </>
@@ -30,13 +37,18 @@ function NewTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
   )
 }
 
-function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
+type NewTodoFormProps = {
+  defaultGroupID?: string,
+  closeHandler: VoidFunction,
+}
+
+function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
   const { todos, setAndSaveTodos } = useTodosContext();
   const showConfirm = useConfirm();
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [group, setGroup] = useState<string>("");
+  const [group, setGroup] = useState<string>(defaultGroupID);
 
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -52,7 +64,11 @@ function NewTodoForm({ closeHandler }: { closeHandler: VoidFunction }) {
     setAndSaveTodos([...todos, newTodo]);
     setTitle("");
     setDescription("");
-    setGroup("");
+
+    // reset group selection if no default group is provided
+    if (defaultGroupID == "") {
+      setGroup("");
+    }
   }
 
   function handleNewTodoFormCancel() {
@@ -167,6 +183,5 @@ function GroupSelect({ currentGroup, selectHandler }: GroupSelectProps) {
         </div>
       }
     </div>
-
   )
 }

@@ -13,7 +13,7 @@ function RouteComponent() {
 
   return (
     <div id="home" className="flex flex-col items-start gap-4 p-2">
-      <h1 className="text-4xl font-black w-full">Finished tasks</h1>
+      <h1 className="text-3xl font-black w-full">Finished tasks</h1>
       {
         finishedTodos.length === 0 ?
           <h2 className="w-full">You don't have any finished tasks yet</h2> :

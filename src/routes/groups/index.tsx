@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useGroupsContext } from '../contexts/GroupsContext/GroupsContext'
-import { useConfirm } from '../contexts/ConfirmContext/ConfirmContext';
-import type { GroupObject } from '../types';
+import { useGroupsContext } from '../../contexts/GroupsContext/GroupsContext'
+import { useConfirm } from '../../contexts/ConfirmContext/ConfirmContext';
+import type { GroupObject } from '../../types';
 
-export const Route = createFileRoute('/groups')({
+export const Route = createFileRoute('/groups/')({
   component: RouteComponent,
 })
 
@@ -13,7 +13,7 @@ function RouteComponent() {
   const { groups } = useGroupsContext();
 
   return (
-    <div id="home" className="flex flex-col items-start gap-4 p-2">
+    <div id="groups" className="flex flex-col items-start gap-4 p-2">
       <h1 className="text-4xl pb-3 font-black w-full">My groups</h1>
       {
         groups.length === 0 ?
@@ -23,11 +23,12 @@ function RouteComponent() {
               {groups.map(group =>
                 <li
                   key={group.id}
-                  className="w-full text-xl"
+                  className="w-full max-w-full text-xl overflow-hidden"
                 >
                   <Link
-                    to={`./${group.id}`}
-                    className="p-2 block w-full border-b-gray-200 hover:bg-gray-100 border-b-1"
+                    to="/groups/$groupID"
+                    params={{ groupID: group.id }}
+                    className="p-2 block border-b border-b-gray-200 hover:bg-gray-100 truncate w-full"
                   >
                     {group.title}
                   </Link>

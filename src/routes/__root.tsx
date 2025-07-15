@@ -28,8 +28,8 @@ function App() {
   return (
     <div id="app" className='flex min-h-[100vh]'>
       <Menu />
-      <div id="outlet" className="flex flex-grow shrink p-10">
-        <div className="w-full max-w-[1000px] mx-auto ">
+      <div id="outlet" className="flex flex-grow shrink justify-center min-w-0 px-10 py-5">
+        <div id="outlet-inner" className="w-full min-w-0 max-w-[1000px]">
           <Outlet />
         </div>
       </div>
