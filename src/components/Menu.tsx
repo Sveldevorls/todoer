@@ -84,7 +84,7 @@ export default function Menu() {
               </LinkBlock>
             </li>
             <li>
-              <LinkBlock to="/todos">
+              <LinkBlock to="/tasks">
                 <h2>Ongoing tasks</h2>
               </LinkBlock>
             </li>
