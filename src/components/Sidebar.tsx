@@ -1,5 +1,5 @@
-import { Link, useLocation } from "@tanstack/react-router";
-import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation, } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
 export default function Sidebar() {
@@ -57,7 +57,7 @@ export default function Sidebar() {
       </button>
 
       {/* Actual sidebar */}
-      <nav className={`relative h-screen bg-blue-100 transition-[width,left] duration-500 z-1
+      <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 z-1
         ${sidebarIsOpen ? "w-[280px]" : "w-0"}
         ${sidebarIsOpen ? "left-0" : "left-[-100px]"}
         `}
@@ -68,7 +68,7 @@ export default function Sidebar() {
             className="shrink-0 p-2"
           >
             <button
-              className="button-svg bg-blue-100 stroke-gray-600 rounded-md"
+              className="button-svg bg-slate-100 stroke-gray-600 rounded-md"
               title="Close sidebar"
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             >
@@ -84,19 +84,31 @@ export default function Sidebar() {
           >
             <ul>
               <li>
-                <LinkBlock to="/">
+                <Link
+                  to="/"
+                  className="block p-1 rounded-md hover:bg-zinc-200"
+                  activeProps={{ className: "bg-blue-100" }}
+                >
                   <h2>Home</h2>
-                </LinkBlock>
+                </Link>
               </li>
               <li>
-                <LinkBlock to="/tasks">
+                <Link
+                  to="/ongoing"
+                  className="block p-1 rounded-md hover:bg-zinc-200"
+                  activeProps={{ className: "bg-blue-100" }}
+                >
                   <h2>Ongoing tasks</h2>
-                </LinkBlock>
+                </Link>
               </li>
               <li>
-                <LinkBlock to="/finished">
+                <Link
+                  to="/finished"
+                  className="block p-1 rounded-md hover:bg-zinc-200"
+                  activeProps={{ className: "bg-blue-100" }}
+                >
                   <h2>Finished tasks</h2>
-                </LinkBlock>
+                </Link>
               </li>
             </ul>
             <GroupsSection />
@@ -117,17 +129,6 @@ export default function Sidebar() {
   )
 }
 
-function LinkBlock({ to, children }: { to: string, children: React.ReactNode }) {
-  return (
-    <Link
-      to={to}
-      className="block w-full p-1 rounded-md hover:bg-blue-200"
-      activeProps={{ className: "bg-blue-200" }}
-    >
-      {children}
-    </Link>
-  )
-}
 
 function GroupsSection() {
   const [blockIsOpen, setBlockIsOpen] = useState<boolean>(true);
@@ -137,18 +138,18 @@ function GroupsSection() {
   return (
     <div id="groups-menu" className="w-full mt-4">
       <div className={`rounded-md p-1 flex items-center
-        ${location.pathname === "/groups" ? "bg-blue-200" : ""}
+        ${location.pathname === "/groups" ? "bg-blue-100" : ""}
         `}>
         <Link
           to="/groups"
           className="block w-full"
-          activeProps={{ className: "bg-blue-200" }}
+          activeProps={{ className: "bg-blue-100" }}
           activeOptions={{ exact: true }}
         >
           <h2 className="font-black">Groups</h2>
         </Link>
         <button
-          className="button-svg p-0.5 ml-auto bg-blue-100 stroke-gray-600 rounded-md"
+          className="button-svg p-0.5 ml-auto bg-slate-100 stroke-gray-600 rounded-md"
           title="Collapse groups"
           onClick={() => setBlockIsOpen(!blockIsOpen)}
         >
@@ -172,7 +173,8 @@ function GroupsSection() {
                 <Link
                   to="/groups/$groupID"
                   params={{ groupID: group.id }}
-                  className="p-1 h-[32px] flex hover:bg-blue-200 rounded-md"
+                  className="p-1 h-[32px] flex hover:hover:bg-zinc-200 rounded-md"
+                  activeProps={{ className: "bg-blue-100" }}
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
                     <circle cx="12" cy="12" r="2.5" />
