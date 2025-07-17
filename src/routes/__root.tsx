@@ -4,8 +4,8 @@ import TodosContextProvider from '../contexts/TodosContext/TodosContextProvider'
 import ConfirmProvider from '../contexts/ConfirmContext/ConfirmContextProvider'
 import AlertProvider from '../contexts/AlertContext/AlertContextProvider'
 import GroupsContextProvider from '../contexts/GroupsContext/GroupsContextProvider'
-import Menu from '../components/Menu'
 import "../main.css";
+import Sidebar from '../components/Sidebar'
 
 export const Route = createRootRoute({
   component: () => (
@@ -26,10 +26,16 @@ export const Route = createRootRoute({
 
 function App() {
   return (
-    <div id="app" className='flex min-h-[100vh]'>
-      <Menu />
-      <div id="outlet" className="flex flex-grow shrink justify-center min-w-0 px-5 sm:px-10 py-10">
-        <div id="outlet-inner" className="w-full min-w-0 max-w-[1000px]">
+    <div id="app" className="flex h-screen w-screen overflow-hidden">
+      <Sidebar />
+      <div
+        id="outlet"
+        className="flex-grow min-w-0 overflow-y-auto scrollbar-thin"
+      >
+        <div
+          id="outlet-inner"
+          className="min-h-full w-full max-w-[1000px] mx-auto px-5 sm:px-10 py-10"
+        >
           <Outlet />
         </div>
       </div>

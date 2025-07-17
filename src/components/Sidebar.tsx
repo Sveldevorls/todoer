@@ -2,16 +2,12 @@ import { Link, useLocation } from "@tanstack/react-router";
 import React, { useEffect, useRef, useState } from "react";
 import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
-export default function Menu() {
-  const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(window.innerWidth >= 768 ? true : false);
+export default function Sidebar() {
+  const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(window.innerWidth >= 768);
   const prevWidth = useRef<number>(window.innerWidth);
   const location = useLocation();
 
   const breakpoint = 768; //md:
-
-  function handleSidebarToggle() {
-    setSidebarIsOpen(!sidebarIsOpen);
-  }
 
   useEffect(() => {
     function handleResize() {
@@ -40,14 +36,19 @@ export default function Menu() {
   }, [location.pathname]);
 
   return (
-    <div id="sidebar" className="text-gray-700">
+    <div
+      id="sidebar"
+      className="absolute md:relative"
+    >
+      {/* Outer button */}
       <button
+        id="outer-button"
         className={`
-          button-svg absolute top-[8px] left-[8px] bg-white stroke-gray-600 rounded-md transition-opacity
+          button-svg absolute top-[8px] left-[8px] bg-white stroke-gray-600 rounded-md transition-opacity duration-500
           ${sidebarIsOpen ? "opacity-0" : "opacity-100"}
           `}
         title="Toggle sidebar"
-        onClick={handleSidebarToggle}
+        onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
       >
         <svg width="24" height="24" viewBox="0 0 24 24">
           <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.2" />
@@ -55,21 +56,21 @@ export default function Menu() {
         </svg>
       </button>
 
-      <div
-        className={`h-full max-md:absolute max-md:inset-0 md:relative transition-all duration-500
-          ${sidebarIsOpen ? "pointer-events-auto" : "pointer-events-none"}
-          `}
+      {/* Actual sidebar */}
+      <nav className={`relative h-screen bg-blue-100 transition-[width,left] duration-500 z-1
+        ${sidebarIsOpen ? "w-[280px]" : "w-0"}
+        ${sidebarIsOpen ? "left-0" : "left-[-100px]"}
+        `}
       >
-        <nav
-          className={`relative h-full p-2 z-3 bg-blue-100 transition-all duration-500 overflow-hidden
-            ${sidebarIsOpen ? "w-[280px] translate-x-0" : "w-0 -translate-x-[150px]"}
-            `}
-        >
-          <div>
+        <div className="h-screen flex flex-col">
+          <div
+            id="navbar-top"
+            className="shrink-0 p-2"
+          >
             <button
               className="button-svg bg-blue-100 stroke-gray-600 rounded-md"
               title="Close sidebar"
-              onClick={handleSidebarToggle}
+              onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             >
               <svg width="24" height="24" viewBox="0 0 24 24">
                 <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.2" />
@@ -77,39 +78,44 @@ export default function Menu() {
               </svg>
             </button>
           </div>
-          <ul>
-            <li>
-              <LinkBlock to="/">
-                <h2>Home</h2>
-              </LinkBlock>
-            </li>
-            <li>
-              <LinkBlock to="/tasks">
-                <h2>Ongoing tasks</h2>
-              </LinkBlock>
-            </li>
-            <li>
-              <LinkBlock to="/finished">
-                <h2>Finished tasks</h2>
-              </LinkBlock>
-            </li>
-          </ul>
+          <div
+            id="navbar-content"
+            className="p-2 overflow-hidden hover:overflow-auto grow scrollbar-thin"
+          >
+            <ul>
+              <li>
+                <LinkBlock to="/">
+                  <h2>Home</h2>
+                </LinkBlock>
+              </li>
+              <li>
+                <LinkBlock to="/tasks">
+                  <h2>Ongoing tasks</h2>
+                </LinkBlock>
+              </li>
+              <li>
+                <LinkBlock to="/finished">
+                  <h2>Finished tasks</h2>
+                </LinkBlock>
+              </li>
+            </ul>
+            <GroupsSection />
+          </div>
+        </div>
+      </nav>
 
-          <GroupsSection />
-
-        </nav>
-
-        <div
-          className={`absolute inset-0 bg-black/50 md:hidden transition-opacity duration-500  
-            ${sidebarIsOpen ? "opacity-100" : "opacity-0"}
-            `}
-          onClick={handleSidebarToggle}
-        />
+      {/* Outer click detection div */}
+      <div
+        className={`fixed inset-0 md:hidden bg-black/50 transition-all
+          ${sidebarIsOpen ? "opacity-100" : "opacity-0"}
+          ${sidebarIsOpen ? "pointer-events-auto" : "pointer-events-none"}
+        `}
+        onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+      >
       </div>
     </div>
-  );
+  )
 }
-
 
 function LinkBlock({ to, children }: { to: string, children: React.ReactNode }) {
   return (

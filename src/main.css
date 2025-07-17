@@ -23,4 +23,9 @@
     .button-svg {
         @apply p-1;
     }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-gutter: stable;
+    }
 }
