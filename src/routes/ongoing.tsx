@@ -4,7 +4,7 @@ import NewTodoEditor from "../components/NewTodoEditor";
 import TodoCard from "../components/TodoCard";
 
 
-export const Route = createFileRoute('/tasks')({
+export const Route = createFileRoute('/ongoing')({
   component: Home,
 })
 
