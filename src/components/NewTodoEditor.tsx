@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
 import { useTodosContext } from "../contexts/TodosContext/TodosContext";
 import type { TodoObject } from "../types";
@@ -6,49 +6,41 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
 type NewTodoEditorProps = {
-  defaultGroupID?: string
+  defaultGroupID?: string | null,
 }
 
-export default function NewTodoEditor({ defaultGroupID = "" }: NewTodoEditorProps) {
+export default function NewTodoEditor({ defaultGroupID = null }: NewTodoEditorProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <>
+    <div className="w-full">
       {
         isOpen ?
           <NewTodoForm
             closeHandler={() => setIsOpen(false)}
             defaultGroupID={defaultGroupID}
           /> :
-          <NewTodoButton clickHandler={() => setIsOpen(true)} />
+          <button onClick={() => setIsOpen(true)} className="button-primary">
+            + Add todo
+          </button>
       }
-    </>
-  )
-}
-
-function NewTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
-  return (
-    <button
-      onClick={clickHandler}
-      className="button-primary"
-    >
-      + Add todo
-    </button>
+    </div>
   )
 }
 
 type NewTodoFormProps = {
-  defaultGroupID?: string,
+  defaultGroupID?: string | null,
   closeHandler: VoidFunction,
 }
 
-function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
+function NewTodoForm({ defaultGroupID = null, closeHandler }: NewTodoFormProps) {
   const { todos, setAndSaveTodos } = useTodosContext();
+  const { groups } = useGroupsContext();
   const showConfirm = useConfirm();
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [group, setGroup] = useState<string>(defaultGroupID);
+  const [group, setGroup] = useState<string | null>(defaultGroupID);
 
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -57,17 +49,17 @@ function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
       id: crypto.randomUUID(),
       title: title,
       description: description,
-      group: group,
+      group: typeof group == typeof null ? "" : group!,
       isCompleted: false,
     };
 
     setAndSaveTodos([...todos, newTodo]);
+
     setTitle("");
     setDescription("");
-
-    // reset group selection if no default group is provided
-    if (defaultGroupID == "") {
-      setGroup("");
+    if (group != defaultGroupID) {
+      // reset group selection to default value current select group is not default
+      setGroup(defaultGroupID);
     }
   }
 
@@ -87,7 +79,7 @@ function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
   }
 
   return (
-    <div className="border-1 border-gray-400 rounded-md w-full flex flex-col gap-4 p-2">
+    <div className="border-1 border-gray-400 rounded-md w-full flex flex-col gap-2 p-2">
       <form
         className="flex flex-col"
         id="new-todo-form"
@@ -100,6 +92,7 @@ function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
           placeholder="Title"
           value={title}
           onChange={e => setTitle(e.currentTarget.value)}
+          autoFocus
           required
         />
         <TextareaAutosize
@@ -112,10 +105,13 @@ function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
           onChange={e => setDescription(e.currentTarget.value)}
         />
       </form>
-      <GroupSelect
-        currentGroup={group}
+
+      <Select
+        options={groups.map(group => ({ label: group.title, value: group.id }))}
+        defaultValue={group}
         selectHandler={setGroup}
       />
+
       <div className="flex justify-start gap-4 border-t-1 border-gray-400 pt-2">
         <button
           className="button-secondary"
@@ -134,52 +130,79 @@ function NewTodoForm({ defaultGroupID = "", closeHandler }: NewTodoFormProps) {
   )
 }
 
-type GroupSelectProps = {
-  currentGroup: string,
-  selectHandler: React.Dispatch<React.SetStateAction<string>>,
+type SelectOption = {
+  label: string,
+  value: string,
 }
 
-function GroupSelect({ currentGroup, selectHandler }: GroupSelectProps) {
-  const { groups } = useGroupsContext();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+type SelectProps = {
+  options: SelectOption[],
+  defaultValue?: string | null,
+  selectHandler: (value: string) => void,
+}
+
+function Select({ options, defaultValue = null, selectHandler }: SelectProps) {
+  const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
+  const [selectedOption, setSelectedOption] = useState<SelectOption | null>(options.find(option => option.value === defaultValue) ?? null);
+  const optionsListRef = useRef<HTMLUListElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const newSelected = options.find(option => option.value === defaultValue) ?? null;
+    setSelectedOption(newSelected);
+  }, [defaultValue]);
+
+  useEffect(() => {
+    if (optionsListRef.current) {
+      const { top, left, bottom } = buttonRef.current!.getBoundingClientRect();
+
+      // default position - beneath button
+      if (optionsListRef.current.clientHeight + bottom < window.innerHeight) {
+        optionsListRef.current.style.top = `${bottom}px`;
+        optionsListRef.current.style.left = `${left}px`;
+      }
+      // second preference - above button if not enough space below
+      else if (top - optionsListRef.current.clientHeight >= 0) {
+        optionsListRef.current.style.bottom = `${window.innerHeight - top}px`;
+        optionsListRef.current.style.left = `${left}px`;
+      }
+      // final resort - vertically aligned in the center of the screen
+      else {
+        optionsListRef.current.style.top = `${(window.innerHeight - optionsListRef.current.clientHeight) / 2}px`;
+        optionsListRef.current.style.left = `${left}px`;
+      }
+    }
+  }, [menuIsOpen])
 
   return (
     <div>
       <button
-        className="button-primary bg-blue-500 truncate max-w-[12em]"
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
+        className="button-primary bg-blue-500 w-fit max-w-[12em] truncate"
+        onClick={() => setMenuIsOpen(!menuIsOpen)}
+        ref={buttonRef}
       >
-        {
-          currentGroup === "" ?
-            "+ Add to group" :
-            groups.filter(group => group.id === currentGroup)[0].title
-        }
+        {selectedOption ? <span>{selectedOption.label}</span> : <span>Add to group</span>}
       </button>
       {
-        isOpen &&
+        menuIsOpen &&
         <div>
-          <div className="fixed inset-0 h-screen w-screen bg-white/0" onClick={() => setIsOpen(!isOpen)}></div>
-          <ul className="absolute z-1 max-w-[12em] bg-white border-gray-400 border-1 shadow rounded-md ">
-            {groups.map(group =>
+          <ul className="py-1 max-w-[200px] max-h-[200px] overflow-y-auto scrollbar-thin rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white absolute z-1" ref={optionsListRef}>
+            {options.map(option =>
               <li
-                key={group.id}
-                className="hover:bg-gray-100 rounded-md"
+                className={`p-1 pl-2 truncate cursor-pointer hover:bg-zinc-200
+                  ${selectedOption?.value === option.value && "bg-blue-100"}
+                  `}
                 onClick={() => {
-                  selectHandler(group.id);
-                  setIsOpen(!isOpen);
+                  setSelectedOption(option);
+                  selectHandler(option.value);
+                  setMenuIsOpen(!menuIsOpen);
                 }}
-              >
-                <button className="flex py-1 w-full">
-                  <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
-                    <circle cx="12" cy="12" r="2.5" />
-                  </svg>
-                  <div className="truncate">{group.title}</div>
-                </button>
+                key={option.value}>
+                {option.label}
               </li>
             )}
           </ul>
+          <div className="fixed inset-0" onClick={() => setMenuIsOpen(!menuIsOpen)} ></div>
         </div>
       }
     </div>

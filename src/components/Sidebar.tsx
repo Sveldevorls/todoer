@@ -57,7 +57,7 @@ export default function Sidebar() {
       </button>
 
       {/* Actual sidebar */}
-      <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 z-1
+      <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 max-md:z-1
         ${sidebarIsOpen ? "w-[280px]" : "w-0"}
         ${sidebarIsOpen ? "left-0" : "left-[-100px]"}
         `}
