@@ -2,11 +2,13 @@ import type { TodoObject } from "../types";
 import { useTodosContext } from "../contexts/TodosContext/TodosContext";
 import { useAlert } from "../contexts/AlertContext/AlertContext";
 import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function TodoCard({ todo }: { todo: TodoObject }) {
   const { todos, setAndSaveTodos } = useTodosContext();
   const { groups } = useGroupsContext();
   const showAlert = useAlert();
+  const navigate = useNavigate();
 
   function handleTodoFinishClick() {
     const nextTodos = todos.map(nextTodo =>
@@ -31,12 +33,20 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   }
 
   return (
-    <li className="flex items-start p-2 gap-3 w-full text-left border-b-gray-200 hover:bg-gray-100 border-b-1">
-      {todo.isCompleted ?
-        <RestartTodoButton clickHandler={handleTodoRestartClick} /> :
-        <FinishTodoButton clickHandler={handleTodoFinishClick} />
-      }
-      <div className="min-w-0 flex-1">
+    <div className="relative hover:bg-gray-100 hover:cursor-pointer">
+      <div className="m-2 absolute">
+        {todo.isCompleted ?
+          <RestartTodoButton clickHandler={handleTodoRestartClick} /> :
+          <FinishTodoButton clickHandler={handleTodoFinishClick} />
+        }
+      </div>
+      <div
+        className="p-2 pl-10 border-b-1 border-gray-400"
+        onClick={() => navigate({
+          to: "/tasks/$taskID",
+          params: { taskID: todo.id },
+        })}
+      >
         <h3 className="font-bold truncate">{todo.title}</h3>
         <p className="break-all line-clamp-2 text-sm">{todo.description}</p>
         {todo.group &&
@@ -44,7 +54,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
             {groups.find(group => group.id === todo.group)!.title}
           </p>}
       </div>
-    </li>
+    </div>
   )
 }
 

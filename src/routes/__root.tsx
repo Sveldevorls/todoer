@@ -30,11 +30,11 @@ function App() {
       <Sidebar />
       <div
         id="outlet"
-        className="flex-grow min-w-0 overflow-y-auto scrollbar-thin"
+        className="flex-grow min-w-0 overflow-y-auto scrollbar-thin @container"
       >
         <div
           id="outlet-inner"
-          className="min-h-full w-full max-w-[1000px] mx-auto px-5 sm:px-10 py-10"
+          className="min-h-full w-full max-w-[1000px] mx-auto px-5 md:px-10 py-10"
         >
           <Outlet />
         </div>

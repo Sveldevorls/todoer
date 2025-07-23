@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OngoingRouteImport } from './routes/ongoing'
 import { Route as FinishedRouteImport } from './routes/finished'
+import { Route as TasksIndexRouteImport } from './routes/tasks/index'
 import { Route as GroupsIndexRouteImport } from './routes/groups/index'
+import { Route as TasksTaskIDRouteImport } from './routes/tasks/$taskID'
 import { Route as GroupsGroupIDRouteImport } from './routes/groups/$groupID'
 
 const OngoingRoute = OngoingRouteImport.update({
@@ -24,9 +26,19 @@ const FinishedRoute = FinishedRouteImport.update({
   path: '/finished',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TasksIndexRoute = TasksIndexRouteImport.update({
+  id: '/tasks/',
+  path: '/tasks/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GroupsIndexRoute = GroupsIndexRouteImport.update({
   id: '/groups/',
   path: '/groups/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TasksTaskIDRoute = TasksTaskIDRouteImport.update({
+  id: '/tasks/$taskID',
+  path: '/tasks/$taskID',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GroupsGroupIDRoute = GroupsGroupIDRouteImport.update({
@@ -39,34 +51,61 @@ export interface FileRoutesByFullPath {
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
+  '/tasks/$taskID': typeof TasksTaskIDRoute
   '/groups': typeof GroupsIndexRoute
+  '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesByTo {
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
+  '/tasks/$taskID': typeof TasksTaskIDRoute
   '/groups': typeof GroupsIndexRoute
+  '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
+  '/tasks/$taskID': typeof TasksTaskIDRoute
   '/groups/': typeof GroupsIndexRoute
+  '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/finished' | '/ongoing' | '/groups/$groupID' | '/groups'
+  fullPaths:
+    | '/finished'
+    | '/ongoing'
+    | '/groups/$groupID'
+    | '/tasks/$taskID'
+    | '/groups'
+    | '/tasks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/finished' | '/ongoing' | '/groups/$groupID' | '/groups'
-  id: '__root__' | '/finished' | '/ongoing' | '/groups/$groupID' | '/groups/'
+  to:
+    | '/finished'
+    | '/ongoing'
+    | '/groups/$groupID'
+    | '/tasks/$taskID'
+    | '/groups'
+    | '/tasks'
+  id:
+    | '__root__'
+    | '/finished'
+    | '/ongoing'
+    | '/groups/$groupID'
+    | '/tasks/$taskID'
+    | '/groups/'
+    | '/tasks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   FinishedRoute: typeof FinishedRoute
   OngoingRoute: typeof OngoingRoute
   GroupsGroupIDRoute: typeof GroupsGroupIDRoute
+  TasksTaskIDRoute: typeof TasksTaskIDRoute
   GroupsIndexRoute: typeof GroupsIndexRoute
+  TasksIndexRoute: typeof TasksIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,11 +124,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FinishedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tasks/': {
+      id: '/tasks/'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof TasksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/groups/': {
       id: '/groups/'
       path: '/groups'
       fullPath: '/groups'
       preLoaderRoute: typeof GroupsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tasks/$taskID': {
+      id: '/tasks/$taskID'
+      path: '/tasks/$taskID'
+      fullPath: '/tasks/$taskID'
+      preLoaderRoute: typeof TasksTaskIDRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/groups/$groupID': {
@@ -106,7 +159,9 @@ const rootRouteChildren: RootRouteChildren = {
   FinishedRoute: FinishedRoute,
   OngoingRoute: OngoingRoute,
   GroupsGroupIDRoute: GroupsGroupIDRoute,
+  TasksTaskIDRoute: TasksTaskIDRoute,
   GroupsIndexRoute: GroupsIndexRoute,
+  TasksIndexRoute: TasksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
