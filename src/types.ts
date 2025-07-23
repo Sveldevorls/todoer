@@ -2,6 +2,7 @@ export type TodoObject = {
   id: string;
   title: string;
   description: string;
+  notes: string;
   group: string;
   isCompleted: boolean;
 };

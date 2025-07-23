@@ -51,6 +51,7 @@ function NewTodoForm({ defaultGroupID = null, closeHandler }: NewTodoFormProps) 
       title: title,
       description: description,
       group: typeof group == typeof null ? "" : group!,
+      notes: "",
       isCompleted: false,
     };
 

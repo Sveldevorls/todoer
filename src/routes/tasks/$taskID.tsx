@@ -167,7 +167,16 @@ function TaskPage({ todo }: { todo: TodoObject }) {
         <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Description</h3>
         <TextAreaEditor
           value={todo.description}
+          placeholder="Click here to add description"
           blurHandler={generateBlurHandler("description")}
+        />
+      </div>
+      <div>
+        <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Notes</h3>
+        <TextAreaEditor
+          value={todo.notes}
+          placeholder="Click here to add notes"
+          blurHandler={generateBlurHandler("notes")}
         />
       </div>
     </div>
@@ -175,11 +184,12 @@ function TaskPage({ todo }: { todo: TodoObject }) {
 }
 
 type TextAreaEditorProps = {
-  value: string,
-  blurHandler: (nextValue: string) => void,
+  value: string;
+  placeholder?: string;
+  blurHandler: (nextValue: string) => void;
 }
 
-function TextAreaEditor({ value, blurHandler }: TextAreaEditorProps) {
+function TextAreaEditor({ value, placeholder = "", blurHandler }: TextAreaEditorProps) {
   const [currValue, setCurrValue] = useState<string>(value);
 
   return (
@@ -188,6 +198,7 @@ function TextAreaEditor({ value, blurHandler }: TextAreaEditorProps) {
       className="w-full resize-none hover:bg-gray-100 focus:outline-0"
       onChange={e => setCurrValue(e.target.value)}
       onBlur={() => blurHandler(currValue)}
+      placeholder={placeholder}
     />
   )
 }
