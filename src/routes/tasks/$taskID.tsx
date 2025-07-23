@@ -1,12 +1,11 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useTodosContext } from '../../contexts/TodosContext/TodosContext';
-import { useAlert } from '../../contexts/AlertContext/AlertContext';
-import type { TodoObject } from '../../types';
 import { useGroupsContext } from '../../contexts/GroupsContext/GroupsContext';
+import { useAlert } from '../../contexts/AlertContext/AlertContext';
 import { useConfirm } from '../../contexts/ConfirmContext/ConfirmContext';
-import { useState } from 'react';
+import type { TodoObject } from '../../types';
+import TextareaEditor from '../../components/TextareaEditor';
 import Select from '../../components/Select';
-import TextareaAutosize from 'react-textarea-autosize';
 
 export const Route = createFileRoute('/tasks/$taskID')({
   component: RouteComponent
@@ -136,7 +135,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
           </div>
         </div>
         <div className="text-3xl font-black">
-          <TextAreaEditor
+          <TextareaEditor
             value={todo.title}
             required={true}
             blurHandler={generateBlurHandler("title")}
@@ -166,7 +165,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
       </div>
       <div>
         <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Description</h3>
-        <TextAreaEditor
+        <TextareaEditor
           value={todo.description}
           placeholder="Click here to add description"
           blurHandler={generateBlurHandler("description")}
@@ -174,41 +173,12 @@ function TaskPage({ todo }: { todo: TodoObject }) {
       </div>
       <div>
         <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Notes</h3>
-        <TextAreaEditor
+        <TextareaEditor
           value={todo.notes}
           placeholder="Click here to add notes"
           blurHandler={generateBlurHandler("notes")}
         />
       </div>
     </div>
-  )
-}
-
-type TextAreaEditorProps = {
-  value: string;
-  placeholder?: string;
-  required?: boolean;
-  blurHandler: (nextValue: string) => void;
-}
-
-function TextAreaEditor({ value, required = false, placeholder = "", blurHandler }: TextAreaEditorProps) {
-  const [currValue, setCurrValue] = useState<string>(value);
-  const showAlert = useAlert();
-
-  return (
-    <TextareaAutosize
-      value={currValue}
-      className="w-full resize-none hover:bg-gray-100 focus:outline-0"
-      onChange={e => setCurrValue(e.target.value)}
-      onBlur={() => {
-        if (required && currValue === "") {
-          setCurrValue(value);
-          showAlert({ message: "This field can not be blank" });
-          return
-        }
-        blurHandler(currValue)
-      }}
-      placeholder={placeholder}
-    />
   )
 }
