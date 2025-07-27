@@ -29,13 +29,13 @@ export default function DeleteButton({ type, id }: DeleteButtonProps) {
 
     if (type === "group") {
       showConfirm({
-        message: "This action can not be reversed, and all tasks belonging to this group will become ungrouped. Are you sure?",
+        message: "Deleting this group will also delete all tasks belonging to the group. Are you sure?",
         cancelText: "Cancel",
         confirmText: "Yes, delete this group",
         onConfirm: () => {
           setTimeout(() => {
             showAlert({ message: "Group deleted" });
-            setAndSaveTodos(todos.map(nextTodo => nextTodo.group === id ? { ...nextTodo, group: "" } : nextTodo));
+            setAndSaveTodos(todos.filter(nextTodo => nextTodo.group != id));
             setAndSaveGroups(groups.filter(nextGroup => nextGroup.id != id));
           }, 0);
           redir();
