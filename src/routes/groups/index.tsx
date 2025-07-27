@@ -3,6 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useGroupsContext } from '../../contexts/GroupsContext/GroupsContext'
 import { useConfirm } from '../../contexts/ConfirmContext/ConfirmContext';
 import type { GroupObject } from '../../types';
+import Header from '../../components/Header';
 
 export const Route = createFileRoute('/groups/')({
   component: RouteComponent,
@@ -11,10 +12,15 @@ export const Route = createFileRoute('/groups/')({
 function RouteComponent() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { groups } = useGroupsContext();
+  const titleRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <div id="groups" className="flex flex-col items-start gap-4">
-      <h1 className="text-4xl pb-3 font-black w-full">My groups</h1>
+      <Header
+        title="My groups"
+        titleRef={titleRef}
+      />
+      <h1 className="text-4xl pb-3 font-black w-full" ref={titleRef}>My groups</h1>
       {
         groups.length === 0 ?
           <h2 className="w-full">You don't have any groups yet</h2> :

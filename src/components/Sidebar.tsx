@@ -2,8 +2,12 @@ import { Link, useLocation, } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 
-export default function Sidebar() {
-  const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(window.innerWidth >= 768);
+type SidebarProps = {
+  sidebarIsOpen: boolean;
+  setSidebarIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+}
+
+export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProps) {
   const prevWidth = useRef<number>(window.innerWidth);
   const location = useLocation();
 
@@ -40,24 +44,8 @@ export default function Sidebar() {
       id="sidebar"
       className="absolute md:relative"
     >
-      {/* Outer button */}
-      <button
-        id="outer-button"
-        className={`
-          button-svg absolute top-[8px] left-[8px] bg-white stroke-gray-600 rounded-md transition-opacity duration-500
-          ${sidebarIsOpen ? "opacity-0" : "opacity-100"}
-          `}
-        title="Toggle sidebar"
-        onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24">
-          <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.2" />
-          <line x1="9" y1="4" x2="9" y2="20" strokeWidth="1.2" />
-        </svg>
-      </button>
-
-      {/* Actual sidebar */}
-      <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 max-md:z-3
+      {/* Sidebar */}
+      <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 max-md:z-100
         ${sidebarIsOpen ? "w-[260px]" : "w-0"}
         ${sidebarIsOpen ? "left-0" : "left-[-100px]"}
         `}
@@ -65,10 +53,12 @@ export default function Sidebar() {
         <div className="h-screen flex flex-col">
           <div
             id="navbar-top"
-            className="shrink-0 p-2"
+            className="flex items-center p-2 h-14"
           >
             <button
-              className="button-svg bg-slate-100 stroke-gray-600 rounded-md"
+              className={`button-svg  stroke-gray-600 rounded-md fixed z-3 transition-[left] duration-500 top-[11px]
+                ${sidebarIsOpen ? "left-[200px] bg-slate-100" : "left-2 bg-white"}
+                `}
               title="Close sidebar"
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             >
@@ -80,7 +70,7 @@ export default function Sidebar() {
           </div>
           <div
             id="navbar-content"
-            className="p-2 overflow-hidden hover:overflow-auto grow scrollbar-thin"
+            className="p-2 overflow-hidden hover:overflow-auto grow [scrollbar-width:thin] [scrollbar-gutter:stable]"
           >
             <ul>
               <li>
@@ -118,7 +108,7 @@ export default function Sidebar() {
 
       {/* Outer click detection div */}
       <div
-        className={`fixed inset-0 md:hidden bg-black/50 transition-all z-2
+        className={`fixed inset-0 md:hidden bg-black/50 transition-all z-99
           ${sidebarIsOpen ? "opacity-100" : "opacity-0"}
           ${sidebarIsOpen ? "pointer-events-auto" : "pointer-events-none"}
         `}
@@ -179,7 +169,9 @@ function GroupsSection() {
                   <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
                     <circle cx="12" cy="12" r="2.5" />
                   </svg>
-                  <h2 key={group.id} className="truncate">{group.title}</h2>
+                  <h2 key={group.id} className="truncate">
+                    {group.title}
+                  </h2>
                 </Link>
               </li>
             )}

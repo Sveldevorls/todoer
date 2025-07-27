@@ -56,7 +56,7 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
       {
         menuIsOpen &&
         <div>
-          <ul className="py-1 max-w-[200px] max-h-[200px] overflow-y-auto scrollbar-thin rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white absolute z-1 [scrollbar-gutter:auto]" ref={optionsListRef}>
+          <ul className="py-1 max-w-[200px] max-h-[200px] overflow-y-auto [scrollbar-width:thin] rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white absolute z-1 [scrollbar-gutter:auto]" ref={optionsListRef}>
             {options.map(option =>
               <li
                 className={`p-1 pl-2 w-full truncate cursor-pointer hover:bg-zinc-200
