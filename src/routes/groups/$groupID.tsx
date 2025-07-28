@@ -62,7 +62,7 @@ function GroupPage({ group }: { group: GroupObject }) {
             }}
           />
           {
-            myGroupFinishedTodos.length > 0 &&
+            myGroupTodos.length > 0 &&
             <div className="text-base font-normal">
               {
                 myGroupFinishedTodos.length === myGroupTodos.length ?
