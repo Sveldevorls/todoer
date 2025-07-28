@@ -8,8 +8,8 @@ import { QuickTodoEditor } from "./QuickTodoEditor";
 import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
 import DeleteIcon from "./icons/DeleteIcon";
 import EditIcon from "./icons/EditIcon";
-import Menu from "./Menu/Menu";
-import MenuItem from "./Menu/MenuItem";
+import Menu from "./Menu";
+import MenuItem from "./MenuItem";
 
 export default function TodoCard({ todo }: { todo: TodoObject }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);

@@ -7,7 +7,7 @@ import TextareaEditor from '../../components/TextareaEditor';
 import Select from '../../components/Select';
 import Header from '../../components/Header';
 import { useRef } from 'react';
-import DeleteButton from '../../components/buttons/DeleteButton/DeleteButton';
+import DeleteButton from '../../components/buttons/DeleteButton';
 import TodoToggleButton from '../../components/buttons/TodoToggleButton';
 import GoBackButton from '../../components/buttons/GoBackButton';
 

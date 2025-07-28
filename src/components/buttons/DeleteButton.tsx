@@ -1,9 +1,9 @@
 import { useRouter } from "@tanstack/react-router";
-import { useGroupsContext } from "../../../contexts/GroupsContext/GroupsContext";
-import { useTodosContext } from "../../../contexts/TodosContext/TodosContext";
-import { useAlert } from "../../../contexts/AlertContext/AlertContext";
-import { useConfirm } from "../../../contexts/ConfirmContext/ConfirmContext";
-import DeleteIcon from "../../icons/DeleteIcon";
+import { useGroupsContext } from "../../contexts/GroupsContext/GroupsContext";
+import { useTodosContext } from "../../contexts/TodosContext/TodosContext";
+import { useAlert } from "../../contexts/AlertContext/AlertContext";
+import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
+import DeleteIcon from "../icons/DeleteIcon";
 
 type DeleteButtonProps = {
   type: "group" | "todo";
