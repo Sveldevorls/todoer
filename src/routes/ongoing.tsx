@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTodosContext } from "../contexts/TodosContext/TodosContext";
-import NewTodoEditor from "../components/NewTodoEditor";
 import TodoList from "../components/TodoList";
 import Header from "../components/Header";
 import { useRef } from "react";
+import NewTodoButton from "../components/buttons/NewTodoButton";
 
 export const Route = createFileRoute('/ongoing')({
   component: RouteComponent,
@@ -27,7 +27,7 @@ function RouteComponent() {
           :
           <TodoList todos={unfinishedTodos} />
       }
-      <NewTodoEditor />
+      <NewTodoButton />
     </div>
   )
 }

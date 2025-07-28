@@ -38,7 +38,7 @@ function App() {
   return (
     <div id="app" className="flex h-screen w-screen overflow-hidden">
       <Sidebar sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} />
-      <div id="outlet" className="relative flex-grow min-w-0 overflow-y-auto [scrollbar-width:thin]" ref={outletRef}>
+      <div id="outlet" className="relative flex-grow min-w-0 overflow-y-auto [scrollbar-width:thin] [scrollbar-gutter:stable]" ref={outletRef}>
         <div id="header" className={`flex sticky top-0 z-2 h-14
           ${!sidebarIsOpen && "[&>header]:pl-6"}
           `}></div>

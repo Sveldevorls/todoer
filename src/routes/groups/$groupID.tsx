@@ -4,11 +4,11 @@ import { useTodosContext } from '../../contexts/TodosContext/TodosContext';
 import { useRef } from 'react';
 import type { GroupObject } from '../../types';
 import Accordion from '../../components/Accordion';
-import NewTodoEditor from '../../components/NewTodoEditor';
 import TodoList from '../../components/TodoList';
 import TextareaEditor from '../../components/TextareaEditor';
 import Header from '../../components/Header';
 import DeleteButton from '../../components/buttons/DeleteButton';
+import NewTodoButton from '../../components/buttons/NewTodoButton';
 
 export const Route = createFileRoute('/groups/$groupID')({
   component: RouteComponent,
@@ -79,7 +79,7 @@ function GroupPage({ group }: { group: GroupObject }) {
             <h2 className="mb-2">
               This group is currently empty
             </h2>
-            <NewTodoEditor defaultGroupID={group.id} />
+            <NewTodoButton defaultGroupID={group.id} />
           </div>
           :
           <div className="w-full flex flex-col gap-4">
@@ -92,7 +92,7 @@ function GroupPage({ group }: { group: GroupObject }) {
                   <p className="py-2">You don't have any ongoing tasks in this gorup right now</p> :
                   <TodoList todos={myGroupOngoingTodos} />
                 }
-                <NewTodoEditor defaultGroupID={group.id} />
+                <NewTodoButton defaultGroupID={group.id} />
               </div>
             </Accordion>
             <Accordion

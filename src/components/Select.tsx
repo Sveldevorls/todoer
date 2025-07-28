@@ -24,7 +24,8 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
 
   useEffect(() => {
     if (optionsListRef.current) {
-      const { top, left, bottom } = buttonRef.current!.getBoundingClientRect();
+      const { top, right, bottom, left } = buttonRef.current!.getBoundingClientRect();
+      console.log(top, right, bottom, left)
 
       // default position - beneath button
       if (optionsListRef.current.clientHeight + bottom < window.innerHeight) {
@@ -56,10 +57,10 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
       {
         menuIsOpen &&
         <div>
-          <ul className="py-1 max-w-[200px] max-h-[200px] overflow-y-auto [scrollbar-width:thin] rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white absolute z-1 [scrollbar-gutter:auto]" ref={optionsListRef}>
+          <ul className="py-1 max-w-[200px] max-h-[200px] overflow-y-auto [scrollbar-width:thin] rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white fixed z-200 [scrollbar-gutter:auto]" ref={optionsListRef}>
             {options.map(option =>
               <li
-                className={`p-1 pl-2 w-full truncate cursor-pointer hover:bg-zinc-200
+                className={`py-1 px-2 w-full truncate cursor-pointer hover:bg-zinc-200
                   ${selectedOption?.value === option.value && "bg-blue-100"}
                   `}
                 onClick={() => {
@@ -72,7 +73,7 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
               </li>
             )}
           </ul>
-          <div className="fixed inset-0" onClick={() => setMenuIsOpen(!menuIsOpen)} ></div>
+          <div className="fixed inset-0 z-199" onClick={() => setMenuIsOpen(!menuIsOpen)} ></div>
         </div>
       }
     </div>
