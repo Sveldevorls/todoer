@@ -7,7 +7,7 @@ import Accordion from '../../components/Accordion';
 import TodoList from '../../components/TodoList';
 import TextareaEditor from '../../components/TextareaEditor';
 import Header from '../../components/Header';
-import DeleteButton from '../../components/buttons/DeleteButton';
+import DeleteButton from '../../components/buttons/DeleteButton/DeleteButton';
 import NewTodoButton from '../../components/buttons/NewTodoButton';
 
 export const Route = createFileRoute('/groups/$groupID')({

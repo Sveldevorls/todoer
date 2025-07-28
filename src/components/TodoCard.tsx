@@ -5,7 +5,11 @@ import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { QuickTodoEditor } from "./QuickTodoEditor";
-
+import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
+import DeleteIcon from "./icons/DeleteIcon";
+import EditIcon from "./icons/EditIcon";
+import Menu from "./Menu/Menu";
+import MenuItem from "./Menu/MenuItem";
 
 export default function TodoCard({ todo }: { todo: TodoObject }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -13,6 +17,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   const { groups } = useGroupsContext();
   const showAlert = useAlert();
   const navigate = useNavigate();
+  const showConfirm = useConfirm();
 
   function handleTodoToggleClick() {
     const nextTodos = todos.map(nextTodo =>
@@ -42,15 +47,15 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   }
 
   return (
-    <div className="group flex relative hover:bg-gray-100 hover:cursor-pointer">
-      <div className="absolute top-2 left-2">
+    <div className="group flex relative hover:bg-gray-100 hover:cursor-pointer @container">
+      <div className="absolute top-3 left-2">
         {todo.isCompleted ?
           <RestartTodoButton clickHandler={handleTodoToggleClick} /> :
           <FinishTodoButton clickHandler={handleTodoToggleClick} />
         }
       </div>
       <div
-        className="p-2 px-10 border-b-1 border-gray-400 flex-grow min-w-0"
+        className="py-3 px-10 border-b-1 border-gray-400 flex-grow min-w-0"
         onClick={handleTodoNavigateClick}
       >
         <h3 className="font-bold truncate">{todo.title}</h3>
@@ -70,13 +75,36 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
           }
         </div>
       </div>
-      <div className="button-svg hover:bg-white rounded-md opacity-0 group-hover:opacity-100 absolute top-2 right-2" onClick={() => setIsEditing(true)}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      <button className="button-svg absolute top-2 right-2 bg-white rounded-md opacity-0 group-hover:opacity-100">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+          viewBox="0 0 24 24">
+          <circle cx="5" cy="12" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="19" cy="12" r="2" />
         </svg>
-      </div>
-    </div>
+      </button>
+      <Menu>
+        <MenuItem onClick={() => setIsEditing(true)}>
+          <EditIcon />
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => {
+          showConfirm({
+            message: "This action can not be reversed. Are you sure?",
+            cancelText: "Cancel",
+            confirmText: "Yes, delete this task",
+            onConfirm: () => {
+              showAlert({ message: "Task deleted" });
+              setAndSaveTodos(todos.filter(nextTodo => nextTodo.id != todo.id));
+            },
+          })
+        }}
+        >
+          <DeleteIcon />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div >
   )
 }
 
