@@ -49,10 +49,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   return (
     <div className="group flex relative hover:bg-gray-100 hover:cursor-pointer @container">
       <div className="absolute top-3 left-2">
-        {todo.isCompleted ?
-          <RestartTodoButton clickHandler={handleTodoToggleClick} /> :
-          <FinishTodoButton clickHandler={handleTodoToggleClick} />
-        }
+        <ToggleTodoButton isCompleted={todo.isCompleted} clickHandler={handleTodoToggleClick} />
       </div>
       <div
         className="py-3 px-10 border-b-1 border-gray-400 flex-grow min-w-0"
@@ -108,48 +105,34 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   )
 }
 
-function FinishTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
-  return (
-    <button
-      className="w-[24px] h-[24px] p-0 rounded-full
-              border-2 border-gray-300 hover:border-green-500
-              transition-colors 
-              flex items-center justify-center shrink-0 group/finish"
-      onClick={clickHandler}
-      title="Mark as finished"
-    >
-      <svg
-        className="w-[16px] h-[16px] stroke-green-500
-          opacity-0 duration-300 group-hover/finish:opacity-100"
-        viewBox="0 0 24 24"
-        strokeWidth="3"
-        strokeLinecap="round"
-      >
-        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" fill="none" strokeWidth="3" />
-      </svg>
-    </button>
-  )
-}
+function ToggleTodoButton({ isCompleted, clickHandler }: { isCompleted: boolean, clickHandler: VoidFunction }) {
 
-function RestartTodoButton({ clickHandler }: { clickHandler: VoidFunction }) {
   return (
     <button
-      className="w-[24px] h-[24px] p-0 rounded-full
-              border-2 border-gray-300 hover:border-red-500
-              transition-colors 
-              flex items-center justify-center shrink-0 group/restart"
+      className={`
+        w-[24px] h-[24px] p-0 rounded-full
+        border-2 border-gray-300 transition-colors 
+        flex items-center justify-center shrink-0 group/toggle
+        ${isCompleted ? "hover:border-red-500" : "hover:border-green-500"}
+      `}
       onClick={clickHandler}
-      title="Mark as unfinished"
+      title={`${isCompleted ? "Mark as ongoing" : "Mark as finished"}`}
     >
       <svg
-        className="w-[16px] h-[16px] stroke-red-500
-          opacity-0 duration-300 group-hover/restart:opacity-100"
-        viewBox="0 0 24 24"
-        strokeWidth="3"
-        strokeLinecap="round"
+        className={`w-[16px] h-[16px] duration-300 opacity-0 group-hover/toggle:opacity-100
+          ${isCompleted ? "stroke-red-500" : "stroke-green-500"}
+        `}
+        viewBox="0 0 24 24" strokeWidth="3" strokeLinecap="round"
       >
-        <line x1="6" y1="6" x2="18" y2="18" />
-        <line x1="18" y1="6" x2="6" y2="18" />
+        {
+          isCompleted ?
+            <>
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+            </>
+            :
+            <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" fill="none" strokeWidth="3" />
+        }
       </svg>
     </button>
   )
