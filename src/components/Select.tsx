@@ -30,17 +30,24 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
       // default position - beneath button
       if (optionsListRef.current.clientHeight + bottom < window.innerHeight) {
         optionsListRef.current.style.top = `${bottom}px`;
-        optionsListRef.current.style.left = `${left}px`;
       }
       // second preference - above button if not enough space below
       else if (top - optionsListRef.current.clientHeight >= 0) {
         optionsListRef.current.style.bottom = `${window.innerHeight - top}px`;
-        optionsListRef.current.style.left = `${left}px`;
       }
       // final resort - vertically aligned in the center of the screen
       else {
         optionsListRef.current.style.top = `${(window.innerHeight - optionsListRef.current.clientHeight) / 2}px`;
+      }
+
+      // default position - left side of parent
+      if (optionsListRef.current.clientWidth + left + 8 < window.innerWidth) {
         optionsListRef.current.style.left = `${left}px`;
+      }
+
+      // second preference - right side of parent
+      else if (left - optionsListRef.current.clientWidth - 8 > 0) {
+        optionsListRef.current.style.left = `${right - optionsListRef.current.clientWidth}px`;
       }
     }
   }, [menuIsOpen])
@@ -68,7 +75,8 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
                   selectHandler(option.value);
                   setMenuIsOpen(!menuIsOpen);
                 }}
-                key={option.value}>
+                key={option.value}
+              >
                 {option.label}
               </li>
             )}
