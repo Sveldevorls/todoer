@@ -8,6 +8,9 @@ type SidebarProps = {
 }
 
 export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProps) {
+  const todos = useAppSelector(state => state.todos.todos);
+  const currOngoingTodos = todos.filter(todo => !todo.isCompleted);
+
   return (
     <div
       id="sidebar"
@@ -54,10 +57,16 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
               <li>
                 <Link
                   to="/ongoing"
-                  className="block p-1 rounded-md hover:bg-zinc-200"
+                  className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
                   activeProps={{ className: "bg-blue-100" }}
                 >
                   <h2>Ongoing tasks</h2>
+                  {
+                    currOngoingTodos.length > 0 &&
+                    <span className="text-sm mx-1">
+                      {currOngoingTodos.length <= 99 ? currOngoingTodos.length : "99+"}
+                    </span>
+                  }
                 </Link>
               </li>
               <li>
@@ -91,6 +100,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
 
 function GroupsSection() {
   const [blockIsOpen, setBlockIsOpen] = useState<boolean>(true);
+  const todos = useAppSelector(state => state.todos.todos);
   const groups = useAppSelector(state => state.groups.groups);
   const location = useLocation();
 
@@ -127,22 +137,33 @@ function GroupsSection() {
         ${blockIsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
         `}>
           <div className="overflow-hidden">
-            {groups.map(group =>
-              <li key={group.id}>
-                <Link
-                  to="/groups/$groupID"
-                  params={{ groupID: group.id }}
-                  className="p-1 h-[32px] flex hover:hover:bg-zinc-200 rounded-md"
-                  activeProps={{ className: "bg-blue-100" }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
-                    <circle cx="12" cy="12" r="2.5" />
-                  </svg>
-                  <h2 key={group.id} className="truncate">
-                    {group.title}
-                  </h2>
-                </Link>
-              </li>
+            {groups.map(group => {
+              const currGroupOngoingTodos = todos.filter(todo => todo.group === group.id && !todo.isCompleted);
+
+              return (
+                <li key={group.id}>
+                  <Link
+                    to="/groups/$groupID"
+                    params={{ groupID: group.id }}
+                    className="flex items-center p-1 h-[32px] hover:hover:bg-zinc-200 rounded-md"
+                    activeProps={{ className: "bg-blue-100" }}
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" className="fill-gray-700 shrink-0">
+                      <circle cx="12" cy="12" r="2.5" />
+                    </svg>
+                    <h2 key={group.id} className="truncate mr-auto">
+                      {group.title}
+                    </h2>
+                    {
+                      currGroupOngoingTodos.length > 0 &&
+                      <span className="text-sm mx-1">
+                        {currGroupOngoingTodos.length <= 99 ? currGroupOngoingTodos.length : "99+"}
+                      </span>
+                    }
+                  </Link>
+                </li>
+              )
+            }
             )}
           </div>
         </ul>
