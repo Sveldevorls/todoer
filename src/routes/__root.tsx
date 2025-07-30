@@ -26,7 +26,35 @@ export const Route = createRootRoute({
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(window.innerWidth >= 768);
   const outletRef = useRef<HTMLDivElement>(null)
+  const prevWidth = useRef<number>(window.innerWidth);
   const location = useLocation();
+  const breakpoint = 768; //md:
+
+  useEffect(() => {
+    function handleResize() {
+      const width = window.innerWidth;
+      const isWide = width >= breakpoint;
+      const wasNarrow = prevWidth.current < breakpoint;
+      const wasWide = prevWidth.current >= breakpoint;
+
+      if (isWide && wasNarrow) {
+        setSidebarIsOpen(true);
+      } else if (!isWide && wasWide) {
+        setSidebarIsOpen(false);
+      }
+
+      prevWidth.current = width;
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarIsOpen(false);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     // auto scroll to page top on path change

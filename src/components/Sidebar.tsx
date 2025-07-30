@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
 
@@ -8,37 +8,6 @@ type SidebarProps = {
 }
 
 export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProps) {
-  const prevWidth = useRef<number>(window.innerWidth);
-  const location = useLocation();
-
-  const breakpoint = 768; //md:
-
-  useEffect(() => {
-    function handleResize() {
-      const width = window.innerWidth;
-      const isWide = width >= breakpoint;
-      const wasNarrow = prevWidth.current < breakpoint;
-      const wasWide = prevWidth.current >= breakpoint;
-
-      if (isWide && wasNarrow) {
-        setSidebarIsOpen(true);
-      } else if (!isWide && wasWide) {
-        setSidebarIsOpen(false);
-      }
-
-      prevWidth.current = width;
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setSidebarIsOpen(false);
-    }
-  }, [location.pathname]);
-
   return (
     <div
       id="sidebar"
@@ -47,7 +16,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
       {/* Sidebar */}
       <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 max-md:z-100
         ${sidebarIsOpen ? "w-[260px]" : "w-0"}
-        ${sidebarIsOpen ? "left-0" : "left-[-100px]"}
+        ${sidebarIsOpen ? "left-0" : "left-[-150px]"}
         `}
       >
         <div className="h-screen flex flex-col">
