@@ -28,8 +28,8 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
             className="flex items-center p-2 h-14"
           >
             <button
-              className={`button-svg  stroke-gray-600 rounded-md fixed z-3 transition-[left] duration-500 top-[11px]
-                ${sidebarIsOpen ? "left-[200px] bg-slate-100" : "left-2 bg-white"}
+              className={`button-svg fixed z-3 top-[11px] stroke-gray-600 transition-[left] duration-500 
+                ${sidebarIsOpen ? "left-[212px]" : "left-2"}
                 `}
               title="Close sidebar"
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
@@ -118,7 +118,7 @@ function GroupsSection() {
           <h2 className="font-black">Groups</h2>
         </Link>
         <button
-          className="button-svg p-0.5 ml-auto bg-slate-100 stroke-gray-600 rounded-md"
+          className="button-svg p-0.5 ml-auto stroke-gray-600"
           title="Collapse groups"
           onClick={() => setBlockIsOpen(!blockIsOpen)}
         >

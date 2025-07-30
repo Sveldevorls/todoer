@@ -14,7 +14,7 @@ export default function TodoToggleButton({ todo }: { todo: TodoObject }) {
 
   return (
     <button
-      className="button-svg bg-white rounded-md stroke-black"
+      className="button-svg"
       onClick={handleTodoToggleClick}
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">

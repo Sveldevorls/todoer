@@ -69,7 +69,7 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
 
   return (
     <button
-      className="button-svg bg-white rounded-md"
+      className="button-svg"
       onClick={handleDeleteClick}
     >
       <DeleteIcon />

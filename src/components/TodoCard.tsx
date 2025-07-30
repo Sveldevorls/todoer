@@ -69,7 +69,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
           }
         </div>
       </div>
-      <button className="button-svg absolute top-2 right-2 bg-white rounded-md opacity-0 group-hover:opacity-100">
+      <button className="button-svg absolute top-2 right-2 opacity-0 group-hover:opacity-100">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
           viewBox="0 0 24 24">
           <circle cx="5" cy="12" r="2" />

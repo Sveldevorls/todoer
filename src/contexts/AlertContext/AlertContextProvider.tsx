@@ -36,7 +36,7 @@ export default function AlertProvider({ children }: { children: ReactNode }) {
       >
         <p>{message}</p>
         <button
-          className="button-svg hover:bg-gray-600 filter-none"
+          className="button-svg hover:bg-gray-600"
           onClick={() => {
             alertRef.current!.style.opacity = "0";
             alertRef.current!.style.pointerEvents = "none";
