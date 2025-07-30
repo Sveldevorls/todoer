@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useGroupsContext } from '../../contexts/GroupsContext/GroupsContext'
 import { useConfirm } from '../../contexts/ConfirmContext/ConfirmContext';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { addGroup } from '../../redux/groupsSlice';
 import type { GroupObject } from '../../types';
 import Header from '../../components/Header';
 
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/groups/')({
 
 function RouteComponent() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { groups } = useGroupsContext();
+  const groups = useAppSelector(state => state.groups.groups);
   const titleRef = useRef<HTMLDivElement | null>(null);
 
   return (
@@ -65,8 +66,8 @@ function NewGroupButton({ clickHandler }: { clickHandler: VoidFunction }) {
 
 function NewGroupForm({ closeHandler }: { closeHandler: VoidFunction }) {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { groups, setAndSaveGroups } = useGroupsContext();
   const showConfirm = useConfirm();
+  const dispatch = useAppDispatch();
 
   function handleNewGroupFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -77,7 +78,7 @@ function NewGroupForm({ closeHandler }: { closeHandler: VoidFunction }) {
       title: data.get("title") as string,
     };
 
-    setAndSaveGroups([...groups, newGroup]);
+    dispatch(addGroup(newGroup));
     formRef.current!.reset();
   }
 

@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useGroupsContext } from '../../contexts/GroupsContext/GroupsContext'
-import { useTodosContext } from '../../contexts/TodosContext/TodosContext';
 import { useRef } from 'react';
+import { createFileRoute } from '@tanstack/react-router'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { updateGroupTitle } from '../../redux/groupsSlice';
 import type { GroupObject } from '../../types';
 import Accordion from '../../components/Accordion';
 import TodoList from '../../components/TodoList';
@@ -16,10 +16,10 @@ export const Route = createFileRoute('/groups/$groupID')({
 
 function RouteComponent() {
   const { groupID } = Route.useParams();
-  const { groups } = useGroupsContext();
-  const group = groups.find(group => group.id === groupID);
+  const groups = useAppSelector(state => state.groups.groups);
+  const currGroup = groups.find(group => group.id === groupID);
 
-  if (group === undefined) {
+  if (currGroup === undefined) {
     return (
       <h1 className="text-3xl font-black">Group not found!</h1>
     )
@@ -27,20 +27,19 @@ function RouteComponent() {
 
   return (
     <GroupPage
-      group={group}
+      group={currGroup}
       key={groupID}
     />
   )
 }
 
 function GroupPage({ group }: { group: GroupObject }) {
-  const { todos } = useTodosContext();
-  const { groups, setAndSaveGroups } = useGroupsContext();
   const titleRef = useRef<HTMLDivElement | null>(null);
-
-  const myGroupTodos = todos.filter(todo => todo.group === group.id);
-  const myGroupFinishedTodos = myGroupTodos.filter(todo => todo.isCompleted);
-  const myGroupOngoingTodos = myGroupTodos.filter(todo => !todo.isCompleted);
+  const todos = useAppSelector(state => state.todos.todos);
+  const currGroupTodos = todos.filter(todo => todo.group === group.id);
+  const currGroupOngoingTodos = currGroupTodos.filter(todo => !todo.isCompleted);
+  const currGroupFinishedTodos = currGroupTodos.filter(todo => todo.isCompleted);
+  const dispatch = useAppDispatch();
 
   return (
     <div id="group-page">
@@ -55,26 +54,23 @@ function GroupPage({ group }: { group: GroupObject }) {
             value={group.title}
             required={true}
             blurHandler={(nextValue) => {
-              setAndSaveGroups(groups.map(nextGroup => nextGroup.id === group.id ?
-                { ...group, title: nextValue } :
-                nextGroup
-              ))
+              dispatch(updateGroupTitle({ id: group.id, value: nextValue }))
             }}
           />
           {
-            myGroupTodos.length > 0 &&
+            currGroupTodos.length > 0 &&
             <div className="text-base font-normal">
               {
-                myGroupFinishedTodos.length === myGroupTodos.length ?
+                currGroupFinishedTodos.length === currGroupTodos.length ?
                   <p>All tasks finished</p> :
-                  <p>{myGroupFinishedTodos.length} out of {myGroupTodos.length} task{myGroupTodos.length > 1 && "s"} finished</p>
+                  <p>{currGroupFinishedTodos.length} out of {currGroupTodos.length} task{currGroupTodos.length > 1 && "s"} finished</p>
               }
             </div>
           }
         </div>
       </div>
       {
-        myGroupTodos.length === 0 ?
+        currGroupTodos.length === 0 ?
           <div>
             <h2 className="mb-2">
               This group is currently empty
@@ -88,20 +84,20 @@ function GroupPage({ group }: { group: GroupObject }) {
               defaultOpen={true}
             >
               <div className="flex flex-col items-start gap-4">
-                {myGroupOngoingTodos.length == 0 ?
+                {currGroupOngoingTodos.length == 0 ?
                   <p className="py-2">You don't have any ongoing tasks in this gorup right now</p> :
-                  <TodoList todos={myGroupOngoingTodos} />
+                  <TodoList todos={currGroupOngoingTodos} />
                 }
                 <NewTodoButton defaultGroupID={group.id} />
               </div>
             </Accordion>
             <Accordion
-              title={`Finished tasks${myGroupFinishedTodos.length > 0 ? ` (${myGroupFinishedTodos.length})` : ""}`}
+              title={`Finished tasks${currGroupFinishedTodos.length > 0 ? ` (${currGroupFinishedTodos.length})` : ""}`}
             >
               <div className="flex flex-col items-start gap-4">
-                {myGroupFinishedTodos.length == 0 ?
+                {currGroupFinishedTodos.length == 0 ?
                   <p className="py-2">You don't have any finished tasks in this gorup right now</p> :
-                  <TodoList todos={myGroupFinishedTodos} />
+                  <TodoList todos={currGroupFinishedTodos} />
                 }
               </div>
             </Accordion>

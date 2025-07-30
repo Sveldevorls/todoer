@@ -1,8 +1,9 @@
 import { useRouter } from "@tanstack/react-router";
-import { useGroupsContext } from "../../contexts/GroupsContext/GroupsContext";
-import { useTodosContext } from "../../contexts/TodosContext/TodosContext";
 import { useAlert } from "../../contexts/AlertContext/AlertContext";
 import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { deleteTodo } from "../../redux/todosSlice";
+import { deleteGroup } from "../../redux/groupsSlice";
 import DeleteIcon from "../icons/DeleteIcon";
 
 type DeleteButtonProps = {
@@ -12,11 +13,11 @@ type DeleteButtonProps = {
 }
 
 export default function DeleteButton({ type, id, redir = true }: DeleteButtonProps) {
-  const { todos, setAndSaveTodos } = useTodosContext();
-  const { groups, setAndSaveGroups } = useGroupsContext();
+  const todos = useAppSelector(state => state.todos.todos);
   const router = useRouter();
   const showAlert = useAlert();
   const showConfirm = useConfirm();
+  const dispatch = useAppDispatch();
 
   function handleDeleteClick() {
     function redirect() {
@@ -35,15 +36,16 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
         cancelText: "Cancel",
         confirmText: "Yes, delete this group",
         onConfirm: () => {
-          setTimeout(() => {
-            showAlert({ message: "Group deleted" });
-            setAndSaveTodos(todos.filter(nextTodo => nextTodo.group != id));
-            setAndSaveGroups(groups.filter(nextGroup => nextGroup.id != id));
-          }, 0);
+          const todosToDelete = todos.filter(todo => todo.group === id);
+          for (const todo of todosToDelete) {
+            dispatch(deleteTodo(todo.id))
+          }
+          dispatch(deleteGroup(id));
+          showAlert({ message: "Group deleted" });
+
           if (redir) {
             redirect();
           }
-
         }
       })
     }
@@ -55,7 +57,7 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
         onConfirm: () => {
           setTimeout(() => {
             showAlert({ message: "Task deleted" });
-            setAndSaveTodos(todos.filter(nextTodo => nextTodo.id != id));
+            dispatch(deleteTodo(id))
           }, 0);
           if (redir) {
             redirect();
@@ -63,8 +65,6 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
         },
       })
     }
-
-
   }
 
   return (

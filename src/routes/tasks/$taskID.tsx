@@ -1,12 +1,12 @@
+import { useRef } from 'react';
 import { createFileRoute } from '@tanstack/react-router'
-import { useTodosContext } from '../../contexts/TodosContext/TodosContext';
-import { useGroupsContext } from '../../contexts/GroupsContext/GroupsContext';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { updateTodoByField } from '../../redux/todosSlice';
 import { useAlert } from '../../contexts/AlertContext/AlertContext';
 import type { TodoObject } from '../../types';
 import TextareaEditor from '../../components/TextareaEditor';
 import Select from '../../components/Select';
 import Header from '../../components/Header';
-import { useRef } from 'react';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import TodoToggleButton from '../../components/buttons/TodoToggleButton';
 import GoBackButton from '../../components/buttons/GoBackButton';
@@ -16,35 +16,30 @@ export const Route = createFileRoute('/tasks/$taskID')({
 })
 
 function RouteComponent() {
-  const { todos } = useTodosContext();
   const { taskID } = Route.useParams();
-  const todo = todos.find(todo => todo.id === taskID);
+  const todos = useAppSelector(state => state.todos.todos);
+  const currTodo = todos.find(todo => todo.id === taskID);
 
-  if (todo === undefined) {
+  if (currTodo === undefined) {
     return (
       <h1 className="text-3xl font-black">Task not found!</h1>
     )
   }
 
   return (
-    <TaskPage todo={todo} />
+    <TaskPage todo={currTodo} />
   )
 }
 
 function TaskPage({ todo }: { todo: TodoObject }) {
-  const { todos, setAndSaveTodos } = useTodosContext();
-  const { groups } = useGroupsContext();
+  const dispatch = useAppDispatch();
+  const groups = useAppSelector(state => state.groups.groups);
   const showAlert = useAlert();
   const titleRef = useRef<HTMLDivElement | null>(null);
 
-  function generateBlurHandler(key: string) {
-    return (value: string) => {
-      const nextTodos = todos.map(
-        nextTodo => nextTodo.id === todo.id ?
-          { ...todo, [key]: value } :
-          nextTodo
-      )
-      setAndSaveTodos(nextTodos);
+  function generateBlurHandler(key: keyof TodoObject) {
+    return <K extends keyof TodoObject>(value: TodoObject[K]) => {
+      dispatch(updateTodoByField({ id: todo.id, key: key, value: value }))
     }
   }
 
@@ -77,13 +72,9 @@ function TaskPage({ todo }: { todo: TodoObject }) {
           options={groups.map(group => ({ label: group.title, value: group.id }))}
           defaultValue={todo.group == "" ? null : todo.group}
           selectHandler={
+
             (nextGroupID: string) => {
-              const nextTodos = todos.map(nextTodo =>
-                nextTodo.id === todo.id ?
-                  { ...nextTodo, group: nextGroupID } :
-                  nextTodo
-              )
-              setAndSaveTodos(nextTodos);
+              dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }))
               showAlert({ message: "Task moved" })
             }
           }

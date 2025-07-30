@@ -4,7 +4,7 @@ import useOnScreen from "../hooks/useOnScreen";
 
 type HeaderProps = {
   title: string;
-  titleRef: RefObject<HTMLDivElement>;
+  titleRef: RefObject<HTMLDivElement | null>;
   leftButtons?: ReactNode[];
   rightButtons?: ReactNode[];
 }

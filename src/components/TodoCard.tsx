@@ -1,32 +1,29 @@
-import type { TodoObject } from "../types";
-import { useTodosContext } from "../contexts/TodosContext/TodosContext";
-import { useAlert } from "../contexts/AlertContext/AlertContext";
-import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
-import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { QuickTodoEditor } from "./QuickTodoEditor";
+import { useNavigate } from "@tanstack/react-router";
 import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
+import { useAlert } from "../contexts/AlertContext/AlertContext";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { deleteTodo, updateTodoByField } from "../redux/todosSlice";
+import type { TodoObject } from "../types";
 import DeleteIcon from "./icons/DeleteIcon";
 import EditIcon from "./icons/EditIcon";
 import Menu from "./Menu";
 import MenuItem from "./MenuItem";
+import { QuickTodoEditor } from "./QuickTodoEditor";
 
 export default function TodoCard({ todo }: { todo: TodoObject }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const { todos, setAndSaveTodos } = useTodosContext();
-  const { groups } = useGroupsContext();
+  const groups = useAppSelector(state => state.groups.groups);
   const showAlert = useAlert();
-  const navigate = useNavigate();
   const showConfirm = useConfirm();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   function handleTodoToggleClick() {
-    const nextTodos = todos.map(nextTodo =>
-      nextTodo.id === todo.id ? { ...nextTodo, isCompleted: !todo.isCompleted } : nextTodo
-    )
+    dispatch(updateTodoByField({ id: todo.id, key: "isCompleted", value: !todo.isCompleted }))
     showAlert({
       message: todo.isCompleted ? "Task restarted" : "Task completed"
     })
-    setAndSaveTodos(nextTodos);
   }
 
   function handleTodoNavigateClick() {
@@ -92,7 +89,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
             confirmText: "Yes, delete this task",
             onConfirm: () => {
               showAlert({ message: "Task deleted" });
-              setAndSaveTodos(todos.filter(nextTodo => nextTodo.id != todo.id));
+              dispatch(deleteTodo(todo.id))
             },
           })
         }}
@@ -106,7 +103,6 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
 }
 
 function ToggleTodoButton({ isCompleted, clickHandler }: { isCompleted: boolean, clickHandler: VoidFunction }) {
-
   return (
     <button
       className={`

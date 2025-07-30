@@ -1,8 +1,8 @@
+import { useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useTodosContext } from "../contexts/TodosContext/TodosContext";
+import { useAppSelector } from "../redux/hooks";
 import TodoList from "../components/TodoList";
 import Header from "../components/Header";
-import { useRef } from "react";
 import NewTodoButton from "../components/buttons/NewTodoButton";
 
 export const Route = createFileRoute('/ongoing')({
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/ongoing')({
 })
 
 function RouteComponent() {
-  const { todos } = useTodosContext();
+  const todos = useAppSelector(state => state.todos.todos)
   const titleRef = useRef<HTMLDivElement | null>(null);
   const unfinishedTodos = todos.filter(todo => !todo.isCompleted);
 

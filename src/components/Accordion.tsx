@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from "react"
 
-
 type AccordionProps = {
   title: string,
   defaultOpen?: boolean,

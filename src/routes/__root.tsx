@@ -1,25 +1,23 @@
+import { useEffect, useRef, useState } from 'react'
 import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import TodosContextProvider from '../contexts/TodosContext/TodosContextProvider'
+import { store } from '../redux/store'
+import { Provider } from 'react-redux'
 import ConfirmProvider from '../contexts/ConfirmContext/ConfirmContextProvider'
 import AlertProvider from '../contexts/AlertContext/AlertContextProvider'
-import GroupsContextProvider from '../contexts/GroupsContext/GroupsContextProvider'
-import "../main.css";
 import Sidebar from '../components/Sidebar'
-import { useEffect, useRef, useState } from 'react'
+import "../main.css";
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <GroupsContextProvider>
-        <AlertProvider>
-          <ConfirmProvider>
-            <TodosContextProvider>
-              <App />
-            </TodosContextProvider>
-          </ConfirmProvider>
-        </AlertProvider>
-      </GroupsContextProvider>
+      <AlertProvider>
+        <ConfirmProvider>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </ConfirmProvider>
+      </AlertProvider>
       <TanStackRouterDevtools />
     </>
   ),

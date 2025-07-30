@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 
-export default function useOnScreen(ref: React.RefObject<HTMLDivElement>) {
+export default function useOnScreen(
+  ref: React.RefObject<HTMLDivElement | null>
+) {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [isOnScreen, setIsOnScreen] = useState(true);
 
@@ -18,7 +20,7 @@ export default function useOnScreen(ref: React.RefObject<HTMLDivElement>) {
   }, []);
 
   useEffect(() => {
-    observerRef.current!.observe(ref.current);
+    observerRef.current!.observe(ref.current!);
 
     return () => {
       observerRef.current!.disconnect();

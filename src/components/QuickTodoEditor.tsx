@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useTodosContext } from "../contexts/TodosContext/TodosContext";
-import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
 import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { addTodo, updateTodoByField } from "../redux/todosSlice";
 import type { TodoObject } from "../types";
 import Select from "./Select";
 import TextareaAutosize from "react-textarea-autosize";
-
 
 type NewTodoModeProps = {
   mode: "new";
@@ -30,9 +29,9 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   const [description, setDescription] = useState<string>(initDescription);
   const [groupID, setGroupID] = useState<string>(initGroupID);
 
-  const { todos, setAndSaveTodos } = useTodosContext();
-  const { groups } = useGroupsContext();
+  const groups = useAppSelector(state => state.groups.groups);
   const showConfirm = useConfirm();
+  const dispatch = useAppDispatch();
 
   function getinitGroupID() {
     if (props.mode === "new") {
@@ -60,14 +59,12 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
         notes: "",
         isCompleted: false,
       };
-      setAndSaveTodos([...todos, newTodo]);
+      dispatch(addTodo(newTodo));
     }
     else {
-      const nextTodos = todos.map(nextTodo => nextTodo.id === props.currTodo.id ?
-        { ...nextTodo, title: title, description: description, group: groupID } :
-        nextTodo
-      )
-      setAndSaveTodos(nextTodos);
+      dispatch(updateTodoByField({ id: props.currTodo.id, key: "title", value: title }));
+      dispatch(updateTodoByField({ id: props.currTodo.id, key: "description", value: description }));
+      dispatch(updateTodoByField({ id: props.currTodo.id, key: "group", value: groupID }));
     }
 
     setTitle("");

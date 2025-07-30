@@ -1,6 +1,6 @@
-import { Link, useLocation, } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { useGroupsContext } from "../contexts/GroupsContext/GroupsContext";
+import { Link, useLocation, } from "@tanstack/react-router";
+import { useAppSelector } from "../redux/hooks";
 
 type SidebarProps = {
   sidebarIsOpen: boolean;
@@ -122,7 +122,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
 
 function GroupsSection() {
   const [blockIsOpen, setBlockIsOpen] = useState<boolean>(true);
-  const { groups } = useGroupsContext();
+  const groups = useAppSelector(state => state.groups.groups);
   const location = useLocation();
 
   return (

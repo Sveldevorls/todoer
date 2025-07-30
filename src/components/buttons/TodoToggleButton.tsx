@@ -1,31 +1,21 @@
 import { useAlert } from "../../contexts/AlertContext/AlertContext";
-import { useTodosContext } from "../../contexts/TodosContext/TodosContext";
+import { useAppDispatch } from "../../redux/hooks";
+import { updateTodoByField } from "../../redux/todosSlice";
 import type { TodoObject } from "../../types";
 
 export default function TodoToggleButton({ todo }: { todo: TodoObject }) {
-  const { todos, setAndSaveTodos } = useTodosContext();
   const showAlert = useAlert();
+  const dispatch = useAppDispatch();
 
-  function handleTodoFinishClick() {
-    const nextTodos = todos.map(nextTodo =>
-      nextTodo.id === todo.id ? { ...nextTodo, isCompleted: true } : nextTodo
-    )
-    showAlert({ message: "Task completed" });
-    setAndSaveTodos(nextTodos);
-  }
-
-  function handleTodoRestartClick() {
-    const nextTodos = todos.map(nextTodo =>
-      nextTodo.id === todo.id ? { ...nextTodo, isCompleted: false } : nextTodo
-    )
-    showAlert({ message: "Task restarted" });
-    setAndSaveTodos(nextTodos);
+  function handleTodoToggleClick() {
+    dispatch(updateTodoByField({ id: todo.id, key: "isCompleted", value: !todo.isCompleted }))
+    showAlert({ message: todo.isCompleted ? "Task restarted" : "Task completed" });
   }
 
   return (
     <button
       className="button-svg bg-white rounded-md stroke-black"
-      onClick={todo.isCompleted ? handleTodoRestartClick : handleTodoFinishClick}
+      onClick={handleTodoToggleClick}
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
