@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OngoingRouteImport } from './routes/ongoing'
 import { Route as FinishedRouteImport } from './routes/finished'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as TasksIndexRouteImport } from './routes/tasks/index'
 import { Route as GroupsIndexRouteImport } from './routes/groups/index'
 import { Route as TasksTaskIDRouteImport } from './routes/tasks/$taskID'
@@ -24,6 +25,11 @@ const OngoingRoute = OngoingRouteImport.update({
 const FinishedRoute = FinishedRouteImport.update({
   id: '/finished',
   path: '/finished',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TasksIndexRoute = TasksIndexRouteImport.update({
@@ -48,6 +54,7 @@ const GroupsGroupIDRoute = GroupsGroupIDRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
@@ -65,6 +73,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
@@ -75,6 +84,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/finished'
     | '/ongoing'
     | '/groups/$groupID'
@@ -83,6 +93,7 @@ export interface FileRouteTypes {
     | '/tasks'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/finished'
     | '/ongoing'
     | '/groups/$groupID'
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '/tasks'
   id:
     | '__root__'
+    | '/'
     | '/finished'
     | '/ongoing'
     | '/groups/$groupID'
@@ -100,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   FinishedRoute: typeof FinishedRoute
   OngoingRoute: typeof OngoingRoute
   GroupsGroupIDRoute: typeof GroupsGroupIDRoute
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/finished'
       fullPath: '/finished'
       preLoaderRoute: typeof FinishedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tasks/': {
@@ -156,6 +176,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   FinishedRoute: FinishedRoute,
   OngoingRoute: OngoingRoute,
   GroupsGroupIDRoute: GroupsGroupIDRoute,

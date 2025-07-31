@@ -75,15 +75,6 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
             <ul>
               <li>
                 <Link
-                  to="/"
-                  className="block p-1 rounded-md hover:bg-zinc-200"
-                  activeProps={{ className: "bg-blue-100" }}
-                >
-                  <h2>Home</h2>
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/ongoing"
                   className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
                   activeProps={{ className: "bg-blue-100" }}
