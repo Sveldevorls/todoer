@@ -1,34 +1,62 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
 
 type SidebarProps = {
   sidebarIsOpen: boolean;
-  setSidebarIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setSidebarIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProps) {
   const todos = useAppSelector(state => state.todos.todos);
   const currOngoingTodos = todos.filter(todo => !todo.isCompleted);
+  const location = useLocation();
+
+  const prevWidth = useRef<number>(window.innerWidth);
+  const breakpoint = 768; //md:
+
+  useEffect(() => {
+    function handleResize() {
+      const width = window.innerWidth;
+      const isWide = width >= breakpoint;
+      const wasNarrow = prevWidth.current < breakpoint;
+      const wasWide = prevWidth.current >= breakpoint;
+
+      if (isWide && wasNarrow) {
+        setSidebarIsOpen(true);
+      } else if (!isWide && wasWide) {
+        setSidebarIsOpen(false);
+      }
+
+      prevWidth.current = width;
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarIsOpen(false);
+    }
+  }, [location.pathname]);
 
   return (
     <div
       id="sidebar"
-      className="absolute md:relative"
+      className={`absolute md:relative transition-[margin] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
+        ${sidebarIsOpen ? "ml-0" : "-ml-[260px]"}
+      `}
     >
       {/* Sidebar */}
-      <nav className={`relative h-screen bg-slate-100 transition-[width,left] duration-500 max-md:z-100
-        ${sidebarIsOpen ? "w-[260px]" : "w-0"}
-        ${sidebarIsOpen ? "left-0" : "left-[-150px]"}
-        `}
-      >
+      <nav className="relative h-screen w-[260px] bg-slate-100 max-md:z-100">
         <div className="h-screen flex flex-col">
           <div
             id="navbar-top"
             className="flex items-center p-2 h-14"
           >
             <button
-              className={`button-svg fixed z-3 top-[11px] stroke-gray-600 transition-[left] duration-500 
+              className={`button-svg fixed z-3 top-[11px] stroke-gray-600 transition-[left] duration-500
                 ${sidebarIsOpen ? "left-[212px]" : "left-2"}
                 `}
               title="Close sidebar"

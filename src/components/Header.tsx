@@ -12,7 +12,6 @@ type HeaderProps = {
 export default function Header({ title, titleRef, leftButtons = [], rightButtons = [] }: HeaderProps) {
   const [domReady, setDomReady] = useState<boolean>(false);
   const isOnScreen = useOnScreen(titleRef);
-  const sideWidth = `${Math.max(leftButtons.length, rightButtons.length) * 32}px`
 
   useEffect(() => {
     setDomReady(true);
@@ -22,19 +21,24 @@ export default function Header({ title, titleRef, leftButtons = [], rightButtons
     domReady ?
       createPortal(
         <header
-          className={`flex justify-center items-center h-14 w-full bg-white border-b-1 transition-[padding]
+          className={`grid grid-cols-[1fr_minmax(0,auto)_1fr] gap-4 h-14 w-full bg-white border-b-1 transition-[padding] duration-500ms ease-linear
             ${isOnScreen ? "border-none" : "border-gray-300"}
             `}
         >
-          <div className="flex mx-4 min-h-8" style={{ width: sideWidth }}>
+          <div className="flex items-center min-h-8">
             {...leftButtons}
           </div>
-          <h1 className={`font-black text-xl transition-opacity truncate mx-auto
+          <h1 className={`flex items-center font-black text-xl transition-opacity
             ${isOnScreen ? "opacity-0" : "opacity-100"}
             `}>
-            {title}
+            {
+              !isOnScreen &&
+              <div className="truncate">
+                {title}
+              </div>
+            }
           </h1>
-          <div className="flex mx-4 min-h-8" style={{ width: sideWidth }}>
+          <div className="flex justify-end gap-2 items-center min-h-8">
             {...rightButtons}
           </div>
         </header>
