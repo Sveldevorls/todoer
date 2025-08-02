@@ -22,19 +22,22 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
 
   return (
     <>
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => {
-          setSelectedDate(date);
-          setSelectorIsOpen(false);
-          changeHandler(date == null ? "" : date?.toString());
-        }}
-        customInput={<OuterButton />}
-      />
+      <div className="relative z-200">
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => {
+            setSelectedDate(date);
+            setSelectorIsOpen(false);
+            changeHandler(date == null ? "" : date?.toString());
+          }}
+          customInput={<OuterButton />}
+          popperPlacement="bottom-start"
+        />
+      </div>
       {
         selectorIsOpen &&
         <div
-          className="fixed inset-0"
+          className="fixed inset-0 z-199"
           onClick={() => setSelectorIsOpen(false)}
         >
         </div>
