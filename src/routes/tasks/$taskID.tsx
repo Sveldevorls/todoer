@@ -10,6 +10,7 @@ import Header from '../../components/Header';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import TodoToggleButton from '../../components/buttons/TodoToggleButton';
 import GoBackButton from '../../components/buttons/GoBackButton';
+import DateSelector from '../../components/DateSelector';
 
 export const Route = createFileRoute('/tasks/$taskID')({
   component: RouteComponent
@@ -66,19 +67,30 @@ function TaskPage({ todo }: { todo: TodoObject }) {
           {todo.isCompleted ? "Finished" : "In progress"}
         </h2>
       </div>
-      <div>
-        <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Group</h3>
-        <Select
-          options={groups.map(group => ({ label: group.title, value: group.id }))}
-          defaultValue={todo.group == "" ? null : todo.group}
-          selectHandler={
-
-            (nextGroupID: string) => {
-              dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }))
-              showAlert({ message: "Task moved" })
+      <div className="flex flex-wrap gap-4">
+        <div className="min-w-[200px] flex-grow">
+          <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Group</h3>
+          <Select
+            options={groups.map(group => ({ label: group.title, value: group.id }))}
+            defaultValue={todo.group == "" ? null : todo.group}
+            selectHandler={
+              (nextGroupID: string) => {
+                dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
+                showAlert({ message: "Task moved" })
+              }
             }
-          }
-        />
+          />
+        </div>
+        <div className="min-w-[200px] flex-grow">
+          <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Date</h3>
+          <DateSelector
+            defaultDate={todo.date == "" ? null : new Date(todo.date)}
+            changeHandler={(value) => {
+              dispatch(updateTodoByField({ id: todo.id, key: "date", value: value }));
+              showAlert({ message: "Date updated" })
+            }}
+          />
+        </div>
       </div>
       <div>
         <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Description</h3>

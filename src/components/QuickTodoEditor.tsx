@@ -5,6 +5,7 @@ import { addTodo, updateTodoByField } from "../redux/todosSlice";
 import type { TodoObject } from "../types";
 import Select from "./Select";
 import TextareaAutosize from "react-textarea-autosize";
+import DateSelector from "./DateSelector";
 
 type NewTodoModeProps = {
   mode: "new";
@@ -24,14 +25,18 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   const initTitle = props.mode === "new" ? "" : props.currTodo.title;
   const initDescription = props.mode === "new" ? "" : props.currTodo.description;
   const initGroupID = getinitGroupID();
+  const initDate = props.mode === "new" ? "" : props.currTodo.date;
 
   const [title, setTitle] = useState<string>(initTitle);
   const [description, setDescription] = useState<string>(initDescription);
   const [groupID, setGroupID] = useState<string>(initGroupID);
+  const [date, setDate] = useState<string>(initDate);
 
   const groups = useAppSelector(state => state.groups.groups);
   const showConfirm = useConfirm();
   const dispatch = useAppDispatch();
+
+  console.log(date)
 
   function getinitGroupID() {
     if (props.mode === "new") {
@@ -57,6 +62,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
         description: description,
         group: groupID,
         notes: "",
+        date: date,
         isCompleted: false,
       };
       dispatch(addTodo(newTodo));
@@ -65,6 +71,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
       dispatch(updateTodoByField({ id: props.currTodo.id, key: "title", value: title }));
       dispatch(updateTodoByField({ id: props.currTodo.id, key: "description", value: description }));
       dispatch(updateTodoByField({ id: props.currTodo.id, key: "group", value: groupID }));
+      dispatch(updateTodoByField({ id: props.currTodo.id, key: "date", value: date }));
     }
 
     setTitle("");
@@ -78,7 +85,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
 
 
   function handleNewTodoFormCancel() {
-    if (title != initTitle || description != initDescription || groupID != initGroupID) {
+    if (title != initTitle || description != initDescription || groupID != initGroupID || date != initDate) {
       showConfirm({
         message: "You will lose all unsaved progress if you exit. Are you sure?",
         cancelText: "Cancel",
@@ -119,11 +126,17 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
         />
       </form>
 
-      <Select
-        options={groups.map(group => ({ label: group.title, value: group.id }))}
-        defaultValue={groupID}
-        selectHandler={setGroupID}
-      />
+      <div className="flex gap-1">
+        <Select
+          options={groups.map(group => ({ label: group.title, value: group.id }))}
+          defaultValue={groupID}
+          selectHandler={setGroupID}
+        />
+        <DateSelector
+          defaultDate={date == "" ? null : new Date(date)}
+          changeHandler={(date) => setDate(date)}
+        />
+      </div>
 
       <div className="flex justify-start gap-4 border-t-1 border-gray-400 pt-2">
         <button

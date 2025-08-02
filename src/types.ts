@@ -4,6 +4,7 @@ export type TodoObject = {
   description: string;
   notes: string;
   group: string;
+  date: string;
   isCompleted: boolean;
 };
 
