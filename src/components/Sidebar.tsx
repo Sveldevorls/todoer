@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
+import type { TodoObject } from "../types";
 
 type SidebarProps = {
   sidebarIsOpen: boolean;
@@ -10,6 +11,7 @@ type SidebarProps = {
 export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProps) {
   const todos = useAppSelector(state => state.todos.todos);
   const currOngoingTodos = todos.filter(todo => !todo.isCompleted);
+  const todayOngoingTodos = todos.filter(todo => todoDateIsToday(todo) && !todo.isCompleted)
   const location = useLocation();
 
   const prevWidth = useRef<number>(window.innerWidth);
@@ -40,6 +42,18 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
       setSidebarIsOpen(false);
     }
   }, [location.pathname]);
+
+  function todoDateIsToday(todo: TodoObject) {
+    if (!todo.date) return false;
+
+    const today = new Date();
+    const todoDate = new Date(parseInt(todo.date, 10));
+    return (
+      todoDate.getDay() === today.getDay() &&
+      todoDate.getMonth() === today.getMonth() &&
+      todoDate.getFullYear() === today.getFullYear()
+    )
+  }
 
   return (
     <div
@@ -90,20 +104,26 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
               </li>
               <li>
                 <Link
+                  to="/today"
+                  className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
+                  activeProps={{ className: "bg-blue-100" }}
+                >
+                  <h2>Today</h2>
+                  {
+                    todayOngoingTodos.length > 0 &&
+                    <span className="text-sm mx-1">
+                      {todayOngoingTodos.length <= 99 ? todayOngoingTodos.length : "99+"}
+                    </span>
+                  }
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/finished"
                   className="block p-1 rounded-md hover:bg-zinc-200"
                   activeProps={{ className: "bg-blue-100" }}
                 >
                   <h2>Finished tasks</h2>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/today"
-                  className="block p-1 rounded-md hover:bg-zinc-200"
-                  activeProps={{ className: "bg-blue-100" }}
-                >
-                  <h2>Today</h2>
                 </Link>
               </li>
             </ul>
