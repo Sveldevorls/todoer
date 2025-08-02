@@ -99,7 +99,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   }
 
   return (
-    <div className="border-1 border-gray-400 rounded-md w-full flex flex-col gap-2 p-2">
+    <div className="border-1 border-gray-400 rounded-md w-full flex flex-col gap-2 p-2 @container">
       <form
         className="flex flex-col"
         id="new-todo-form"
@@ -127,30 +127,50 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
       </form>
 
       <div className="flex gap-1">
-        <Select
-          options={groups.map(group => ({ label: group.title, value: group.id }))}
-          defaultValue={groupID}
-          selectHandler={setGroupID}
-        />
         <DateSelector
           defaultDate={date == "" ? null : new Date(date)}
           changeHandler={(date) => setDate(date)}
         />
       </div>
 
-      <div className="flex justify-start gap-4 border-t-1 border-gray-400 pt-2">
-        <button
-          className="button-secondary"
-          onClick={handleNewTodoFormCancel}
-        >
-          Cancel
-        </button>
-        <button
-          form="new-todo-form"
-          className="button-primary min-w-[5em]"
-        >
-          {props.mode === "new" ? "Add todo" : "Save"}
-        </button>
+      <div className="flex border-t-1 border-gray-400 pt-2">
+        <Select
+          options={groups.map(group => ({ label: group.title, value: group.id }))}
+          defaultValue={groupID}
+          selectHandler={setGroupID}
+        />
+        <div className="flex gap-2 ml-auto">
+          <button
+            className="button-svg bg-gray-200 hover:bg-gray-300 @lg:hidden"
+            onClick={handleNewTodoFormCancel}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="gray" strokeWidth="1.5" strokeLinecap="round">
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+            </svg>
+          </button>
+          <button
+            className="button-secondary @max-lg:hidden"
+            onClick={handleNewTodoFormCancel}
+          >
+            Cancel
+          </button>
+
+          <button
+            form="new-todo-form"
+            className="button-primary p-1 @lg:hidden"
+          >
+            <svg width="24" height="24" viewBox="-9 0 35 20" xmlns="http://www.w3.org/2000/svg" fill="white">
+              <path d="M0 0l20 10L0 20V0zm0 8v4l10-2L0 8z" />
+            </svg>
+          </button>
+          <button
+            form="new-todo-form"
+            className="button-primary min-w-[5em] @max-lg:hidden"
+          >
+            {props.mode === "new" ? "Add todo" : "Save"}
+          </button>
+        </div>
       </div>
     </div>
   )

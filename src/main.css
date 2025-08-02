@@ -12,7 +12,7 @@
     }
 
     .button-secondary {
-        @apply px-3 py-1 rounded-sm bg-gray-100 border-1 border-zinc-500 hover:brightness-90 transition-[filter] duration-100;
+        @apply px-3 py-1 rounded-sm bg-gray-200 hover:brightness-90 transition-[filter] duration-100;
     }
 
     .button-svg {
