@@ -9,7 +9,8 @@ import DateSelector from "./DateSelector";
 
 type NewTodoModeProps = {
   mode: "new";
-  defaultGroupID?: string;
+  defaultGroupID: string;
+  defaultDate: string;
   closeHandler: VoidFunction;
 }
 
@@ -24,8 +25,8 @@ type QuickTodoEditorProps = NewTodoModeProps | EditModeProps;
 export function QuickTodoEditor(props: QuickTodoEditorProps) {
   const initTitle = props.mode === "new" ? "" : props.currTodo.title;
   const initDescription = props.mode === "new" ? "" : props.currTodo.description;
-  const initGroupID = getinitGroupID();
-  const initDate = props.mode === "new" ? "" : props.currTodo.date;
+  const initGroupID = props.mode === "new" ? props.defaultGroupID : props.currTodo.group;
+  const initDate = props.mode === "new" ? props.defaultDate : props.currTodo.date;
 
   const [title, setTitle] = useState<string>(initTitle);
   const [description, setDescription] = useState<string>(initDescription);
@@ -36,21 +37,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   const showConfirm = useConfirm();
   const dispatch = useAppDispatch();
 
-  console.log(date)
-
-  function getinitGroupID() {
-    if (props.mode === "new") {
-      if (props.defaultGroupID) {
-        return props.defaultGroupID
-      }
-      else {
-        return ""
-      }
-    }
-    else {
-      return props.currTodo.group
-    }
-  }
+  console.log(date, initDate)
 
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -77,6 +64,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
     setTitle("");
     setDescription("");
     setGroupID(initGroupID);
+    setDate(initDate);
 
     if (props.mode === "edit") {
       props.closeHandler();

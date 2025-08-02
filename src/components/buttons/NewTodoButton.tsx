@@ -1,7 +1,12 @@
 import { useState } from "react"
 import { QuickTodoEditor } from "../QuickTodoEditor";
 
-export default function NewTodoButton({ defaultGroupID = "" }: { defaultGroupID?: string }) {
+type NewTodoButtonProps = {
+  defaultGroupID?: string;
+  defaultDate?: string;
+}
+
+export default function NewTodoButton({ defaultGroupID = "", defaultDate = "" }: NewTodoButtonProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   if (isEditing) {
@@ -9,6 +14,7 @@ export default function NewTodoButton({ defaultGroupID = "" }: { defaultGroupID?
       <QuickTodoEditor
         mode="new"
         defaultGroupID={defaultGroupID}
+        defaultDate={defaultDate}
         closeHandler={() => setIsEditing(false)}
       />
     )

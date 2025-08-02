@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TodayRouteImport } from './routes/today'
 import { Route as OngoingRouteImport } from './routes/ongoing'
 import { Route as FinishedRouteImport } from './routes/finished'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as GroupsIndexRouteImport } from './routes/groups/index'
 import { Route as TasksTaskIDRouteImport } from './routes/tasks/$taskID'
 import { Route as GroupsGroupIDRouteImport } from './routes/groups/$groupID'
 
+const TodayRoute = TodayRouteImport.update({
+  id: '/today',
+  path: '/today',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OngoingRoute = OngoingRouteImport.update({
   id: '/ongoing',
   path: '/ongoing',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
+  '/today': typeof TodayRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
   '/tasks/$taskID': typeof TasksTaskIDRoute
   '/groups': typeof GroupsIndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
+  '/today': typeof TodayRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
   '/tasks/$taskID': typeof TasksTaskIDRoute
   '/groups': typeof GroupsIndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/finished': typeof FinishedRoute
   '/ongoing': typeof OngoingRoute
+  '/today': typeof TodayRoute
   '/groups/$groupID': typeof GroupsGroupIDRoute
   '/tasks/$taskID': typeof TasksTaskIDRoute
   '/groups/': typeof GroupsIndexRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/finished'
     | '/ongoing'
+    | '/today'
     | '/groups/$groupID'
     | '/tasks/$taskID'
     | '/groups'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/finished'
     | '/ongoing'
+    | '/today'
     | '/groups/$groupID'
     | '/tasks/$taskID'
     | '/groups'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/finished'
     | '/ongoing'
+    | '/today'
     | '/groups/$groupID'
     | '/tasks/$taskID'
     | '/groups/'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FinishedRoute: typeof FinishedRoute
   OngoingRoute: typeof OngoingRoute
+  TodayRoute: typeof TodayRoute
   GroupsGroupIDRoute: typeof GroupsGroupIDRoute
   TasksTaskIDRoute: typeof TasksTaskIDRoute
   GroupsIndexRoute: typeof GroupsIndexRoute
@@ -123,6 +136,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/today': {
+      id: '/today'
+      path: '/today'
+      fullPath: '/today'
+      preLoaderRoute: typeof TodayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ongoing': {
       id: '/ongoing'
       path: '/ongoing'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FinishedRoute: FinishedRoute,
   OngoingRoute: OngoingRoute,
+  TodayRoute: TodayRoute,
   GroupsGroupIDRoute: GroupsGroupIDRoute,
   TasksTaskIDRoute: TasksTaskIDRoute,
   GroupsIndexRoute: GroupsIndexRoute,

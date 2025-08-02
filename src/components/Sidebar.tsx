@@ -97,6 +97,15 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
                   <h2>Finished tasks</h2>
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/today"
+                  className="block p-1 rounded-md hover:bg-zinc-200"
+                  activeProps={{ className: "bg-blue-100" }}
+                >
+                  <h2>Today</h2>
+                </Link>
+              </li>
             </ul>
             <GroupsSection />
           </div>
