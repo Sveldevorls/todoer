@@ -37,8 +37,6 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   const showConfirm = useConfirm();
   const dispatch = useAppDispatch();
 
-  console.log(date, initDate)
-
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -71,9 +69,25 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
     }
   }
 
+  function isSameDay(UNIXDateOne: string, UNIXDateTwo: string) {
+    // both dates present
+    if (UNIXDateOne && UNIXDateTwo) {
+      const firstDate = new Date(parseInt(UNIXDateOne, 10));
+      const secondDate = new Date(parseInt(UNIXDateTwo, 10));
+      return (
+        firstDate.getDay() === secondDate.getDay() &&
+        firstDate.getMonth() === secondDate.getMonth() &&
+        firstDate.getFullYear() === secondDate.getFullYear()
+      )
+    }
+    // both are empty
+    else {
+      return (UNIXDateOne === "" && UNIXDateTwo === "")
+    }
+  }
 
   function handleNewTodoFormCancel() {
-    if (title != initTitle || description != initDescription || groupID != initGroupID || date != initDate) {
+    if (title != initTitle || description != initDescription || groupID != initGroupID || !isSameDay(date, initDate)) {
       showConfirm({
         message: "You will lose all unsaved progress if you exit. Are you sure?",
         cancelText: "Cancel",
@@ -116,7 +130,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
 
       <div className="flex gap-1">
         <DateSelector
-          defaultDate={date == "" ? null : new Date(date)}
+          defaultDate={date == "" ? null : new Date(parseInt(date, 10))}
           changeHandler={(date) => setDate(date)}
         />
       </div>

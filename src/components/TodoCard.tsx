@@ -64,7 +64,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
           {
             todo.date &&
             <p className="w-fit max-w-[10em] px-2 py-1 mt-1 bg-slate-100 border-1 border-gray-600 text-xs text-black font-bold truncate rounded-md">
-              {new Date(todo.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+              {new Date(parseInt(todo.date, 10)).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
             </p>
           }
           {

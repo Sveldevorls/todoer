@@ -19,7 +19,7 @@ function RouteComponent() {
     if (!todo.date) return false;
 
     const today = new Date();
-    const todoDate = new Date(todo.date);
+    const todoDate = new Date(parseInt(todo.date, 10));
     return (
       todoDate.getDay() === today.getDay() &&
       todoDate.getMonth() === today.getMonth() &&
@@ -46,7 +46,7 @@ function RouteComponent() {
           <TodoList todos={todayOngoingTodos} />
       }
       <NewTodoButton
-        defaultDate={new Date().toString()}
+        defaultDate={new Date().getTime().toString()}
       />
     </div>
   )

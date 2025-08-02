@@ -28,7 +28,7 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
           onChange={(date) => {
             setSelectedDate(date);
             setSelectorIsOpen(false);
-            changeHandler(date == null ? "" : date?.toString());
+            changeHandler(date == null ? "" : date.getTime().toString());
           }}
           customInput={<OuterButton />}
           popperPlacement="bottom-start"

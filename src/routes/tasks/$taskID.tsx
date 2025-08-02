@@ -84,7 +84,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
         <div className="min-w-[200px] flex-grow">
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Date</h3>
           <DateSelector
-            defaultDate={todo.date == "" ? null : new Date(todo.date)}
+            defaultDate={todo.date == "" ? null : new Date(parseInt(todo.date, 10))}
             changeHandler={(value) => {
               dispatch(updateTodoByField({ id: todo.id, key: "date", value: value }));
               showAlert({ message: "Date updated" })

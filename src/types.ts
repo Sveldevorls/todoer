@@ -4,7 +4,7 @@ export type TodoObject = {
   description: string;
   notes: string;
   group: string;
-  date: string;
+  date: string; // "" | UNIX timestamp
   isCompleted: boolean;
 };
 
