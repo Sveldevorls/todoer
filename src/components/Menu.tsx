@@ -41,7 +41,7 @@ export default function Menu({ children }: { children: ReactNode }) {
   return (
     <div>
       <button
-        className="button-svg absolute top-2 right-2 opacity-0 group-hover:opacity-100"
+        className="button-svg"
         onClick={() => setMenuIsOpen(!menuIsOpen)}
         ref={buttonRef}
       >

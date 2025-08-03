@@ -19,6 +19,36 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  function formatDate(UNIXtimestamp: string) {
+    const today = new Date();
+    const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+    const inputDate = new Date(parseInt(UNIXtimestamp, 10));
+
+    // before today - overdue
+    if (inputDate < yesterday) {
+      return "Overdue"
+    }
+    // today
+    else if (
+      inputDate.getFullYear() === today.getFullYear() &&
+      inputDate.getMonth() === today.getMonth() &&
+      inputDate.getDay() === today.getDay()
+    ) {
+      return "Today"
+    }
+    // tomorrow
+    else if (
+      inputDate.getFullYear() === tomorrow.getFullYear() &&
+      inputDate.getMonth() === tomorrow.getMonth() &&
+      inputDate.getDay() === tomorrow.getDay()
+    ) {
+      return "Tomorrow"
+    }
+    // future date - MMM DD
+    return inputDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  }
+
   function handleTodoToggleClick() {
     dispatch(updateTodoByField({ id: todo.id, key: "isCompleted", value: !todo.isCompleted }))
     showAlert({
@@ -45,65 +75,65 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
 
   return (
     <div className="group flex relative hover:bg-gray-100 hover:cursor-pointer @container">
-      <div className="absolute top-3 left-2">
+      <div className="absolute top-2 left-2">
         <ToggleTodoButton isCompleted={todo.isCompleted} clickHandler={handleTodoToggleClick} />
       </div>
       <div
-        className="py-3 px-10 border-b-1 border-gray-400 flex-grow min-w-0"
+        className="py-2 px-10 border-b-1 border-gray-300 flex-grow min-w-0"
         onClick={handleTodoNavigateClick}
       >
-        <h3 className="font-bold truncate">{todo.title}</h3>
-        <p className="break-all line-clamp-2 text-sm">{todo.description}</p>
-        <div className="flex gap-1">
-          {
-            todo.group &&
-            <p className="w-fit max-w-[10em] px-2 py-1 mt-1 bg-blue-500 text-xs text-white font-bold truncate rounded-md">
-              {groups.find(group => group.id === todo.group)!.title}
-            </p>
-          }
-          {
-            todo.date &&
-            <p className="w-fit max-w-[10em] px-2 py-1 mt-1 bg-slate-100 border-1 border-gray-600 text-xs text-black font-bold truncate rounded-md">
-              {new Date(parseInt(todo.date, 10)).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-            </p>
-          }
-          {
-            todo.notes &&
-            <p className="w-fit max-w-[10em] px-2 py-1 mt-1 bg-slate-100 border-1 border-gray-600 text-xs text-black font-bold truncate rounded-md">
-              Has notes
-            </p>
-          }
+        <div>
+          <h3 className="font-bold truncate">{todo.title}</h3>
+          <p className="break-all line-clamp-2 text-sm">{todo.description}</p>
+        </div>
+        <div className="flex items-center mt-1 text-xs text-blue-700">
+          <div className="flex gap-1 [&>p+p:before]:content-['•'] [&>p+p:before]:mr-[4px]">
+            {
+              todo.date &&
+              <p>
+                {formatDate(todo.date)}
+              </p>
+            }
+            {
+              todo.notes &&
+              <p>
+                Has notes
+              </p>
+            }
+          </div>
+          <div className="ml-auto">
+            {
+              todo.group &&
+              <p className="max-w-[12em] truncate">
+                #{groups.find(group => group.id === todo.group)!.title}
+              </p>
+            }
+          </div>
         </div>
       </div>
-      <button className="button-svg absolute top-2 right-2 opacity-0 group-hover:opacity-100">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-          viewBox="0 0 24 24">
-          <circle cx="5" cy="12" r="2" />
-          <circle cx="12" cy="12" r="2" />
-          <circle cx="19" cy="12" r="2" />
-        </svg>
-      </button>
-      <Menu>
-        <MenuItem onClick={() => setIsEditing(true)}>
-          <EditIcon />
-          Edit
-        </MenuItem>
-        <MenuItem onClick={() => {
-          showConfirm({
-            message: "This action can not be reversed. Are you sure?",
-            cancelText: "Cancel",
-            confirmText: "Yes, delete this task",
-            onConfirm: () => {
-              showAlert({ message: "Task deleted" });
-              dispatch(deleteTodo(todo.id))
-            },
-          })
-        }}
-        >
-          <DeleteIcon />
-          Delete
-        </MenuItem>
-      </Menu>
+      <div className="absolute top-1.5 right-2 opacity-0 group-hover:opacity-100">
+        <Menu>
+          <MenuItem onClick={() => setIsEditing(true)}>
+            <EditIcon />
+            Edit
+          </MenuItem>
+          <MenuItem onClick={() => {
+            showConfirm({
+              message: "This action can not be reversed. Are you sure?",
+              cancelText: "Cancel",
+              confirmText: "Yes, delete this task",
+              onConfirm: () => {
+                showAlert({ message: "Task deleted" });
+                dispatch(deleteTodo(todo.id))
+              },
+            })
+          }}
+          >
+            <DeleteIcon />
+            Delete
+          </MenuItem>
+        </Menu>
+      </div>
     </div >
   )
 }
