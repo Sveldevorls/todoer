@@ -1,11 +1,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { TodoObject } from "../types";
+import defaultTodos from "../defaultTodos";
 
 interface TodosState {
   todos: TodoObject[];
 }
 
-const initialTodos = JSON.parse(localStorage.getItem("todos") ?? "[]");
+const initialTodos =
+  localStorage.getItem("todos") != null
+    ? JSON.parse(localStorage.getItem("todos")!)
+    : defaultTodos;
 const initialState: TodosState = {
   todos: initialTodos,
 };

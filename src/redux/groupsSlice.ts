@@ -1,11 +1,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { GroupObject } from "../types";
+import defaultGroups from "../defauitGroups";
 
 interface GroupsState {
   groups: GroupObject[];
 }
 
-const initialGroups = JSON.parse(localStorage.getItem("groups") ?? "[]");
+const initialGroups =
+  localStorage.getItem("groups") != null
+    ? JSON.parse(localStorage.getItem("groups")!)
+    : defaultGroups;
 const initialState: GroupsState = {
   groups: initialGroups,
 };
