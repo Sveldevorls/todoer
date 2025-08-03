@@ -19,11 +19,11 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  function formatDate(UNIXtimestamp: string) {
+  function formatDate(dateTimestamp: string) {
     const today = new Date();
     const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
     const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
-    const inputDate = new Date(parseInt(UNIXtimestamp, 10));
+    const inputDate = new Date(parseInt(dateTimestamp, 10));
 
     // before today - overdue
     if (inputDate < today) {
@@ -47,6 +47,28 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
     }
     // future date - MMM DD
     return inputDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  }
+
+  function formatDateColor(dateTimestamp: string) {
+    const today = new Date();
+    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+    const inputDate = new Date(parseInt(dateTimestamp, 10));
+
+    // overdue - red
+    if (inputDate < today) {
+      return "text-red-600"
+    }
+    // today - green
+    else if (
+      inputDate.getFullYear() === today.getFullYear() &&
+      inputDate.getMonth() === today.getMonth() &&
+      inputDate.getDay() === today.getDay()
+    ) {
+      return "text-green-600"
+    }
+    // future - blue
+    return "text-blue-700"
+
   }
 
   function handleTodoToggleClick() {
@@ -86,11 +108,11 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
           <h3 className="font-bold truncate">{todo.title}</h3>
           <p className="break-all line-clamp-2 text-sm">{todo.description}</p>
         </div>
-        <div className="flex items-center mt-1 text-xs text-blue-700">
+        <div className="flex items-center mt-1 text-xs text-blue-700 font-black">
           <div className="flex gap-1 [&>p+p:before]:content-['•'] [&>p+p:before]:mr-[4px]">
             {
               todo.date &&
-              <p>
+              <p className={`${formatDateColor(todo.date)}`}>
                 {formatDate(todo.date)}
               </p>
             }
