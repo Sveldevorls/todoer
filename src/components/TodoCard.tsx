@@ -26,7 +26,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
     const inputDate = new Date(parseInt(UNIXtimestamp, 10));
 
     // before today - overdue
-    if (inputDate < yesterday) {
+    if (inputDate < today) {
       return "Overdue"
     }
     // today
