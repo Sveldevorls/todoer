@@ -15,7 +15,7 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOption | null>(options.find(option => option.value === defaultValue) ?? null);
   const optionsListRef = useRef<HTMLUListElement | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const newSelected = options.find(option => option.value === defaultValue) ?? null;
@@ -54,17 +54,36 @@ export default function Select({ options, defaultValue = null, selectHandler }: 
 
   return (
     <div>
-      <button
-        className="button-primary bg-blue-500 w-fit max-w-[12em] truncate"
+      <div
+        className="flex items-center w-fit px-2 py-1 rounded-sm border-1 border-gray-400 hover:bg-zinc-200 hover:cursor-pointer"
         onClick={() => setMenuIsOpen(!menuIsOpen)}
         ref={buttonRef}
       >
-        {selectedOption ? <span>{selectedOption.label}</span> : <span>Add to group</span>}
-      </button>
+        <div className="flex items-center max-w-[12em] truncate">
+          {selectedOption ? <span>{selectedOption.label}</span> : <span>Add to group</span>}
+        </div>
+        {
+          selectedOption &&
+          <button
+            className="ml-2 -mr-1 hover:bg-zinc-400 rounded-sm"
+            onClick={
+              (e) => {
+                e.stopPropagation();
+                setSelectedOption(null);
+                selectHandler("");
+              }
+            }
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="8,16 16,8 12,12 8,8 16,16" fill="none" />
+            </svg>
+          </button>
+        }
+      </div>
       {
         menuIsOpen &&
         <div>
-          <ul className="py-1 max-w-[200px] max-h-[200px] overflow-y-auto [scrollbar-width:thin] rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white fixed z-200 [scrollbar-gutter:auto]" ref={optionsListRef}>
+          <ul className="py-1 min-w-[100px] max-w-[200px] max-h-[200px] overflow-y-auto [scrollbar-width:thin] rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white fixed z-200 [scrollbar-gutter:auto]" ref={optionsListRef}>
             {options.map(option =>
               <li
                 className={`py-1 px-2 w-full truncate cursor-pointer hover:bg-zinc-200

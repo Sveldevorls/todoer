@@ -14,14 +14,36 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
   const OuterButton =
     ({ onClick }: { onClick?: VoidFunction }) => {
       return (
-        <button className="button-secondary bg-blue-100" onClick={() => { onClick(); setSelectorIsOpen(true) }}>
-          {selectedDate ? selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Add date"}
-        </button>
+        <div
+          className="flex items-center w-fit px-2 py-1 rounded-sm border-1 border-gray-400 bg-blue-100 hover:bg-blue-200 hover:cursor-pointer"
+          onClick={() => { onClick(); setSelectorIsOpen(true) }}
+        >
+          <div>
+            {selectedDate ? selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Add date"}
+          </div>
+          {
+            selectedDate &&
+            <button
+              className="ml-2 -mr-1 hover:bg-zinc-400 rounded-sm"
+              onClick={
+                (e) => {
+                  e.stopPropagation();
+                  setSelectedDate(null);
+                  changeHandler("");
+                }
+              }
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="8,16 16,8 12,12 8,8 16,16" fill="none" />
+              </svg>
+            </button>
+          }
+        </div>
       )
     }
 
   return (
-    <>
+    <div>
       <div className="relative z-200">
         <DatePicker
           selected={selectedDate}
@@ -42,7 +64,7 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
         >
         </div>
       }
-    </>
+    </div>
   );
 };
 
