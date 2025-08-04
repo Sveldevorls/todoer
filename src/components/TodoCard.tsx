@@ -20,10 +20,10 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   const dispatch = useAppDispatch();
 
   function formatDate(dateTimestamp: string) {
-    const today = new Date();
-    const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
-    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
-    const inputDate = new Date(parseInt(dateTimestamp, 10));
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1); tomorrow.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1); yesterday.setHours(0, 0, 0, 0);
+    const inputDate = new Date(parseInt(dateTimestamp, 10)); inputDate.setHours(0, 0, 0, 0);
 
     // before today - overdue
     if (inputDate < today) {
@@ -50,9 +50,9 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
   }
 
   function formatDateColor(dateTimestamp: string) {
-    const today = new Date();
-    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
-    const inputDate = new Date(parseInt(dateTimestamp, 10));
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1); yesterday.setHours(0, 0, 0, 0);
+    const inputDate = new Date(parseInt(dateTimestamp, 10)); inputDate.setHours(0, 0, 0, 0);
 
     // overdue - red
     if (inputDate < today) {
@@ -106,10 +106,10 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
       >
         <div>
           <h3 className="font-bold truncate">{todo.title}</h3>
-          <p className="break-all line-clamp-2 text-sm">{todo.description}</p>
+          <p className="line-clamp-2 text-sm">{todo.description}</p>
         </div>
-        <div className="flex items-center mt-1 text-xs text-blue-700 font-black">
-          <div className="flex gap-1 [&>p+p:before]:content-['•'] [&>p+p:before]:mr-[4px]">
+        <div className="flex justify-between items-center flex-wrap mt-1 text-xs text-blue-700 font-black">
+          <div className="flex gap-1 mr-10 [&>p+p:before]:content-['•'] [&>p+p:before]:mr-[4px]">
             {
               todo.date &&
               <p className={`${formatDateColor(todo.date)}`}>
@@ -123,7 +123,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
               </p>
             }
           </div>
-          <div className="ml-auto">
+          <div>
             {
               todo.group &&
               <p className="max-w-[12em] truncate">
