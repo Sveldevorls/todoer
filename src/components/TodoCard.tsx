@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
 import { useAlert } from "../contexts/AlertContext/AlertContext";
@@ -11,8 +10,13 @@ import Menu from "./Menu";
 import MenuItem from "./MenuItem";
 import { QuickTodoEditor } from "./QuickTodoEditor";
 
-export default function TodoCard({ todo }: { todo: TodoObject }) {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+type TodoCardProps = {
+  todo: TodoObject;
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProps) {
   const groups = useAppSelector(state => state.groups.groups);
   const showAlert = useAlert();
   const showConfirm = useConfirm();
@@ -90,7 +94,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
       <QuickTodoEditor
         mode="edit"
         currTodo={todo}
-        closeHandler={() => setIsEditing(false)}
+        closeHandler={() => setIsEditing("")}
       />
     )
   }
@@ -135,7 +139,7 @@ export default function TodoCard({ todo }: { todo: TodoObject }) {
       </div>
       <div className="absolute top-1.5 right-2 opacity-0 group-hover:opacity-100">
         <Menu>
-          <MenuItem onClick={() => setIsEditing(true)}>
+          <MenuItem onClick={() => setIsEditing(todo.id)}>
             <EditIcon />
             Edit
           </MenuItem>
