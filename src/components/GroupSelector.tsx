@@ -53,19 +53,25 @@ export default function GroupSelector({ options, defaultValue = null, selectHand
   }, [menuIsOpen])
 
   return (
-    <div>
+    <div className="flex flex-grow min-w-0 basis-[100px] shrink-0 max-w-[200px] mr-8">
       <div
-        className="flex items-center w-fit px-2 py-1 rounded-sm border-1 border-gray-400 hover:bg-zinc-200 hover:cursor-pointer"
+        className="flex items-center min-w-0 px-2 py-1 rounded-sm border-1 border-gray-400 hover:bg-zinc-200 cursor-pointer"
         onClick={() => setMenuIsOpen(!menuIsOpen)}
         ref={buttonRef}
       >
-        <div className="flex items-center max-w-[12em] truncate">
-          {selectedOption ? <span>{selectedOption.label}</span> : <span>Add to group</span>}
+        <div className="flex flex-grow min-w-0 max-w-[12em]">
+          <span className="truncate">
+            {
+              selectedOption ?
+                selectedOption.label :
+                "Add to group"
+            }
+          </span>
         </div>
         {
           selectedOption &&
           <button
-            className="ml-2 -mr-1 hover:bg-zinc-400 rounded-sm"
+            className="ml-2 -mr-1 rounded-sm hover:bg-zinc-400"
             onClick={
               (e) => {
                 e.stopPropagation();
