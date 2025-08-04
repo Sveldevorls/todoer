@@ -8,7 +8,11 @@ import todosReducer, {
   deleteTodo,
   updateTodoByField,
 } from "./todosSlice";
-import groupsReducer, { addGroup, deleteGroup } from "./groupsSlice";
+import groupsReducer, {
+  addGroup,
+  deleteGroup,
+  updateGroupTitle,
+} from "./groupsSlice";
 
 const todosListener = createListenerMiddleware();
 const groupsListener = createListenerMiddleware();
@@ -24,7 +28,7 @@ todosListener.startListening({
 });
 
 groupsListener.startListening({
-  matcher: isAnyOf(addGroup, deleteGroup),
+  matcher: isAnyOf(addGroup, deleteGroup, updateGroupTitle),
   effect: (action, listenerApi) => {
     localStorage.setItem(
       "groups",

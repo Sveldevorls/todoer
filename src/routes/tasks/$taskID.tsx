@@ -5,7 +5,7 @@ import { updateTodoByField } from '../../redux/todosSlice';
 import { useAlert } from '../../contexts/AlertContext/AlertContext';
 import type { TodoObject } from '../../types';
 import TextareaEditor from '../../components/TextareaEditor';
-import Select from '../../components/GroupSelector';
+import GroupSelector from '../../components/GroupSelector';
 import Header from '../../components/Header';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import TodoToggleButton from '../../components/buttons/TodoToggleButton';
@@ -70,13 +70,18 @@ function TaskPage({ todo }: { todo: TodoObject }) {
       <div className="flex flex-wrap gap-4">
         <div className="min-w-[200px] flex-grow">
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Group</h3>
-          <Select
+          <GroupSelector
             options={groups.map(group => ({ label: group.title, value: group.id }))}
             defaultValue={todo.group == "" ? null : todo.group}
             selectHandler={
               (nextGroupID: string) => {
                 dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
-                showAlert({ message: "Task moved" })
+                if (nextGroupID) {
+                  showAlert({ message: "Task moved" });
+                }
+                else {
+                  showAlert({ message: "Task removed from group" })
+                }
               }
             }
           />

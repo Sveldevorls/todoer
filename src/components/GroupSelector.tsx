@@ -20,7 +20,7 @@ export default function GroupSelector({ options, defaultValue = null, selectHand
   useEffect(() => {
     const newSelected = options.find(option => option.value === defaultValue) ?? null;
     setSelectedOption(newSelected);
-  }, [defaultValue]);
+  }, [defaultValue, options]);
 
   useEffect(() => {
     if (optionsListRef.current) {
