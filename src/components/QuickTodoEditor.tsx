@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useBlocker, useNavigate } from "@tanstack/react-router";
 import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { addTodo, updateTodoByField } from "../redux/todosSlice";
@@ -36,6 +37,30 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   const groups = useAppSelector(state => state.groups.groups);
   const showConfirm = useConfirm();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const formIsDirty =
+    title !== initTitle ||
+    description !== initDescription ||
+    groupID !== initGroupID ||
+    !isSameDay(date, initDate);
+
+  useBlocker({
+    shouldBlockFn: ({ next }) => {
+      if (!formIsDirty) {
+        return false
+      }
+      else {
+        showConfirm({
+          message: "You will lose all unsaved progress if you exit. Are you sure?",
+          cancelText: "Cancel",
+          confirmText: "Yes, exit",
+          onConfirm: () => navigate({ to: next.pathname, ignoreBlocker: true })
+        })
+      }
+      return true
+    }
+  });
 
   function handleNewTodoFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -87,7 +112,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
   }
 
   function handleNewTodoFormCancel() {
-    if (title != initTitle || description != initDescription || groupID != initGroupID || !isSameDay(date, initDate)) {
+    if (formIsDirty) {
       showConfirm({
         message: "You will lose all unsaved progress if you exit. Are you sure?",
         cancelText: "Cancel",
