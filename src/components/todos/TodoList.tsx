@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { TodoObject } from "../types";
+import type { TodoObject } from "../../types";
 import TodoCard from "./TodoCard";
 
 export default function TodoList({ todos }: { todos: TodoObject[] }) {

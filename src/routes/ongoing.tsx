@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
-import TodoList from "../components/TodoList";
+import TodoList from "../components/todos/TodoList";
 import Header from "../components/Header";
 import NewTodoButton from "../components/buttons/NewTodoButton";
 

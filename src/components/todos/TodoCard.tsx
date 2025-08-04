@@ -1,14 +1,14 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
-import { useAlert } from "../contexts/AlertContext/AlertContext";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { deleteTodo, updateTodoByField } from "../redux/todosSlice";
-import type { TodoObject } from "../types";
-import DeleteIcon from "./icons/DeleteIcon";
-import EditIcon from "./icons/EditIcon";
-import Menu from "./Menu";
-import MenuItem from "./MenuItem";
-import { QuickTodoEditor } from "./QuickTodoEditor";
+import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
+import { useAlert } from "../../contexts/AlertContext/AlertContext";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { deleteTodo, updateTodoByField } from "../../redux/todosSlice";
+import type { TodoObject } from "../../types";
+import DeleteIcon from "../icons/DeleteIcon";
+import EditIcon from "../icons/EditIcon";
+import Menu from "../Menu";
+import MenuItem from "../MenuItem";
+import TodoEditor from "./TodoEditor";
 
 type TodoCardProps = {
   todo: TodoObject;
@@ -91,7 +91,7 @@ export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProp
 
   if (isEditing) {
     return (
-      <QuickTodoEditor
+      <TodoEditor
         mode="edit"
         currTodo={todo}
         closeHandler={() => setIsEditing("")}

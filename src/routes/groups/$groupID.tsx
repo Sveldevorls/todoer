@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateGroupTitle } from '../../redux/groupsSlice';
 import type { GroupObject } from '../../types';
 import Accordion from '../../components/Accordion';
-import TodoList from '../../components/TodoList';
+import TodoList from '../../components/todos/TodoList';
 import TextareaEditor from '../../components/TextareaEditor';
 import Header from '../../components/Header';
 import DeleteButton from '../../components/buttons/DeleteButton';

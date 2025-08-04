@@ -1,13 +1,13 @@
-import Menu from './Menu';
-import MenuItem from './MenuItem';
-import EditIcon from './icons/EditIcon';
-import DeleteIcon from './icons/DeleteIcon';
-import { deleteGroup } from '../redux/groupsSlice';
-import { useConfirm } from '../contexts/ConfirmContext/ConfirmContext';
-import { useAlert } from '../contexts/AlertContext/AlertContext';
-import type { GroupObject } from '../types';
+import Menu from '../Menu';
+import MenuItem from '../MenuItem';
+import EditIcon from '../icons/EditIcon';
+import DeleteIcon from '../icons/DeleteIcon';
+import { deleteGroup } from '../../redux/groupsSlice';
+import { useConfirm } from '../../contexts/ConfirmContext/ConfirmContext';
+import { useAlert } from '../../contexts/AlertContext/AlertContext';
+import type { GroupObject } from '../../types';
 import GroupEditor from './GroupEditor';
-import { useAppDispatch } from '../redux/hooks';
+import { useAppDispatch } from '../../redux/hooks';
 import { Link } from '@tanstack/react-router';
 
 type GroupCardProps = {

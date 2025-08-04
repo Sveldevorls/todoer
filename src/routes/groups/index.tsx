@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useAppSelector } from '../../redux/hooks';
 import Header from '../../components/Header';
 import NewGroupButton from '../../components/buttons/NewGroupButton';
-import GroupCard from '../../components/GroupCard';
+import GroupCard from '../../components/groups/GroupCard';
 
 
 export const Route = createFileRoute('/groups/')({

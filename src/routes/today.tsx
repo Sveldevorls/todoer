@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useAppSelector } from '../redux/hooks';
 import type { TodoObject } from '../types';
 import Header from '../components/Header';
-import TodoList from '../components/TodoList';
+import TodoList from '../components/todos/TodoList';
 import NewTodoButton from '../components/buttons/NewTodoButton';
 
 export const Route = createFileRoute('/today')({

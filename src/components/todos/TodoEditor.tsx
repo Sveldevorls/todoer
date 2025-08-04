@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useBlocker, useNavigate } from "@tanstack/react-router";
-import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { addTodo, updateTodoByField } from "../redux/todosSlice";
-import type { TodoObject } from "../types";
-import GroupSelector from "./GroupSelector";
+import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { addTodo, updateTodoByField } from "../../redux/todosSlice";
+import type { TodoObject } from "../../types";
+import GroupSelector from "..//GroupSelector";
 import TextareaAutosize from "react-textarea-autosize";
-import DateSelector from "./DateSelector";
+import DateSelector from "..//DateSelector";
 
 type NewTodoModeProps = {
   mode: "new";
@@ -21,9 +21,9 @@ type EditModeProps = {
   closeHandler: VoidFunction;
 }
 
-type QuickTodoEditorProps = NewTodoModeProps | EditModeProps;
+type TodoEditorProps = NewTodoModeProps | EditModeProps;
 
-export function QuickTodoEditor(props: QuickTodoEditorProps) {
+export default function TodoEditor(props: TodoEditorProps) {
   const initTitle = props.mode === "new" ? "" : props.currTodo.title;
   const initDescription = props.mode === "new" ? "" : props.currTodo.description;
   const initGroupID = props.mode === "new" ? props.defaultGroupID : props.currTodo.group;

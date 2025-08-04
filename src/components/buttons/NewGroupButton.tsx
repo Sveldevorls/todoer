@@ -1,5 +1,5 @@
 import { useState } from "react";
-import GroupEditor from "../GroupEditor";
+import GroupEditor from "../groups/GroupEditor";
 
 export default function NewGroupButton() {
   const [isEditing, setIsEditing] = useState<boolean>(false);

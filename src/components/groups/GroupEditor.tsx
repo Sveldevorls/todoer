@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { useBlocker, useNavigate } from "@tanstack/react-router";
-import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
-import type { GroupObject } from "../types";
-import { addGroup, updateGroupTitle } from "../redux/groupsSlice";
+import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
+import type { GroupObject } from "../../types";
+import { addGroup, updateGroupTitle } from "../../redux/groupsSlice";
 
 type NewTodoModeProps = {
   mode: "new";

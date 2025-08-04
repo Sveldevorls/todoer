@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { QuickTodoEditor } from "../QuickTodoEditor";
+import TodoEditor from "../todos/TodoEditor";
 
 type NewTodoButtonProps = {
   defaultGroupID?: string;
@@ -11,7 +11,7 @@ export default function NewTodoButton({ defaultGroupID = "", defaultDate = "" }:
 
   if (isEditing) {
     return (
-      <QuickTodoEditor
+      <TodoEditor
         mode="new"
         defaultGroupID={defaultGroupID}
         defaultDate={defaultDate}
