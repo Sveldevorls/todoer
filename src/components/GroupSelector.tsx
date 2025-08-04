@@ -5,13 +5,13 @@ type SelectOption = {
   value: string,
 }
 
-type SelectProps = {
+type GroupSelectorProps = {
   options: SelectOption[],
   defaultValue?: string | null,
   selectHandler: (value: string) => void,
 }
 
-export default function Select({ options, defaultValue = null, selectHandler }: SelectProps) {
+export default function GroupSelector({ options, defaultValue = null, selectHandler }: GroupSelectorProps) {
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<SelectOption | null>(options.find(option => option.value === defaultValue) ?? null);
   const optionsListRef = useRef<HTMLUListElement | null>(null);

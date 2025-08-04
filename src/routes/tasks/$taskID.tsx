@@ -5,7 +5,7 @@ import { updateTodoByField } from '../../redux/todosSlice';
 import { useAlert } from '../../contexts/AlertContext/AlertContext';
 import type { TodoObject } from '../../types';
 import TextareaEditor from '../../components/TextareaEditor';
-import Select from '../../components/Select';
+import Select from '../../components/GroupSelector';
 import Header from '../../components/Header';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import TodoToggleButton from '../../components/buttons/TodoToggleButton';

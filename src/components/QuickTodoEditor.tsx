@@ -3,7 +3,7 @@ import { useConfirm } from "../contexts/ConfirmContext/ConfirmContext";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { addTodo, updateTodoByField } from "../redux/todosSlice";
 import type { TodoObject } from "../types";
-import Select from "./Select";
+import GroupSelector from "./GroupSelector";
 import TextareaAutosize from "react-textarea-autosize";
 import DateSelector from "./DateSelector";
 
@@ -136,7 +136,7 @@ export function QuickTodoEditor(props: QuickTodoEditorProps) {
       </div>
 
       <div className="flex border-t-1 border-gray-400 pt-2">
-        <Select
+        <GroupSelector
           options={groups.map(group => ({ label: group.title, value: group.id }))}
           defaultValue={groupID}
           selectHandler={setGroupID}
