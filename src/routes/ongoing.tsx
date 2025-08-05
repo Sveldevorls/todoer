@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
 import TodoList from "../components/todos/TodoList";
@@ -10,6 +10,8 @@ export const Route = createFileRoute('/ongoing')({
 })
 
 function RouteComponent() {
+  const [currEditngTodoID, setCurrEditingTodoID] = useState<string>("")
+
   const todos = useAppSelector(state => state.todos.todos)
   const titleRef = useRef<HTMLDivElement | null>(null);
   const unfinishedTodos = todos.filter(todo => !todo.isCompleted);
@@ -23,11 +25,19 @@ function RouteComponent() {
       <h1 className="text-3xl font-black w-full" ref={titleRef}>Ongoing tasks</h1>
       {
         unfinishedTodos.length === 0 ?
-          <h2 className="w-full break-words hyphens-auto">You don't have any ongoing tasks right now</h2>
+          <h2 className="w-full break-words">You don't have any ongoing tasks right now</h2>
           :
-          <TodoList todos={unfinishedTodos} />
+          <TodoList
+            todos={unfinishedTodos}
+            currEditingTodoID={currEditngTodoID}
+            setCurrEditingTodoID={setCurrEditingTodoID}
+          />
       }
-      <NewTodoButton />
+      <NewTodoButton
+        openHandler={() => setCurrEditingTodoID("new")}
+        closeHandler={() => setCurrEditingTodoID("")}
+        isEditing={currEditngTodoID === "new"}
+      />
     </div>
   )
 }

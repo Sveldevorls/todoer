@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateGroupTitle } from '../../redux/groupsSlice';
@@ -34,6 +34,8 @@ function RouteComponent() {
 }
 
 function GroupPage({ group }: { group: GroupObject }) {
+  const [currEditngTodoID, setCurrEditingTodoID] = useState<string>("")
+
   const titleRef = useRef<HTMLDivElement | null>(null);
   const todos = useAppSelector(state => state.todos.todos);
   const currGroupTodos = todos.filter(todo => todo.group === group.id);
@@ -75,7 +77,12 @@ function GroupPage({ group }: { group: GroupObject }) {
             <h2 className="mb-2">
               This group is currently empty
             </h2>
-            <NewTodoButton defaultGroupID={group.id} />
+            <NewTodoButton
+              defaultGroupID={group.id}
+              openHandler={() => setCurrEditingTodoID("new")}
+              closeHandler={() => setCurrEditingTodoID("")}
+              isEditing={currEditngTodoID === "new"}
+            />
           </div>
           :
           <div className="w-full flex flex-col gap-4">
@@ -86,9 +93,18 @@ function GroupPage({ group }: { group: GroupObject }) {
               <div className="flex flex-col items-start gap-4">
                 {currGroupOngoingTodos.length == 0 ?
                   <p className="py-2">You don't have any ongoing tasks in this gorup right now</p> :
-                  <TodoList todos={currGroupOngoingTodos} />
+                  <TodoList
+                    todos={currGroupOngoingTodos}
+                    currEditingTodoID={currEditngTodoID}
+                    setCurrEditingTodoID={setCurrEditingTodoID}
+                  />
                 }
-                <NewTodoButton defaultGroupID={group.id} />
+                <NewTodoButton
+                  defaultGroupID={group.id}
+                  openHandler={() => setCurrEditingTodoID("new")}
+                  closeHandler={() => setCurrEditingTodoID("")}
+                  isEditing={currEditngTodoID === "new"}
+                />
               </div>
             </Accordion>
             <Accordion
@@ -97,7 +113,11 @@ function GroupPage({ group }: { group: GroupObject }) {
               <div className="flex flex-col items-start gap-4">
                 {currGroupFinishedTodos.length == 0 ?
                   <p className="py-2">You don't have any finished tasks in this gorup right now</p> :
-                  <TodoList todos={currGroupFinishedTodos} />
+                  <TodoList
+                    todos={currGroupFinishedTodos}
+                    currEditingTodoID={currEditngTodoID}
+                    setCurrEditingTodoID={setCurrEditingTodoID}
+                  />
                 }
               </div>
             </Accordion>

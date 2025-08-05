@@ -1,21 +1,23 @@
-import { useState } from "react"
 import TodoEditor from "../todos/TodoEditor";
 
 type NewTodoButtonProps = {
+  isEditing: boolean;
+  openHandler: VoidFunction;
+  closeHandler: VoidFunction;
   defaultGroupID?: string;
   defaultDate?: string;
 }
 
-export default function NewTodoButton({ defaultGroupID = "", defaultDate = "" }: NewTodoButtonProps) {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-
+export default function NewTodoButton({
+  isEditing, openHandler, closeHandler, defaultGroupID = "", defaultDate = ""
+}: NewTodoButtonProps) {
   if (isEditing) {
     return (
       <TodoEditor
         mode="new"
         defaultGroupID={defaultGroupID}
         defaultDate={defaultDate}
-        closeHandler={() => setIsEditing(false)}
+        closeHandler={closeHandler}
       />
     )
   }
@@ -23,7 +25,7 @@ export default function NewTodoButton({ defaultGroupID = "", defaultDate = "" }:
   return (
     <button
       className="button-primary"
-      onClick={() => setIsEditing(true)}
+      onClick={openHandler}
     >
       +Add todo
     </button>

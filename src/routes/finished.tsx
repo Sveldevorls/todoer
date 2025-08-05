@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
 import TodoList from "../components/todos/TodoList";
@@ -9,6 +9,8 @@ export const Route = createFileRoute('/finished')({
 })
 
 function RouteComponent() {
+  const [currEditngTodoID, setCurrEditingTodoID] = useState<string>("")
+
   const todos = useAppSelector(state => state.todos.todos);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const finishedTodos = todos.filter(todo => todo.isCompleted);
@@ -24,7 +26,11 @@ function RouteComponent() {
         finishedTodos.length === 0 ?
           <h2 className="w-full">You don't have any finished tasks yet</h2>
           :
-          <TodoList todos={finishedTodos} />
+          <TodoList
+            todos={finishedTodos}
+            currEditingTodoID={currEditngTodoID}
+            setCurrEditingTodoID={setCurrEditingTodoID}
+          />
       }
     </div>
   )

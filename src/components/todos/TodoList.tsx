@@ -1,10 +1,13 @@
-import { useState } from "react";
 import type { TodoObject } from "../../types";
 import TodoCard from "./TodoCard";
 
-export default function TodoList({ todos }: { todos: TodoObject[] }) {
-  const [currEditingTodoID, setCurrEditingTodoID] = useState<string>("");
+type TodoListProps = {
+  todos: TodoObject[];
+  currEditingTodoID: string;
+  setCurrEditingTodoID: React.Dispatch<React.SetStateAction<string>>;
+}
 
+export default function TodoList({ todos, currEditingTodoID, setCurrEditingTodoID }: TodoListProps) {
   return (
     <ul className="flex flex-col items-start w-full">
       {todos.map(todo =>

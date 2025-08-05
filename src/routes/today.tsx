@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router'
 import { useAppSelector } from '../redux/hooks';
 import type { TodoObject } from '../types';
@@ -11,6 +11,8 @@ export const Route = createFileRoute('/today')({
 })
 
 function RouteComponent() {
+  const [currEditngTodoID, setCurrEditingTodoID] = useState<string>("")
+
   const todos = useAppSelector(state => state.todos.todos);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const todayOngoingTodos = todos.filter(todo => todoDateIsToday(todo) && !todo.isCompleted)
@@ -43,10 +45,17 @@ function RouteComponent() {
       {
         todayOngoingTodos.length === 0 ?
           <h2 className="w-full">You don't have any tasks today</h2> :
-          <TodoList todos={todayOngoingTodos} />
+          <TodoList
+            todos={todayOngoingTodos}
+            currEditingTodoID={currEditngTodoID}
+            setCurrEditingTodoID={setCurrEditingTodoID}
+          />
       }
       <NewTodoButton
         defaultDate={new Date().getTime().toString()}
+        openHandler={() => setCurrEditingTodoID("new")}
+        closeHandler={() => setCurrEditingTodoID("")}
+        isEditing={currEditngTodoID === "new"}
       />
     </div>
   )
