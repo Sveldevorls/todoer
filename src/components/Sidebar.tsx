@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
 import type { TodoObject } from "../types";
+import logo from "../assets/logo.svg"
+
 
 type SidebarProps = {
   sidebarIsOpen: boolean;
@@ -70,7 +72,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
             className="flex items-center p-2 h-14"
           >
             <Link to="/" className="flex items-center pl-1 h-[40px]">
-              <img src="/src/assets/logo.svg" className="h-[60%]" />
+              <img src={logo} className="h-[60%]" />
             </Link>
             <button
               className={`button-svg fixed z-3 top-[11px] stroke-gray-600 transition-[left] duration-500
