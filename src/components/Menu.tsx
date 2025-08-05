@@ -9,9 +9,6 @@ export default function Menu({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (menuRef.current) {
       const { top, right, bottom, left } = buttonRef.current!.getBoundingClientRect();
-      console.log(menuRef.current.clientWidth)
-      console.log(top, right, bottom, left)
-      console.log(window.innerWidth)
 
       // default position - beneath button
       if (menuRef.current.clientHeight + bottom < window.innerHeight) {

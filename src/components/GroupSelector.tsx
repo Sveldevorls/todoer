@@ -25,7 +25,6 @@ export default function GroupSelector({ options, defaultValue = null, selectHand
   useEffect(() => {
     if (optionsListRef.current) {
       const { top, right, bottom, left } = buttonRef.current!.getBoundingClientRect();
-      console.log(top, right, bottom, left)
 
       // default position - beneath button
       if (optionsListRef.current.clientHeight + bottom < window.innerHeight) {
