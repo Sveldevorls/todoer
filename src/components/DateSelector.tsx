@@ -16,7 +16,10 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
       return (
         <div
           className="flex items-center w-fit px-2 py-1 rounded-sm border-1 border-gray-400 bg-blue-100 hover:bg-blue-200 hover:cursor-pointer"
-          onClick={() => { onClick(); setSelectorIsOpen(true) }}
+          onClick={() => {
+            if (onClick) onClick();
+            setSelectorIsOpen(true);
+          }}
         >
           <div>
             {selectedDate ? selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Add date"}

@@ -19,7 +19,7 @@ const groupsListener = createListenerMiddleware();
 
 todosListener.startListening({
   matcher: isAnyOf(addTodo, deleteTodo, updateTodoByField),
-  effect: (action, listenerApi) => {
+  effect: (_action, listenerApi) => {
     localStorage.setItem(
       "todos",
       JSON.stringify((listenerApi.getState() as RootState).todos.todos)
@@ -29,7 +29,7 @@ todosListener.startListening({
 
 groupsListener.startListening({
   matcher: isAnyOf(addGroup, deleteGroup, updateGroupTitle),
-  effect: (action, listenerApi) => {
+  effect: (_action, listenerApi) => {
     localStorage.setItem(
       "groups",
       JSON.stringify((listenerApi.getState() as RootState).groups.groups)
