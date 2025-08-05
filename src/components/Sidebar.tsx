@@ -69,11 +69,14 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
             id="navbar-top"
             className="flex items-center p-2 h-14"
           >
+            <Link to="/" className="flex items-center pl-1 h-[40px]">
+              <img src="/src/assets/logo.svg" className="h-[60%]" />
+            </Link>
             <button
               className={`button-svg fixed z-3 top-[11px] stroke-gray-600 transition-[left] duration-500
                 ${sidebarIsOpen ? "left-[212px]" : "left-2"}
                 `}
-              title="Close sidebar"
+              title={`${sidebarIsOpen ? "Close sidebar" : "Open sidebar"}`}
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
             >
               <svg width="24" height="24" viewBox="0 0 24 24">
