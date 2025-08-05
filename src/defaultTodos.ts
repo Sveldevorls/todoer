@@ -3,7 +3,7 @@ import type { TodoObject } from "./types";
 const defaultTodos: TodoObject[] = [
   {
     id: crypto.randomUUID(),
-    title: "Welcome to [PROJECT_NAME]",
+    title: "Welcome to Todoer",
     description: "Click on a task to see its details",
     notes: "And tasks can have notes too",
     group: "",

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { GroupObject } from "../types";
-import defaultGroups from "../defauitGroups";
+import defaultGroups from "../defaultGroups";
 
 interface GroupsState {
   groups: GroupObject[];
