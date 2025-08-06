@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, } from "@tanstack/react-router";
 import { useAppSelector } from "../redux/hooks";
 import type { TodoObject } from "../types";
@@ -13,36 +13,6 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
   const todos = useAppSelector(state => state.todos.todos);
   const currOngoingTodos = todos.filter(todo => !todo.isCompleted);
   const todayOngoingTodos = todos.filter(todo => todoDateIsToday(todo) && !todo.isCompleted)
-  const location = useLocation();
-
-  const prevWidth = useRef<number>(window.innerWidth);
-  const breakpoint = 768; //md:
-
-  useEffect(() => {
-    function handleResize() {
-      const width = window.innerWidth;
-      const isWide = width >= breakpoint;
-      const wasNarrow = prevWidth.current < breakpoint;
-      const wasWide = prevWidth.current >= breakpoint;
-
-      if (isWide && wasNarrow) {
-        setSidebarIsOpen(true);
-      } else if (!isWide && wasWide) {
-        setSidebarIsOpen(false);
-      }
-
-      prevWidth.current = width;
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setSidebarIsOpen(false);
-    }
-  }, [location.pathname]);
 
   function todoDateIsToday(todo: TodoObject) {
     if (!todo.date) return false;
