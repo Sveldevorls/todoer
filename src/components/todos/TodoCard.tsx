@@ -1,6 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
-import { useAlert } from "../../contexts/AlertContext/AlertContext";
+import { useSnackbar } from "../../contexts/SnackbarContext/SnackbarContext";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { deleteTodo, updateTodoByField } from "../../redux/todosSlice";
 import type { TodoObject } from "../../types";
@@ -18,7 +18,7 @@ type TodoCardProps = {
 
 export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProps) {
   const groups = useAppSelector(state => state.groups.groups);
-  const showAlert = useAlert();
+  const showSnackbar = useSnackbar();
   const showConfirm = useConfirm();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -77,7 +77,7 @@ export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProp
 
   function handleTodoToggleClick() {
     dispatch(updateTodoByField({ id: todo.id, key: "isCompleted", value: !todo.isCompleted }))
-    showAlert({
+    showSnackbar({
       message: todo.isCompleted ? "Task restarted" : "Task completed"
     })
   }
@@ -149,7 +149,7 @@ export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProp
               cancelText: "Cancel",
               confirmText: "Yes, delete this task",
               onConfirm: () => {
-                showAlert({ message: "Task deleted" });
+                showSnackbar({ message: "Task deleted" });
                 dispatch(deleteTodo(todo.id))
               },
             })

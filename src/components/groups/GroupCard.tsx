@@ -4,7 +4,7 @@ import EditIcon from '../icons/EditIcon';
 import DeleteIcon from '../icons/DeleteIcon';
 import { deleteGroup } from '../../redux/groupsSlice';
 import { useConfirm } from '../../contexts/ConfirmContext/ConfirmContext';
-import { useAlert } from '../../contexts/AlertContext/AlertContext';
+import { useSnackbar } from '../../contexts/SnackbarContext/SnackbarContext';
 import type { GroupObject } from '../../types';
 import GroupEditor from './GroupEditor';
 import { useAppDispatch } from '../../redux/hooks';
@@ -18,7 +18,7 @@ type GroupCardProps = {
 
 export default function GroupCard({ group, isEditing, setIsEditing }: GroupCardProps) {
   const showConfirm = useConfirm();
-  const showAlert = useAlert();
+  const showSnackbar = useSnackbar();
   const dispatch = useAppDispatch();
 
   if (isEditing) {
@@ -54,7 +54,7 @@ export default function GroupCard({ group, isEditing, setIsEditing }: GroupCardP
               cancelText: "Cancel",
               confirmText: "Yes, delete this group",
               onConfirm: () => {
-                showAlert({ message: "Group deleted" });
+                showSnackbar({ message: "Group deleted" });
                 dispatch(deleteGroup(group.id))
               },
             })

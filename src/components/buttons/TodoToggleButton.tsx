@@ -1,15 +1,15 @@
-import { useAlert } from "../../contexts/AlertContext/AlertContext";
+import { useSnackbar } from "../../contexts/SnackbarContext/SnackbarContext";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateTodoByField } from "../../redux/todosSlice";
 import type { TodoObject } from "../../types";
 
 export default function TodoToggleButton({ todo }: { todo: TodoObject }) {
-  const showAlert = useAlert();
+  const showSnackbar = useSnackbar();
   const dispatch = useAppDispatch();
 
   function handleTodoToggleClick() {
     dispatch(updateTodoByField({ id: todo.id, key: "isCompleted", value: !todo.isCompleted }))
-    showAlert({ message: todo.isCompleted ? "Task restarted" : "Task completed" });
+    showSnackbar({ message: todo.isCompleted ? "Task restarted" : "Task completed" });
   }
 
   return (

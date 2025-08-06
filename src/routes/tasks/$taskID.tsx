@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { createFileRoute } from '@tanstack/react-router'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateTodoByField } from '../../redux/todosSlice';
-import { useAlert } from '../../contexts/AlertContext/AlertContext';
+import { useSnackbar } from '../../contexts/SnackbarContext/SnackbarContext';
 import type { TodoObject } from '../../types';
 import TextareaEditor from '../../components/TextareaEditor';
 import GroupSelector from '../../components/GroupSelector';
@@ -35,7 +35,7 @@ function RouteComponent() {
 function TaskPage({ todo }: { todo: TodoObject }) {
   const dispatch = useAppDispatch();
   const groups = useAppSelector(state => state.groups.groups);
-  const showAlert = useAlert();
+  const showSnackbar = useSnackbar();
   const titleRef = useRef<HTMLDivElement | null>(null);
 
   function generateBlurHandler(key: keyof TodoObject) {
@@ -77,10 +77,10 @@ function TaskPage({ todo }: { todo: TodoObject }) {
               (nextGroupID: string) => {
                 dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
                 if (nextGroupID) {
-                  showAlert({ message: "Task moved" });
+                  showSnackbar({ message: "Task moved" });
                 }
                 else {
-                  showAlert({ message: "Task removed from group" })
+                  showSnackbar({ message: "Task removed from group" })
                 }
               }
             }
@@ -92,7 +92,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
             defaultDate={todo.date == "" ? null : new Date(parseInt(todo.date, 10))}
             changeHandler={(value) => {
               dispatch(updateTodoByField({ id: todo.id, key: "date", value: value }));
-              showAlert({ message: "Date updated" })
+              showSnackbar({ message: "Date updated" })
             }}
           />
         </div>

@@ -3,21 +3,21 @@ import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { store } from '../redux/store'
 import { Provider } from 'react-redux'
-import ConfirmProvider from '../contexts/ConfirmContext/ConfirmContextProvider'
-import AlertProvider from '../contexts/AlertContext/AlertContextProvider'
+import ConfirmProvider from '../contexts/ConfirmContext/ConfirmProvider'
+import SnackbarProvider from '../contexts/SnackbarContext/SnackbarProvider'
 import Sidebar from '../components/Sidebar'
 import "../main.css";
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <AlertProvider>
+      <SnackbarProvider>
         <ConfirmProvider>
           <Provider store={store}>
             <App />
           </Provider>
         </ConfirmProvider>
-      </AlertProvider>
+      </SnackbarProvider>
       <TanStackRouterDevtools />
     </>
   ),

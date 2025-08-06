@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAlert } from "../contexts/AlertContext/AlertContext";
+import { useSnackbar } from "../contexts/SnackbarContext/SnackbarContext";
 import TextareaAutosize from "react-textarea-autosize";
 
 type TextAreaEditorProps = {
@@ -11,7 +11,7 @@ type TextAreaEditorProps = {
 
 export default function TextareaEditor({ value, required = false, placeholder = "", blurHandler }: TextAreaEditorProps) {
   const [currValue, setCurrValue] = useState<string>(value);
-  const showAlert = useAlert();
+  const showSnackbar = useSnackbar();
 
   return (
     <TextareaAutosize
@@ -21,7 +21,7 @@ export default function TextareaEditor({ value, required = false, placeholder = 
       onBlur={() => {
         if (required && currValue === "") {
           setCurrValue(value);
-          showAlert({ message: "This field can not be blank" });
+          showSnackbar({ message: "This field can not be blank" });
           return
         }
         blurHandler(currValue);

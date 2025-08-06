@@ -1,5 +1,5 @@
 import { useRouter } from "@tanstack/react-router";
-import { useAlert } from "../../contexts/AlertContext/AlertContext";
+import { useSnackbar } from "../../contexts/SnackbarContext/SnackbarContext";
 import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { deleteTodo } from "../../redux/todosSlice";
@@ -15,7 +15,7 @@ type DeleteButtonProps = {
 export default function DeleteButton({ type, id, redir = true }: DeleteButtonProps) {
   const todos = useAppSelector(state => state.todos.todos);
   const router = useRouter();
-  const showAlert = useAlert();
+  const showSnackbar = useSnackbar();
   const showConfirm = useConfirm();
   const dispatch = useAppDispatch();
 
@@ -41,7 +41,7 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
             dispatch(deleteTodo(todo.id))
           }
           dispatch(deleteGroup(id));
-          showAlert({ message: "Group deleted" });
+          showSnackbar({ message: "Group deleted" });
 
           if (redir) {
             redirect();
@@ -56,7 +56,7 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
         confirmText: "Yes, delete this task",
         onConfirm: () => {
           setTimeout(() => {
-            showAlert({ message: "Task deleted" });
+            showSnackbar({ message: "Task deleted" });
             dispatch(deleteTodo(id))
           }, 0);
           if (redir) {
