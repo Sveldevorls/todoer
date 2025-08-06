@@ -9,6 +9,16 @@ type SidebarProps = {
   setSidebarIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+function getTodosCountDisplay(todos: TodoObject[]): string {
+  if (todos.length === 0) {
+    return ""
+  }
+  if (todos.length <= 99) {
+    return todos.length.toString()
+  }
+  return "99+"
+}
+
 export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProps) {
   const todos = useAppSelector(state => state.todos.todos);
   const currOngoingTodos = todos.filter(todo => !todo.isCompleted);
@@ -64,7 +74,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
                 {
                   currOngoingTodos.length > 0 &&
                   <span className="text-sm mx-1">
-                    {currOngoingTodos.length <= 99 ? currOngoingTodos.length : "99+"}
+                    {getTodosCountDisplay(currOngoingTodos)}
                   </span>
                 }
               </Link>
@@ -79,7 +89,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
                 {
                   todayOngoingTodos.length > 0 &&
                   <span className="text-sm mx-1">
-                    {todayOngoingTodos.length <= 99 ? todayOngoingTodos.length : "99+"}
+                    {getTodosCountDisplay(todayOngoingTodos)}
                   </span>
                 }
               </Link>
@@ -161,7 +171,7 @@ function GroupsSection() {
                     {
                       currGroupOngoingTodos.length > 0 &&
                       <span className="text-sm mx-1">
-                        {currGroupOngoingTodos.length <= 99 ? currGroupOngoingTodos.length : "99+"}
+                        {getTodosCountDisplay(currGroupOngoingTodos)}
                       </span>
                     }
                   </Link>
