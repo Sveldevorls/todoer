@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 type SelectOption = {
   label: string,
@@ -87,26 +88,33 @@ export default function GroupSelector({ options, defaultValue = null, selectHand
       </div>
       {
         menuIsOpen &&
-        <div>
-          <ul className="py-1 min-w-[100px] max-w-[200px] max-h-[200px] overflow-y-auto [scrollbar-width:thin] rounded-md shadow-[0_1px_5px_0px_#00000088] bg-white fixed z-200 [scrollbar-gutter:auto]" ref={optionsListRef}>
-            {options.map(option =>
-              <li
-                className={`py-1 px-2 w-full truncate cursor-pointer hover:bg-zinc-200
+        createPortal(
+          <div>
+            <ul
+              className="fixed z-1 py-1 min-w-[100px] max-w-[200px] max-h-[200px] overflow-y-auto bg-white rounded-md shadow-[0_1px_5px_0px_#00000088] [scrollbar-width:thin] [scrollbar-gutter:auto]"
+              ref={optionsListRef}
+            >
+              {options.map(option =>
+                <li
+                  className={`py-1 px-2 w-full truncate cursor-pointer hover:bg-zinc-200
                   ${selectedOption?.value === option.value && "bg-blue-100"}
                   `}
-                onClick={() => {
-                  setSelectedOption(option);
-                  selectHandler(option.value);
-                  setMenuIsOpen(!menuIsOpen);
-                }}
-                key={option.value}
-              >
-                {option.label}
-              </li>
-            )}
-          </ul>
-          <div className="fixed inset-0 z-199" onClick={() => setMenuIsOpen(!menuIsOpen)} ></div>
-        </div>
+                  onClick={() => {
+                    setSelectedOption(option);
+                    selectHandler(option.value);
+                    setMenuIsOpen(!menuIsOpen);
+                  }}
+                  key={option.value}
+                >
+                  {option.label}
+                </li>
+              )}
+            </ul>
+            <div className="fixed inset-0" onClick={() => setMenuIsOpen(!menuIsOpen)} ></div>
+          </div>,
+          document.getElementById("overlay")!
+        )
+
       }
     </div>
   )

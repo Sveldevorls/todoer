@@ -4,7 +4,6 @@ import { useAppSelector } from "../redux/hooks";
 import type { TodoObject } from "../types";
 import logo from "../assets/logo.svg"
 
-
 type SidebarProps = {
   sidebarIsOpen: boolean;
   setSidebarIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -58,95 +57,77 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
   }
 
   return (
-    <div
-      id="sidebar"
-      className={`absolute md:relative transition-[margin] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
-        ${sidebarIsOpen ? "ml-0" : "-ml-[260px]"}
-      `}
-    >
-      {/* Sidebar */}
-      <nav className="relative h-screen w-[260px] bg-slate-100 max-md:z-100">
-        <div className="h-screen flex flex-col">
-          <div
-            id="navbar-top"
-            className="flex items-center p-2 h-14"
-          >
-            <Link to="/" className="flex items-center pl-1 h-[40px]">
-              <img src={logo} className="h-[60%]" />
-            </Link>
-            <button
-              className={`button-svg fixed z-3 top-[11px] stroke-gray-600 transition-[left] duration-500
+    <nav className="relative h-screen w-[260px] z-1 bg-slate-100">
+      <div className="h-screen flex flex-col">
+        <div
+          id="navbar-top"
+          className="flex items-center p-2 h-14"
+        >
+          <Link to="/" className="flex items-center pl-1 h-[40px]">
+            <img src={logo} className="h-[60%]" />
+          </Link>
+          <button
+            className={`button-svg fixed top-[11px] stroke-gray-600 transition-[left] duration-500
                 ${sidebarIsOpen ? "left-[212px]" : "left-2"}
                 `}
-              title={`${sidebarIsOpen ? "Close sidebar" : "Open sidebar"}`}
-              onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24">
-                <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.2" />
-                <line x1="9" y1="4" x2="9" y2="20" strokeWidth="1.2" />
-              </svg>
-            </button>
-          </div>
-          <div
-            id="navbar-content"
-            className="p-2 overflow-hidden hover:overflow-auto grow [scrollbar-width:thin] [scrollbar-gutter:stable]"
+            title={`${sidebarIsOpen ? "Close sidebar" : "Open sidebar"}`}
+            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
           >
-            <ul>
-              <li>
-                <Link
-                  to="/ongoing"
-                  className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
-                  activeProps={{ className: "bg-blue-100" }}
-                >
-                  <h2>Ongoing tasks</h2>
-                  {
-                    currOngoingTodos.length > 0 &&
-                    <span className="text-sm mx-1">
-                      {currOngoingTodos.length <= 99 ? currOngoingTodos.length : "99+"}
-                    </span>
-                  }
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/today"
-                  className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
-                  activeProps={{ className: "bg-blue-100" }}
-                >
-                  <h2>Today</h2>
-                  {
-                    todayOngoingTodos.length > 0 &&
-                    <span className="text-sm mx-1">
-                      {todayOngoingTodos.length <= 99 ? todayOngoingTodos.length : "99+"}
-                    </span>
-                  }
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/finished"
-                  className="block p-1 rounded-md hover:bg-zinc-200"
-                  activeProps={{ className: "bg-blue-100" }}
-                >
-                  <h2>Finished tasks</h2>
-                </Link>
-              </li>
-            </ul>
-            <GroupsSection />
-          </div>
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.2" />
+              <line x1="9" y1="4" x2="9" y2="20" strokeWidth="1.2" />
+            </svg>
+          </button>
         </div>
-      </nav>
-
-      {/* Outer click detection div */}
-      <div
-        className={`fixed inset-0 md:hidden bg-black/50 transition-all z-99
-          ${sidebarIsOpen ? "opacity-100" : "opacity-0"}
-          ${sidebarIsOpen ? "pointer-events-auto" : "pointer-events-none"}
-        `}
-        onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-      >
+        <div
+          id="navbar-content"
+          className="p-2 overflow-hidden hover:overflow-auto grow [scrollbar-width:thin] [scrollbar-gutter:stable]"
+        >
+          <ul>
+            <li>
+              <Link
+                to="/ongoing"
+                className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
+                activeProps={{ className: "bg-blue-100" }}
+              >
+                <h2>Ongoing tasks</h2>
+                {
+                  currOngoingTodos.length > 0 &&
+                  <span className="text-sm mx-1">
+                    {currOngoingTodos.length <= 99 ? currOngoingTodos.length : "99+"}
+                  </span>
+                }
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/today"
+                className="flex justify-between items-center p-1 rounded-md hover:bg-zinc-200"
+                activeProps={{ className: "bg-blue-100" }}
+              >
+                <h2>Today</h2>
+                {
+                  todayOngoingTodos.length > 0 &&
+                  <span className="text-sm mx-1">
+                    {todayOngoingTodos.length <= 99 ? todayOngoingTodos.length : "99+"}
+                  </span>
+                }
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/finished"
+                className="block p-1 rounded-md hover:bg-zinc-200"
+                activeProps={{ className: "bg-blue-100" }}
+              >
+                <h2>Finished tasks</h2>
+              </Link>
+            </li>
+          </ul>
+          <GroupsSection />
+        </div>
       </div>
-    </div>
+    </nav>
   )
 }
 

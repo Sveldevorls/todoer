@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -46,28 +47,27 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
     }
 
   return (
-    <div>
-      <div className="relative z-200">
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => {
-            setSelectedDate(date);
-            setSelectorIsOpen(false);
-            changeHandler(date == null ? "" : date.getTime().toString());
-          }}
-          customInput={<OuterButton />}
-          popperPlacement="bottom-start"
-        />
-      </div>
+    <>
+      <DatePicker
+        selected={selectedDate}
+        onChange={(date) => {
+          setSelectedDate(date);
+          setSelectorIsOpen(false);
+          changeHandler(date == null ? "" : date.getTime().toString());
+        }}
+        customInput={<OuterButton />}
+        popperPlacement="bottom-start"
+        popperClassName="z-1"
+        portalId="overlay"
+      />
       {
         selectorIsOpen &&
-        <div
-          className="fixed inset-0 z-199"
-          onClick={() => setSelectorIsOpen(false)}
-        >
-        </div>
+        createPortal(
+          <div className="inset-0 fixed" onClick={() => setSelectorIsOpen(false)}></div>,
+          document.getElementById("overlay")!
+        )
       }
-    </div>
+    </>
   );
 };
 
