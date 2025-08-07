@@ -50,7 +50,8 @@ export default function GroupCard({ group, isEditing, setIsEditing }: GroupCardP
           </MenuItem>
           <MenuItem onClick={() => {
             showConfirm({
-              message: "This action can not be reversed. Are you sure?",
+              title: "Delete this group?",
+              message: "Deleting this group will also delete all tasks belonging to the group. Are you sure?",
               cancelText: "Cancel",
               confirmText: "Yes, delete this group",
               onConfirm: () => {

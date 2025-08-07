@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 export default function ConfirmProvider({ children }: { children: ReactNode }) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [domReady, setDomReady] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [cancelText, setCancelText] = useState<string>("");
   const [confirmText, setConfirmText] = useState<string>("");
@@ -14,7 +15,8 @@ export default function ConfirmProvider({ children }: { children: ReactNode }) {
     setDomReady(true);
   }, [])
 
-  const showConfirm = ({ message, cancelText, confirmText, onConfirm }: ConfirmOptions) => {
+  const showConfirm = ({ title, message, cancelText, confirmText, onConfirm }: ConfirmOptions) => {
+    setTitle(title);
     setMessage(message);
     setCancelText(cancelText);
     setConfirmText(confirmText);
@@ -44,7 +46,8 @@ export default function ConfirmProvider({ children }: { children: ReactNode }) {
                 p-4 rounded-md shadow-md
                 w-[min(90vw,480px)]"
             >
-              <p className="p-4">{message}</p>
+              <h2 className="font-black">{title}</h2>
+              <p className="pt-2 pb-8">{message}</p>
               <div className="flex justify-end gap-4">
                 <button
                   onClick={handleCancel}

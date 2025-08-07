@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
 export type ConfirmOptions = {
+  title: string;
   message: string;
   cancelText: string;
   confirmText: string;

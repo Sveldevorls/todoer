@@ -34,6 +34,7 @@ export default function GroupEditor(props: GroupEditorProps) {
       }
       else {
         showConfirm({
+          title: "Discard unsaved changes?",
           message: "You will lose all unsaved progress if you exit. Are you sure?",
           cancelText: "Cancel",
           confirmText: "Yes, exit",
@@ -71,6 +72,7 @@ export default function GroupEditor(props: GroupEditorProps) {
     }
     else {
       showConfirm({
+        title: "Discard unsaved changes?",
         message: "You will lose all unsaved progress if you exit. Are you sure?",
         cancelText: "Cancel",
         confirmText: "Yes, exit",

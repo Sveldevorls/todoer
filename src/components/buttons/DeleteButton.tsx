@@ -32,6 +32,7 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
 
     if (type === "group") {
       showConfirm({
+        title: "Delete this group?",
         message: "Deleting this group will also delete all tasks belonging to the group. Are you sure?",
         cancelText: "Cancel",
         confirmText: "Yes, delete this group",
@@ -51,6 +52,7 @@ export default function DeleteButton({ type, id, redir = true }: DeleteButtonPro
     }
     else {
       showConfirm({
+        title: "Delete this task?",
         message: "This action can not be reversed. Are you sure?",
         cancelText: "Cancel",
         confirmText: "Yes, delete this task",

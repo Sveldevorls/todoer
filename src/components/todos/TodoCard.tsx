@@ -145,6 +145,7 @@ export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProp
           </MenuItem>
           <MenuItem onClick={() => {
             showConfirm({
+              title: "Delete this task?",
               message: "This action can not be reversed. Are you sure?",
               cancelText: "Cancel",
               confirmText: "Yes, delete this task",
