@@ -37,12 +37,12 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
                 }
               }
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-gray-600" width="24" height="24" fill="none" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="8,16 16,8 12,12 8,8 16,16" fill="none" />
               </svg>
             </button>
           }
-        </div>
+        </div >
       )
     }
 

@@ -141,7 +141,7 @@ export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProp
         <Menu>
           <MenuItem onClick={() => setIsEditing(todo.id)}>
             <EditIcon />
-            Edit
+            <div>Edit</div>
           </MenuItem>
           <MenuItem onClick={() => {
             showConfirm({
@@ -157,7 +157,7 @@ export default function TodoCard({ todo, isEditing, setIsEditing }: TodoCardProp
           }}
           >
             <DeleteIcon />
-            Delete
+            <div>Delete</div>
           </MenuItem>
         </Menu>
       </div>
@@ -190,7 +190,7 @@ function ToggleTodoButton({ isCompleted, clickHandler }: { isCompleted: boolean,
               <line x1="18" y1="6" x2="6" y2="18" />
             </>
             :
-            <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" fill="none" strokeWidth="3" />
+            <path d="M5 13l4 4L19 7" fill="none" />
         }
       </svg>
     </button>

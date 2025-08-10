@@ -173,7 +173,7 @@ export default function TodoEditor(props: TodoEditorProps) {
             className="button-svg bg-gray-200 hover:bg-gray-300 @lg:hidden"
             onClick={handleNewTodoFormCancel}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="gray" strokeWidth="1.5" strokeLinecap="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="gray" strokeWidth="1.1" strokeLinecap="round">
               <line x1="6" y1="6" x2="18" y2="18" />
               <line x1="18" y1="6" x2="6" y2="18" />
             </svg>
@@ -201,6 +201,6 @@ export default function TodoEditor(props: TodoEditorProps) {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   )
 }

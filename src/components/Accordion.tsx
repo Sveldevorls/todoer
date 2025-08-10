@@ -21,8 +21,8 @@ export default function Accordion({ title, defaultOpen = false, children }: Acco
               ${isOpen ? "rotate-0" : "-rotate-90"}
             `}
         >
-          <line x1="6" y1="10" x2="12" y2="16" strokeWidth="1.3" />
-          <line x1="18" y1="10" x2="12" y2="16" strokeWidth="1.3" />
+          <line x1="6" y1="10" x2="12" y2="16" strokeWidth="1.1" />
+          <line x1="18" y1="10" x2="12" y2="16" strokeWidth="1.1" />
         </svg>
       </h3>
       <div className={`grid transition-all duration-500

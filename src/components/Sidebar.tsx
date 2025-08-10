@@ -54,8 +54,8 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
             onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
           >
             <svg width="24" height="24" viewBox="0 0 24 24">
-              <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.2" />
-              <line x1="9" y1="4" x2="9" y2="20" strokeWidth="1.2" />
+              <rect x="2" y="4" width="20" height="16" rx="2" ry="2" fill="none" strokeWidth="1.1" />
+              <line x1="9" y1="4" x2="9" y2="20" strokeWidth="1.1" />
             </svg>
           </button>
         </div>
@@ -141,8 +141,8 @@ function GroupsSection() {
               ${blockIsOpen ? "rotate-0" : "-rotate-90"}
             `}
           >
-            <line x1="6" y1="10" x2="12" y2="16" strokeWidth="1.3" />
-            <line x1="18" y1="10" x2="12" y2="16" strokeWidth="1.3" />
+            <line x1="6" y1="10" x2="12" y2="16" strokeWidth="1.1" />
+            <line x1="18" y1="10" x2="12" y2="16" strokeWidth="1.1" />
           </svg>
         </button>
       </div>
