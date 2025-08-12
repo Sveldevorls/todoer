@@ -1,10 +1,10 @@
 export type TodoObject = {
   id: string;
   title: string;
-  description: string;
-  notes: string;
-  group: string;
-  date: string; // "" | UNIX timestamp
+  description: string | null;
+  notes: string | null;
+  group: string | null;
+  date: number | null;
   isCompleted: boolean;
 };
 

@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 type DateSelectorProps = {
   defaultDate?: Date | null;
-  changeHandler: (date: string) => void;
+  changeHandler: (date: number | null) => void;
 }
 
 export default function DateSelector({ defaultDate = null, changeHandler }: DateSelectorProps) {
@@ -33,7 +33,7 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
                 (e) => {
                   e.stopPropagation();
                   setSelectedDate(null);
-                  changeHandler("");
+                  changeHandler(null);
                 }
               }
             >
@@ -53,7 +53,7 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
         onChange={(date) => {
           setSelectedDate(date);
           setSelectorIsOpen(false);
-          changeHandler(date == null ? "" : date.getTime().toString());
+          changeHandler(date ? date.getTime() : null);
         }}
         customInput={<OuterButton />}
         popperPlacement="bottom-start"
@@ -70,30 +70,3 @@ export default function DateSelector({ defaultDate = null, changeHandler }: Date
     </>
   );
 };
-
-// may switch to a custom one
-/* import { useState } from "react";
-
-export default function DateSelector({ defaultDate = null }: { defaultDate: Date | null }) {
-  const [selectorIsOpen, setSelectorIsOpen] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(defaultDate)
-
-  return (
-    <>
-      <button onClick={() => setSelectorIsOpen(!selectorIsOpen)} className="button-secondary">
-        Date
-      </button>
-      {
-        selectorIsOpen &&
-        <div>
-          <div>
-            Today
-          </div>
-          <div>
-            Tomorrow
-          </div>
-        </div>
-      }
-    </>
-  )
-} */

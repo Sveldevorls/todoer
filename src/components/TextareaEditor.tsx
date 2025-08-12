@@ -6,7 +6,7 @@ type TextAreaEditorProps = {
   value: string;
   placeholder?: string;
   required?: boolean;
-  blurHandler: (nextValue: string) => void;
+  blurHandler: (nextValue: string | null) => void;
 }
 
 export default function TextareaEditor({ value, required = false, placeholder = "", blurHandler }: TextAreaEditorProps) {
@@ -24,7 +24,7 @@ export default function TextareaEditor({ value, required = false, placeholder = 
           showSnackbar({ message: "This field can not be blank" });
           return
         }
-        blurHandler(currValue);
+        blurHandler(currValue ? currValue : null);
       }}
       placeholder={placeholder}
     />

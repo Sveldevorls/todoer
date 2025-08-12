@@ -4,12 +4,12 @@ type NewTodoButtonProps = {
   isEditing: boolean;
   openHandler: VoidFunction;
   closeHandler: VoidFunction;
-  defaultGroupID?: string;
-  defaultDate?: string;
+  defaultGroupID?: string | null;
+  defaultDate?: number | null;
 }
 
 export default function NewTodoButton({
-  isEditing, openHandler, closeHandler, defaultGroupID = "", defaultDate = ""
+  isEditing, openHandler, closeHandler, defaultGroupID = null, defaultDate = null
 }: NewTodoButtonProps) {
   if (isEditing) {
     return (

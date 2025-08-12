@@ -85,11 +85,26 @@ function TaskPage({ todo }: { todo: TodoObject }) {
               }
             }
           />
+          {/* <GroupSelectorNew
+            defaultLabel={todo.group === "" || groups.find(group => group.id === todo.group) === undefined ? "Add to group" : groups.find(group => group.id === todo.group)!.title}
+            defaultValue={todo.group === "" ? null : todo.group}
+            selectHandler={
+              (nextGroupID: string) => {
+                dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
+                if (nextGroupID) {
+                  showSnackbar({ message: "Task moved" });
+                }
+                else {
+                  showSnackbar({ message: "Task removed from group" })
+                }
+              }
+            }
+          /> */}
         </div>
         <div className="min-w-[200px] flex-grow">
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Date</h3>
           <DateSelector
-            defaultDate={todo.date == "" ? null : new Date(parseInt(todo.date, 10))}
+            defaultDate={todo.date ? new Date(todo.date) : null}
             changeHandler={(value) => {
               dispatch(updateTodoByField({ id: todo.id, key: "date", value: value }));
               showSnackbar({ message: "Date updated" })
@@ -100,7 +115,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
       <div>
         <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Description</h3>
         <TextareaEditor
-          value={todo.description}
+          value={todo.description ? todo.description : ""}
           placeholder="Click here to add description"
           blurHandler={generateBlurHandler("description")}
         />
@@ -108,7 +123,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
       <div>
         <h3 className="text-sm uppercase font-black border-b-1 border-gray-400">Notes</h3>
         <TextareaEditor
-          value={todo.notes}
+          value={todo.notes ? todo.notes : ""}
           placeholder="Click here to add notes"
           blurHandler={generateBlurHandler("notes")}
         />

@@ -56,7 +56,7 @@ function GroupPage({ group }: { group: GroupObject }) {
             value={group.title}
             required={true}
             blurHandler={(nextValue) => {
-              dispatch(updateGroupTitle({ id: group.id, value: nextValue }))
+              dispatch(updateGroupTitle({ id: group.id, value: nextValue! }))
             }}
           />
           {

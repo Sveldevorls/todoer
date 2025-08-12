@@ -4,14 +4,14 @@ import { useConfirm } from "../../contexts/ConfirmContext/ConfirmContext";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addTodo, updateTodoByField } from "../../redux/todosSlice";
 import type { TodoObject } from "../../types";
-import GroupSelector from "..//GroupSelector";
+import GroupSelector from "../GroupSelector";
 import TextareaAutosize from "react-textarea-autosize";
 import DateSelector from "..//DateSelector";
 
 type NewTodoModeProps = {
   mode: "new";
-  defaultGroupID: string;
-  defaultDate: string;
+  defaultGroupID: string | null;
+  defaultDate: number | null;
   closeHandler: VoidFunction;
 }
 
@@ -25,14 +25,14 @@ type TodoEditorProps = NewTodoModeProps | EditModeProps;
 
 export default function TodoEditor(props: TodoEditorProps) {
   const initTitle = props.mode === "new" ? "" : props.currTodo.title;
-  const initDescription = props.mode === "new" ? "" : props.currTodo.description;
+  const initDescription = props.mode === "new" ? null : props.currTodo.description;
   const initGroupID = props.mode === "new" ? props.defaultGroupID : props.currTodo.group;
   const initDate = props.mode === "new" ? props.defaultDate : props.currTodo.date;
 
   const [title, setTitle] = useState<string>(initTitle);
-  const [description, setDescription] = useState<string>(initDescription);
-  const [groupID, setGroupID] = useState<string>(initGroupID);
-  const [date, setDate] = useState<string>(initDate);
+  const [description, setDescription] = useState<string | null>(initDescription);
+  const [groupID, setGroupID] = useState<string | null>(initGroupID);
+  const [date, setDate] = useState<number | null>(initDate);
 
   const groups = useAppSelector(state => state.groups.groups);
   const showConfirm = useConfirm();
@@ -43,7 +43,7 @@ export default function TodoEditor(props: TodoEditorProps) {
     title !== initTitle ||
     description !== initDescription ||
     groupID !== initGroupID ||
-    !isSameDay(date, initDate);
+    date && initDate && !isSameDay(date, initDate);
 
   useBlocker({
     shouldBlockFn: ({ next }) => {
@@ -70,10 +70,10 @@ export default function TodoEditor(props: TodoEditorProps) {
       const newTodo: TodoObject = {
         id: crypto.randomUUID(),
         title: title,
-        description: description,
-        group: groupID,
-        notes: "",
-        date: date,
+        description: description ? description : null,
+        group: groupID ? groupID : null,
+        notes: null,
+        date: date ? date : null,
         isCompleted: false,
       };
       dispatch(addTodo(newTodo));
@@ -86,7 +86,7 @@ export default function TodoEditor(props: TodoEditorProps) {
     }
 
     setTitle("");
-    setDescription("");
+    setDescription(null);
     setGroupID(initGroupID);
     setDate(initDate);
 
@@ -95,11 +95,11 @@ export default function TodoEditor(props: TodoEditorProps) {
     }
   }
 
-  function isSameDay(UNIXDateOne: string, UNIXDateTwo: string) {
+  function isSameDay(UNIXDateOne: number, UNIXDateTwo: number) {
     // both dates present
     if (UNIXDateOne && UNIXDateTwo) {
-      const firstDate = new Date(parseInt(UNIXDateOne, 10));
-      const secondDate = new Date(parseInt(UNIXDateTwo, 10));
+      const firstDate = new Date(UNIXDateOne);
+      const secondDate = new Date(UNIXDateTwo);
       return (
         firstDate.getDay() === secondDate.getDay() &&
         firstDate.getMonth() === secondDate.getMonth() &&
@@ -108,7 +108,7 @@ export default function TodoEditor(props: TodoEditorProps) {
     }
     // both are empty
     else {
-      return (UNIXDateOne === "" && UNIXDateTwo === "")
+      return (!UNIXDateOne && !UNIXDateTwo)
     }
   }
 
@@ -150,14 +150,14 @@ export default function TodoEditor(props: TodoEditorProps) {
           placeholder="Description (optional)"
           minRows={3}
           maxRows={5}
-          value={description}
+          value={description ? description : ""}
           onChange={e => setDescription(e.currentTarget.value)}
         />
       </form>
 
       <div className="flex gap-1">
         <DateSelector
-          defaultDate={date == "" ? null : new Date(parseInt(date, 10))}
+          defaultDate={date ? new Date(date) : null}
           changeHandler={(date) => setDate(date)}
         />
       </div>
@@ -168,6 +168,7 @@ export default function TodoEditor(props: TodoEditorProps) {
           defaultValue={groupID}
           selectHandler={setGroupID}
         />
+        {/* <GroupSelectorNew /> */}
         <div className="flex gap-2 ml-auto">
           <button
             className="button-svg bg-gray-200 hover:bg-gray-300 @lg:hidden"
