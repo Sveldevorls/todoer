@@ -5,12 +5,12 @@ import { updateTodoByField } from '../../redux/todosSlice';
 import { useSnackbar } from '../../contexts/SnackbarContext/SnackbarContext';
 import type { TodoObject } from '../../types';
 import TextareaEditor from '../../components/TextareaEditor';
-import GroupSelector from '../../components/GroupSelector';
 import Header from '../../components/Header';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import TodoToggleButton from '../../components/buttons/TodoToggleButton';
 import GoBackButton from '../../components/buttons/GoBackButton';
 import DateSelector from '../../components/DateSelector';
+import GroupSelector from '../../components/GroupSelector';
 
 export const Route = createFileRoute('/tasks/$taskID')({
   component: RouteComponent
@@ -71,35 +71,21 @@ function TaskPage({ todo }: { todo: TodoObject }) {
         <div className="min-w-[200px] flex-grow">
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Group</h3>
           <GroupSelector
-            options={groups.map(group => ({ label: group.title, value: group.id }))}
-            defaultValue={todo.group == "" ? null : todo.group}
+            defaultLabel={todo.group ? groups.find(group => group.id === todo.group)?.title : "Add to group"}
+            defaultValue={todo.group ? todo.group : null}
             selectHandler={
               (nextGroupID: string) => {
                 dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
-                if (nextGroupID) {
-                  showSnackbar({ message: "Task moved" });
-                }
-                else {
-                  showSnackbar({ message: "Task removed from group" })
-                }
+                showSnackbar({ message: "Task moved" });
+              }
+            }
+            removeHandler={
+              (nextGroupID: null) => {
+                dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
+                showSnackbar({ message: "Task removed from group" });
               }
             }
           />
-          {/* <GroupSelectorNew
-            defaultLabel={todo.group === "" || groups.find(group => group.id === todo.group) === undefined ? "Add to group" : groups.find(group => group.id === todo.group)!.title}
-            defaultValue={todo.group === "" ? null : todo.group}
-            selectHandler={
-              (nextGroupID: string) => {
-                dispatch(updateTodoByField({ id: todo.id, key: "group", value: nextGroupID }));
-                if (nextGroupID) {
-                  showSnackbar({ message: "Task moved" });
-                }
-                else {
-                  showSnackbar({ message: "Task removed from group" })
-                }
-              }
-            }
-          /> */}
         </div>
         <div className="min-w-[200px] flex-grow">
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Date</h3>

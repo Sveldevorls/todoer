@@ -34,10 +34,10 @@ export default function TodoEditor(props: TodoEditorProps) {
   const [groupID, setGroupID] = useState<string | null>(initGroupID);
   const [date, setDate] = useState<number | null>(initDate);
 
-  const groups = useAppSelector(state => state.groups.groups);
   const showConfirm = useConfirm();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const groups = useAppSelector(state => state.groups.groups);
 
   const formIsDirty =
     title !== initTitle ||
@@ -164,11 +164,11 @@ export default function TodoEditor(props: TodoEditorProps) {
 
       <div className="flex border-t-1 border-gray-400 pt-2">
         <GroupSelector
-          options={groups.map(group => ({ label: group.title, value: group.id }))}
+          defaultLabel={props.mode === "new" ? "Add to group" : groups.find(group => group.id === groupID)?.title}
           defaultValue={groupID}
-          selectHandler={setGroupID}
+          selectHandler={(newGroupID: string) => setGroupID(newGroupID)}
+          removeHandler={(noGroupID: null) => setGroupID(noGroupID)}
         />
-        {/* <GroupSelectorNew /> */}
         <div className="flex gap-2 ml-auto">
           <button
             className="button-svg bg-gray-200 hover:bg-gray-300 @lg:hidden"
