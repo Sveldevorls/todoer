@@ -67,8 +67,8 @@ function TaskPage({ todo }: { todo: TodoObject }) {
           {todo.isCompleted ? "Finished" : "In progress"}
         </h2>
       </div>
-      <div className="flex flex-wrap gap-4">
-        <div className="min-w-[200px] flex-grow">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
+        <div>
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Group</h3>
           <GroupSelector
             defaultLabel={todo.group ? groups.find(group => group.id === todo.group)?.title : "Add to group"}
@@ -87,7 +87,7 @@ function TaskPage({ todo }: { todo: TodoObject }) {
             }
           />
         </div>
-        <div className="min-w-[200px] flex-grow">
+        <div>
           <h3 className="mb-1 text-sm uppercase font-black border-b-1 border-gray-400">Date</h3>
           <DateSelector
             defaultDate={todo.date ? new Date(todo.date) : null}
