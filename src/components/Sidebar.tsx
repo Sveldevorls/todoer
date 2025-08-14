@@ -28,7 +28,7 @@ export default function Sidebar({ sidebarIsOpen, setSidebarIsOpen }: SidebarProp
     if (!todo.date) return false;
 
     const today = new Date();
-    const todoDate = new Date(parseInt(todo.date, 10));
+    const todoDate = new Date(todo.date, 10);
     return (
       todoDate.getDay() === today.getDay() &&
       todoDate.getMonth() === today.getMonth() &&
